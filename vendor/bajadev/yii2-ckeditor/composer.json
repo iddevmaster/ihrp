@@ -1,0 +1,30 @@
+{
+    "name": "bajadev/yii2-ckeditor",
+    "keywords": ["yii", "wysiwyg", "editor", "CKEditor"],
+    "description": "Yii2 CKEditor",
+    "homepage": "https://github.com/Bajadev/yii2-ckeditor",
+    "license": "BSD-3-Clause",
+    "type": "yii2-extension",
+	"minimum-stability":"stable",
+    "authors": [
+        {
+            "name": "Bajadev",
+            "email": "info@bajadev.hu",
+            "homepage": "https://github.com/Bajadev",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"bajadev\\ckeditor\\": ""}
+    },
+    "require": {
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-imagine": "*"
+    },
+	"extra": {
+		"asset-installer-paths": {
+			"npm-asset-library": "vendor/npm",
+			"bower-asset-library": "vendor/bower"
+		}
+	}
+}

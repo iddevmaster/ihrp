@@ -1,0 +1,16 @@
+<?php
+
+return [
+    'adminEmail' => 'admin@example.com',
+    'adminName' => 'ศูนย์จริยธรรมการวิจัยในมนุษย์ มหาวิทยาลัยขอนแก่น',
+    'sendMailCmd' => 'php /var/www/html/echr/yii email-queue/send-mail',
+//    'dateFormat' => 'd/m/Y',
+//    'dateFormatJs' => 'DD/MM/YYYY',
+    'alertCheckInterval' => 5 * 60 * 1000,
+    'fileEncryptionKey' => getenv('FILE_ENCRYPTION_KEY') ?: 'gRS52o%z5R!AM@oA0M8G',
+    'user.passwordResetTokenExpire' => 15 * 60 * 1000,
+    'i18nSuffixes' => [
+        'th' => '',
+        'en' => '_eng',
+    ]
+];

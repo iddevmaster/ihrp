@@ -1,0 +1,39 @@
+[settings]
+; absolute path to the temp dir. If empty the default system tmp directory will be used
+temp_path = ""
+
+; if set to true: detects if the contents are UTF-8 encoded and if not encodes them
+; if set to false do nothing
+encode_to_UTF8 = "true"
+
+; default document language
+language = "th-TH"
+
+; default paper size
+paper_size = "A4"
+
+; right to left languages config
+;bidi = "true"
+;rtl = "true"
+
+; if true, generate the DOCX as stream instead of saving if to the file system. Only available for Premium licenses
+;stream="true"
+
+[license]
+; PHPDocX license code
+code = ""
+;eccc86fd31bd2432d468095796a801f3code = "3ea942ab5cf838dd440a78c3133cef9d"
+; subdomain (Basic license), domain (Advanced license) or IP (Premium license)
+value = "localhost"
+
+[transform]
+; transform options. Only available for Advanced and Premium licenses
+
+; libreoffice, native, msword, openoffice
+method = "libreoffice"
+;method = "native"
+
+; libreoffice installation path, absolute path
+;path = "/opt/libreoffice/program/soffice"
+path = "sudo /opt/libreoffice6.3/program/soffice"
+;path = "/usr/lib/libreoffice/program/soffice"

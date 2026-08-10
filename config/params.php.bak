@@ -1,0 +1,15 @@
+<?php
+
+return [
+    'adminEmail' => 'admin@example.com',
+    'adminName' => 'สำนักงานคณะกรรมการจริยธรรมการวิจัยในมนุษย์ มหาวิทยาลัยขอนแก่น',
+    'sendMailCmd' => '/var/www/html/echr/yii email-queue/send-mail',
+//    'dateFormat' => 'd/m/Y',
+//    'dateFormatJs' => 'DD/MM/YYYY',
+    'alertCheckInterval' => 5 * 60 * 1000,
+    'user.passwordResetTokenExpire' => 15 * 60 * 1000,
+    'i18nSuffixes' => [
+        'th' => '',
+        'en' => '_eng',
+    ]
+];

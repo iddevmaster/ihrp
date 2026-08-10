@@ -1,0 +1,7 @@
+.github
+.idea
+build/
+compiled-docs/
+license.txt
+.DS_Store
+node_modules/
