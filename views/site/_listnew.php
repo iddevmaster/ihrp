@@ -47,6 +47,9 @@ endforeach;
                     if ($st == Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN && ($currentRole['role_id'] == Role::PRESIDENT)) {
                         $cc = 'red-800';
                     }
+                    if ($st == Submission::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN && ($currentRole['role_id'] == Role::SECRETARY)) {
+                        $cc = 'red-800';
+                    }
                 }
 //                }
                 ?>
@@ -58,6 +61,10 @@ endforeach;
                     <?php
                     if ($st == Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN && ($currentRole['role_id'] == Role::PRESIDENT)) {
                         $url = ['submission/president-approve-result-documents', 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_NEW, 'panelId' => $panelId];
+                        $base64url = base64_encode(\yii\helpers\Url::to($url));
+                        $url['url'] = $base64url;
+                    } elseif ($st == Submission::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN && ($currentRole['role_id'] == Role::SECRETARY)) {
+                        $url = ['submission/secretary-approve-result-documents', 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_NEW, 'panelId' => $panelId];
                         $base64url = base64_encode(\yii\helpers\Url::to($url));
                         $url['url'] = $base64url;
                     } else {

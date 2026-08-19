@@ -31,6 +31,22 @@ $this->title = Yii::$app->name;
                             </div>
                         </a>
                     </div>
+                    <div class="col-sm-6">
+                        <a href="<?= Url::to(['submission/president-approve-result-documents']) ?>" data-pjax="0" style="text-decoration: none">
+                            <div class="widget">
+                                <div class="widget-content padding-35 bg-purple-600">
+                                    <div class="widget-watermark darker font-size-60 margin-15"><i class="icon glyphicon glyphicon-certificate" aria-hidden="true"></i></div>
+                                    <div class="counter counter-md counter-inverse text-left">
+                                        <div class="counter-number-group">
+                                            <span class="counter-number-related text-capitalize"><?= yii::t('app', 'หนังสือแจ้งผลที่ต้องตรวจสอบ'); ?></span>
+                                            <button type="button" class="btn btn-icon bg-purple-200 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN) + \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_CONT, app\models\Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN); ?> </button>
+                                                <?= yii::t('app', 'โครงการ'); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 <div class="row" >
 

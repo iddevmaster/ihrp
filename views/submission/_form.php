@@ -58,7 +58,8 @@ $currentRole = \Yii::$app->session->get('currentRole');
             'data' => $data,
             'options' => ['placeholder' => ''],
             'pluginOptions' => [
-                'allowClear' => true
+                'allowClear' => true,
+                'disabled' => true
             ],
         ]);
 

@@ -65,7 +65,7 @@ return [
         ],
         'visibleButtons' => [
             'select' => function($model) use ($currentRole, $submission) {
-                return (($currentRole['role_id'] == \app\models\Role::ADMIN) || ($currentRole['role_id'] == \app\models\Role::SECRETARY && $submission->secretary_person == \Yii::$app->user->id) || ($currentRole['role_id'] == \app\models\Role::STAFF && $submission->responsible_person == \Yii::$app->user->id)) && ($submission->status < \app\models\Submission::STATUS_AGENDA_ADDED);
+                return ($currentRole['role_id'] == \app\models\Role::PRESIDENT) && ($submission->status < \app\models\Submission::STATUS_AGENDA_ADDED);
             },
         ],
     ],

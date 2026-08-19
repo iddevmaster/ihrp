@@ -38,7 +38,7 @@ $currentRoles = Yii::$app->session->get('currentRole');
             </div>
         </div>
         <div class="panel-body">
-            <?php if (in_array($currentRoles['role_id'], [\app\models\Role::STAFF, \app\models\Role::SECRETARY, \app\models\Role::ADMIN])) { ?>
+            <?php if ($currentRoles['role_id'] == \app\models\Role::PRESIDENT) { ?>
                 <div class="col-md-12">
                     <?php
                     echo $this->renderFile('@app/views/submission-committee/list-committee-select.php', [

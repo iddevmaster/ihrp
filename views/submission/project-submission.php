@@ -298,7 +298,7 @@ if ($currentRoles['role_id'] == \app\models\Role::COPRESIDENT || $currentRoles['
                         </li>
                     <?php endif; ?>
 
-                    <?php if (!isset($re) && (((($currentRoles['role_id'] == \app\models\Role::STAFF && $submission->responsible_person == \Yii::$app->user->identity->id) || ($currentRoles['role_id'] == \app\models\Role::SECRETARY && $submission->secretary_person == \Yii::$app->user->identity->id) || $currentRoles['role_id'] == \app\models\Role::ADMIN))) && (($submission->status >= Submission::STATUS_SECRETARY_SELECTED))): ?>
+                    <?php if (!isset($re) && ($currentRoles['role_id'] == \app\models\Role::PRESIDENT) && (($submission->status >= Submission::STATUS_SECRETARY_SELECTED))): ?>
                         <li role="presentation">
                             <a data-toggle="tab" href="#tab-5" aria-controls="tab-5" role="tab"><?= yii::t('app', 'เลือกกรรมการ') ?><span class="site-menu-arrow font-size-20 center"></span></a>
                         </li>
@@ -452,7 +452,7 @@ if ($currentRoles['role_id'] == \app\models\Role::COPRESIDENT || $currentRoles['
                             ?>
                         </div>
                     <?php endif; ?>
-                    <?php if (!isset($re) && (((($currentRoles['role_id'] == \app\models\Role::STAFF && $submission->responsible_person == \Yii::$app->user->identity->id) || ($currentRoles['role_id'] == \app\models\Role::SECRETARY && $submission->secretary_person == \Yii::$app->user->identity->id) || $currentRoles['role_id'] == \app\models\Role::ADMIN)) && $currentRoles['role_id'] != app\models\Role::RESEARCHER && $currentRoles['role_id'] != app\models\Role::COORDINATOR && $currentRoles['role_id'] != app\models\Role::COMMITTEE && $currentRoles['role_id'] != app\models\Role::PRESIDENT) && (($submission->status >= Submission::STATUS_SECRETARY_SELECTED))): ?>
+                    <?php if (!isset($re) && ($currentRoles['role_id'] == \app\models\Role::PRESIDENT) && (($submission->status >= Submission::STATUS_SECRETARY_SELECTED))): ?>
                         <div class="tab-pane" id="tab-5" role="tabpanel">
                             <?=
                             $this->renderFile('@app/views/submission-committee/select-committee.php', [
@@ -640,7 +640,7 @@ if ($currentRoles['role_id'] == \app\models\Role::COPRESIDENT || $currentRoles['
                         ]);
                         ?>
                     <?php } ?>
-                    <?php if (($submission->status == Submission::STATUS_SECRETARY_SELECT_TYPE) && (($currentRoles['role_id'] == \app\models\Role::STAFF && $submission->responsible_person == \Yii::$app->user->identity->id) || ($currentRoles['role_id'] == \app\models\Role::SECRETARY && $submission->secretary_person == \Yii::$app->user->identity->id) )) { ?>
+                    <?php if (($submission->status == Submission::STATUS_SECRETARY_SELECT_TYPE) && ($currentRoles['role_id'] == \app\models\Role::PRESIDENT)) { ?>
                         <?=
                         Html::a('<i class="icon md-floppy"></i> ' . yii::t('app', 'เลือกประเภทโครงการ'), ['submission/update', 'id' => $submission->id, 'mode' => Submission::MODE_ASSESSTYPE], ['role' => 'modal-remote', 'title' => 'เลือกประเภทโครงการ',
                             'data-confirm' => false, 'data-method' => false, // for overide yii data api

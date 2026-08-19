@@ -1,9 +1,8 @@
 <?php
-if (isset($submission->president_person)) {
-    $person = $submission->presidentPerson->person;
-} else {
-    $person = $submission->project->panel->chairman;
+if (!isset($submission->secretary_person) || !isset($submission->secretaryPerson->person)) {
+    return;
 }
+$person = $submission->secretaryPerson->person;
 $signType = ($type == 'thai') ? 'thai' : 'eng';
 $signPath = ($type == 'thai') ? $person->templatePathAliasSignatureThai : $person->templatePathAliasSignature;
 $signValue = ($type == 'thai') ? $person->signature_thai : $person->signature;

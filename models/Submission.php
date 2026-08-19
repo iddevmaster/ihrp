@@ -141,6 +141,7 @@ class Submission extends \yii\db\ActiveRecord {
     const STATUS_WAITING_PRE_APPROVE_AGENDA = 1160;
     const STATUS_SECRETARY_APPROVE_AGENDA = 1200;
     const STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN = 1260;
+    const STATUS_SECRETARY_APPROVE_RESULTDOCUMEN = 1280;
     const STATUS_STAFF_UPLOAD_RESULTDOCUMENT = 1300;
     const CUSTOM_STATUS_MEETING_PENDING = 'MEETING_PENDING';
     const CUSTOM_STATUS_STEP_PENDING = 'STEP_PENDING';
@@ -1754,6 +1755,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'เลขาฯตรวจสอบรายงานการประชุม'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'ประธานตรวจสอบรายงานการประชุม'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'ประธานตรวจสอบหนังสือแจ้งผล'),
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'เลขาฯตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผล'),
         ];
     }
@@ -1812,6 +1814,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'ส่งผลการพิจารณาจากประธาน'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
@@ -1881,6 +1884,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'รอการตรวจสอบผลพิจารณาจากประธาน'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
@@ -1917,6 +1921,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'รอการตรวจสอบผลพิจารณาจากประธาน'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
@@ -1934,6 +1939,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
@@ -1949,6 +1955,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
@@ -1977,6 +1984,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => 'bg-blue-500',
             self::STATUS_SECRETARY_APPROVE_AGENDA => 'bg-purple-200',
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => 'bg-purple-900',
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => 'bg-purple-700',
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => 'bg-orange-400',
         ];
     }
@@ -2111,6 +2119,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA,
             self::STATUS_SECRETARY_APPROVE_AGENDA,
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN,
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN,
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT,
         ];
     }
@@ -2170,6 +2179,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA,
             self::STATUS_SECRETARY_APPROVE_AGENDA,
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN,
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN,
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT,
         ];
     }
@@ -2188,6 +2198,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => yii::t('app', 'รอการตรวจสอบผลพิจารณาจากประธาน'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
@@ -2207,6 +2218,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA,
             self::STATUS_SECRETARY_APPROVE_AGENDA,
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN,
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN,
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT,
         ];
     }
@@ -2263,6 +2275,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_WAITING_PRE_APPROVE_AGENDA,
             self::STATUS_SECRETARY_APPROVE_AGENDA,
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN,
+            self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN,
             self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT,
         ];
     }

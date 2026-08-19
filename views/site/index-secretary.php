@@ -82,51 +82,6 @@ $currentRole = Yii::$app->session->get('currentRole');
         <div class="page animsition">
             <div class="page-content container-fluid">
                 <div class="row">
-                    <div class="example-wrap">
-                        <div class="col-md-3">
-                            <a href="<?= Url::to(['submission/index', 'status' => app\models\Submission::STATUS_SECRETARY_SELECT_TYPE, 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_NEW, 'secretary' => 1]) ?>" data-pjax="0" style="text-decoration: none" class="link-card">
-                                <div role="alert" class="alert alert-social alert-primary  alert-dismissible" >
-                                    <i class="icon glyphicon glyphicon-leaf" aria-hidden="true"></i>
-                                    <h4><?= yii::t('app', 'งานวิจัยใหม่'); ?></h4>
-                                    <p style="height:50px;">
-                                        <?= yii::t('app', ' รอกำหนดประเภทการพิจารณา'); ?> <?= yii::t('app', 'จำนวน'); ?> <span class="badge badge-default" ><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_SECRETARY_SELECT_TYPE, NULL, NULL, NULL, NULL, \Yii::$app->user->identity->id); ?> </span> <?= yii::t('app', 'โครงการ'); ?>
-                                    </p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="<?= Url::to(['submission/index', 'status' => app\models\Submission::STATUS_SECRETARY_SELECTED, 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_NEW, 'secretary' => 1]) ?>" data-pjax="0" style="text-decoration: none" class="link-card">
-                                <div role="alert" class="alert alert-social alert-primary  alert-dismissible" >
-                                    <i class="icon glyphicon glyphicon-tree-conifer" aria-hidden="true"></i>
-                                    <h4><?= yii::t('app', 'งานวิจัยใหม่'); ?></h4>
-                                    <p style="height:50px;"><?= yii::t('app', 'รอกำหนดกรรมการ'); ?> <?= yii::t('app', 'จำนวน'); ?> <span class="badge badge-default" ><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_SECRETARY_SELECTED, NULL, NULL, NULL, NULL, \Yii::$app->user->identity->id); ?> </span> <?= yii::t('app', 'โครงการ'); ?></p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="<?= Url::to(['submission/index', 'status' => app\models\Submission::STATUS_SECRETARY_SELECT_TYPE, 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_CONT, 'secretary' => 1]) ?>" data-pjax="0" style="text-decoration: none" class="link-card">
-                                <div role="alert" class="alert alert-social alert-primary  alert-dismissible" >
-                                    <i class="icon glyphicon glyphicon-tree-deciduous" aria-hidden="true"></i>
-                                    <h4><?= yii::t('app', 'งานวิจัยต่อเนื่อง'); ?></h4>
-                                    <p style="height:50px;">
-                                        <?= yii::t('app', 'รอกำหนดประเภทการพิจารณา'); ?> <?= yii::t('app', 'จำนวน'); ?> <span class="badge badge-default" ><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_CONT, app\models\Submission::STATUS_SECRETARY_SELECT_TYPE, NULL, NULL, NULL, NULL, \Yii::$app->user->identity->id); ?> </span> <?= yii::t('app', 'โครงการ'); ?>
-                                    </p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="<?= Url::to(['submission/index', 'status' => app\models\Submission::STATUS_SECRETARY_SELECTED, 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_CONT, 'secretary' => 1]) ?>" data-pjax="0" style="text-decoration: none" class="link-card">
-                                <div role="alert" class="alert alert-social alert-primary  alert-dismissible">
-                                    <i class="icon glyphicon glyphicon-cloud" aria-hidden="true"></i>
-                                    <h4><?= yii::t('app', 'งานวิจัยต่อเนื่อง'); ?></h4>
-                                    <p style="height:50px;"><?= yii::t('app', 'รอกำหนดกรรมการ'); ?> <?= yii::t('app', 'จำนวน'); ?> <span class="badge badge-default" ><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_CONT, app\models\Submission::STATUS_SECRETARY_SELECTED, NULL, NULL, NULL, NULL, \Yii::$app->user->identity->id); ?> </span> <?= yii::t('app', 'โครงการ'); ?></p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="col-sm-6">
                         <a href="<?= Url::to(['meeting/staff-check', 'status' => app\models\Meeting::CS_STAFF_CHECKED]) ?>" data-pjax="0" style="text-decoration: none" class="link-card">
 
@@ -134,6 +89,15 @@ $currentRole = Yii::$app->session->get('currentRole');
                                 <i class="icon glyphicon glyphicon-file" aria-hidden="true"></i>
                                 <h4><?= yii::t('app', 'การประชุมที่ต้องตรวจสอบ'); ?></h4>
                                 <p style="height:50px;"><?= yii::t('app', 'รายงานการประชุมที่ต้องตรวจสอบความถูกต้องของมติที่ประชุม'); ?> <?= yii::t('app', 'จำนวน'); ?> <span class="badge badge-default" ><?= \Yii::$app->user->identity->getMeetingCount(app\models\Meeting::CS_STAFF_CHECKED); ?> </span> <?= yii::t('app', 'รายงาน'); ?></p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="<?= Url::to(['submission/secretary-approve-result-documents']) ?>" data-pjax="0" style="text-decoration: none" class="link-card">
+                            <div role="alert" class="alert alert-social alert-primary  alert-dismissible">
+                                <i class="icon glyphicon glyphicon-certificate" aria-hidden="true"></i>
+                                <h4><?= yii::t('app', 'หนังสือแจ้งผลที่ต้องตรวจสอบ'); ?></h4>
+                                <p style="height:50px;"><?= yii::t('app', 'หนังสือรับรอง/หนังสือแจ้งผลที่รอเลขานุการตรวจสอบและอนุมัติ'); ?> <?= yii::t('app', 'จำนวน'); ?> <span class="badge badge-default" ><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN) + \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_CONT, app\models\Submission::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN); ?> </span> <?= yii::t('app', 'โครงการ'); ?></p>
                             </div>
                         </a>
                     </div>

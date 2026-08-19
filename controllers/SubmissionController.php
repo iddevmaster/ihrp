@@ -788,10 +788,12 @@ class SubmissionController extends RbacController {
             }
             $searchModel->status = $status;
 
-            if (!isset($staff)) {// & ($status == Submission::STATUS_SUBMITTED || $status == Submission::STATUS_DOC_APPROVED || $status == Submission::STATUS_DOC_REJECTED)) {
-                $searchModel->responsible_person = -1;
-            } else {
-                $searchModel->responsible_person = $staff;
+            if ($currentRole['role_id'] != Role::PRESIDENT) {
+                if (!isset($staff)) {// & ($status == Submission::STATUS_SUBMITTED || $status == Submission::STATUS_DOC_APPROVED || $status == Submission::STATUS_DOC_REJECTED)) {
+                    $searchModel->responsible_person = -1;
+                } else {
+                    $searchModel->responsible_person = $staff;
+                }
             }
         }
 
@@ -1001,6 +1003,9 @@ class SubmissionController extends RbacController {
         $model->statusCommittee = \app\models\SubmissionCommittee::STATUS_ACCEPTED;
         $model->can_meeting = 1;
         $project = Project::find()->isDeleted(FALSE)->where(['id' => $model->project_id])->one();
+        if ($mode == Submission::MODE_GENERATECODE) {
+            $model->panelId = !empty($project->panel_id) ? $project->panel_id : 1;
+        }
         $agenda = new \app\models\MeetingAgenda;
         if ($currentRole['role_id'] == \app\models\Role::COMMITTEE) {
             $committee = \app\models\SubmissionCommittee::find()->where(['submission_id' => $id, 'person_id' => $currentRole['person_id'], 'deleted' => 0])->one();
@@ -2652,7 +2657,7 @@ js;
                         continue;
                     }
                     if ($action === 'approve') {
-                        $model->status = Submission::STATUS_STAFF_UPLOAD_RESULTDOCUMENT;
+                        $model->status = Submission::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN;
 
                         if ($model->resolution == Submission::RESOLUTION_Y && isset($model->refSubmission->meetingAgenda)) {
                             $project = $model->project;
@@ -2703,7 +2708,7 @@ js;
                             }
                         }
 
-                        EmailQueue::addQueueNoExec(EmailQueue::TYPE_INFO_RESULT_PROJECTLEADER, $model->id);
+                        // แจ้งนักวิจัยตอนเลขาฯอนุมัติ (actionSecretaryApproveResultDocuments) ไม่ใช่ตอนนี้
 
                         $ardProvider = new ArrayDataProvider([
                             'allModels' => $submission->getResultDocuments()
@@ -2844,6 +2849,12 @@ js;
                             $imagesThai = $this->renderPartial('@app/views/result-document/_image', ['submission' => $submission, 'type' => 'thai']);
                             $imagesThai = $this->renderPartial('@app/views/result-document/_wrap', ['content' => $imagesThai]);
 
+                            $imagesSecretary = $this->renderPartial('@app/views/result-document/_image-secretary', ['submission' => $submission, 'type' => 'eng']);
+                            $imagesSecretary = $this->renderPartial('@app/views/result-document/_wrap', ['content' => $imagesSecretary]);
+
+                            $imagesThaiSecretary = $this->renderPartial('@app/views/result-document/_image-secretary', ['submission' => $submission, 'type' => 'thai']);
+                            $imagesThaiSecretary = $this->renderPartial('@app/views/result-document/_wrap', ['content' => $imagesThaiSecretary]);
+
                             $imagesLetter = $this->renderPartial('@app/views/result-document/_image-letter', ['submission' => $submission, 'type' => 'eng']);
                             $imagesLetter = $this->renderPartial('@app/views/result-document/_wrap', ['content' => $imagesLetter]);
 
@@ -2898,6 +2909,8 @@ js;
                                 'researcher-thai' => $researcherThai,
                                 'researcher-thai-title' => $rname,
                                 'chairman' => $chairman->fullName,
+                                'secretary' => isset($submission->secretary_person) && isset($submission->secretaryPerson->person) ? $submission->secretaryPerson->person->fullName : "",
+                                'secretary-eng' => isset($submission->secretary_person) && isset($submission->secretaryPerson->person) ? $submission->secretaryPerson->person->fullNameEng : "",
                                 'project-type' => $projectType,
                                 'project-type-eng' => $projectTypeEng,
                                 'chairman-eng' => $chairman->fullNameEng,
@@ -2943,6 +2956,8 @@ js;
                             $docx->replaceVariableByHTML('chairman-signature-letter', 'block', $imagesLetter, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('chairman-signature-thai', 'block', $imagesThai, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('chairman-signature-eng', 'block', $images, ['isFile' => false, 'embedFonts' => true]);
+                            $docx->replaceVariableByHTML('secretary-signature-thai', 'block', $imagesThaiSecretary, ['isFile' => false, 'embedFonts' => true]);
+                            $docx->replaceVariableByHTML('secretary-signature-eng', 'block', $imagesSecretary, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => true]);
@@ -2959,7 +2974,7 @@ js;
                                     ['type' => 'inline', 'target' => 'footer']   // ⭐ ต้องมี target = footer
                             );
 
-                            $code = str_replace('/', '-', $submission->project->project_code);
+                            $code = str_replace(['/', ' '], ['-', '_'], $submission->project->project_code);
                             $nameR = mb_substr($rd->name, 0, 50, 'UTF-8');
                             $file = "{$code}_{$r['id']}.docx";
 
@@ -3080,9 +3095,11 @@ js;
         // GET - render page
         $query = Submission::find()
                 ->joinWith(['submissionType', 'project'])
-                ->submissionTypeGroup($typeGroup)
                 ->isDeleted(false)
                 ->andWhere(['submission.status' => Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN]);
+        if (isset($typeGroup)) {
+            $query->submissionTypeGroup($typeGroup);
+        }
 
         if ($currentRole['role_id'] == Role::PRESIDENT) {
             $query->andWhere(['submission.president_person' => Yii::$app->user->identity->id]);
@@ -3122,6 +3139,66 @@ js;
                     'endorseSubmissions' => $endorseSubmissions,
                     'rejectedSubmissions' => $rejectedSubmissions,
                     'totalCount' => count($allSubmissions),
+        ]);
+    }
+
+    public function actionSecretaryApproveResultDocuments($typeGroup = NULL, $panelId = NULL) {
+        $currentRole = \Yii::$app->session->get('currentRole');
+
+        $request = Yii::$app->request;
+
+        if ($request->isPost) {
+            $decisions = $request->post('decisions', []);
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                foreach ($decisions as $submissionId => $decision) {
+                    $action = $decision['action'] ?? 'pending';
+
+                    if ($action !== 'approve') {
+                        continue;
+                    }
+                    $model = $this->findModel($submissionId);
+                    if ($model->deleted || $model->status != Submission::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN) {
+                        continue;
+                    }
+                    if ($currentRole['role_id'] == Role::SECRETARY && $model->secretary_person != Yii::$app->user->identity->id) {
+                        continue;
+                    }
+                    $model->status = Submission::STATUS_STAFF_UPLOAD_RESULTDOCUMENT;
+                    $model->save(FALSE);
+                    EmailQueue::addQueueNoExec(EmailQueue::TYPE_INFO_RESULT_PROJECTLEADER, $model->id);
+                }
+                EmailQueue::execSendMailCmd();
+                $transaction->commit();
+                Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('app', 'บันทึกเรียบร้อยแล้ว'));
+            } catch (Exception $ex) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('app', 'เกิดข้อผิดพลาด: ') . $ex->getMessage());
+            }
+            return $this->redirect(['secretary-approve-result-documents', 'typeGroup' => $typeGroup, 'panelId' => $panelId]);
+        }
+
+        // GET - render page
+        $query = Submission::find()
+                ->joinWith(['submissionType', 'project'])
+                ->isDeleted(false)
+                ->andWhere(['submission.status' => Submission::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN]);
+        if (isset($typeGroup)) {
+            $query->submissionTypeGroup($typeGroup);
+        }
+
+        if ($currentRole['role_id'] == Role::SECRETARY) {
+            $query->andWhere(['submission.secretary_person' => Yii::$app->user->identity->id]);
+        }
+
+        if (isset($panelId)) {
+            $query->panel($panelId);
+        }
+
+        $submissions = $query->orderBy(['submission.id' => SORT_ASC])->all();
+
+        return $this->render('secretary-approve-result-documents', [
+                    'submissions' => $submissions,
         ]);
     }
 

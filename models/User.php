@@ -292,12 +292,14 @@ class User extends ActiveRecord implements IdentityInterface {
         }
         if ($currentRole['role_id'] == Role::PRESIDENT) {
             if ($status == Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN) {
-                $sub->staff(\Yii::$app->user->identity->id);
+                $sub->president(\Yii::$app->user->identity->id);
             }
         }
-//        if ($currentRole['role_id'] == Role::SECRETARY) {
-//            $sub->secretary(\Yii::$app->user->identity->id);
-//        }
+        if ($currentRole['role_id'] == Role::SECRETARY) {
+            if ($status == Submission::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN) {
+                $sub->secretary(\Yii::$app->user->identity->id);
+            }
+        }
         if (isset($crecResult)) {
             $sub->crecResolution($crecResult);
         }

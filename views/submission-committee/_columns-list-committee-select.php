@@ -113,10 +113,10 @@ return [
         ],
         'visibleButtons' => [
             'select' => function($model) use ($currentRole) {
-                return $currentRole['role_id'] != \app\models\Role::COPRESIDENT && $currentRole['role_id'] != \app\models\Role::PRESIDENT && $currentRole['role_id'] != \app\models\Role::COMMITTEE;
+                return $currentRole['role_id'] == \app\models\Role::PRESIDENT;
             },
             'delete' => function($model) use ($currentRole) {
-                return ($currentRole['role_id'] != \app\models\Role::COPRESIDENT && $currentRole['role_id'] != \app\models\Role::PRESIDENT && $currentRole['role_id'] != \app\models\Role::COMMITTEE) && ($model->submission->status < \app\models\Submission::STATUS_AGENDA_ADDED);
+                return ($currentRole['role_id'] == \app\models\Role::PRESIDENT) && ($model->submission->status < \app\models\Submission::STATUS_AGENDA_ADDED);
             },
             'committeeAccepted' => function($model)use ($currentRole) {
                 return $model->status == app\models\SubmissionCommittee::STATUS_PENDING && ($currentRole['role_id'] == \app\models\Role::STAFF || $currentRole['role_id'] == \app\models\Role::ADMIN );
