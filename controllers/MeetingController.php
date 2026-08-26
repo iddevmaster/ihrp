@@ -1420,7 +1420,7 @@ class MeetingController extends RbacController {
         // $docx->replaceVariableByHTML('issues2', 'block', $issues2, ['isFile' => false, 'embedFonts' => true]);
         // $docx->replaceVariableByHTML('revise-remark', 'block', $reviseRemark, ['isFile' => false, 'embedFonts' => true]);
         $file = "meeting_panel_{$model->panel_id}_{$model->meeting_no}_{$model->year}.docx";
-        $filePath = Yii::getAlias("@app/web/tmp/{$file}");
+        $filePath = str_replace('/', DIRECTORY_SEPARATOR, Yii::getAlias("@app/web/tmp/{$file}"));
         $docx->createDocxAndDownload($filePath);
         // $templateProcessor->setValue('meeting-name', $model->title);
         // $templateProcessor->setValue('panel-id', $model->panel_id);
