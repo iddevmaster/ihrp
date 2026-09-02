@@ -15,7 +15,9 @@ use yii\helpers\Url;
 
 <div class="document-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+    ]); ?>
     <?= $this->renderFile('@app/views/widgets/_alert.php'); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
@@ -40,7 +42,7 @@ use yii\helpers\Url;
     <?=
     $form->field($model, 'template_file')->widget(FileInput::classname(), [
         'options' => [
-            'accept' => 'image/*',
+            'accept' => '.doc,.docx',
         //'multiple' => 'true',
         ],
         'pluginOptions' => [
@@ -64,7 +66,7 @@ use yii\helpers\Url;
     <?=
     $form->field($model, 'template_file_eng')->widget(FileInput::classname(), [
         'options' => [
-            'accept' => 'image/*',
+            'accept' => '.doc,.docx',
         //'multiple' => 'true',
         ],
         'pluginOptions' => [

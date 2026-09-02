@@ -13,6 +13,7 @@ use yii\helpers\Html;
 use kartik\widgets\Alert;
 use yii\helpers\Json;
 use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 use app\models\Submission;
 use app\models\MeetingAgenda;
 
@@ -202,29 +203,32 @@ class DocumentController extends RbacController {
             } else if ($model->load($request->post()) && $model->validate()) {
                 $file = UploadedFile::getInstance($model, 'template_file');
                 if (isset($file)) {
-                    $model->template_file = $file;
-                    $model->template_file->name = 'thai-' . uniqid() . '.' . $model->template_file->extension;
-                    $path = 'uploads/document-template/';
-                    $model->template_file->saveAs($path . $model->template_file->name);
-                    $model->template_file = $model->template_file->name;
+                    $path = Yii::getAlias('@webroot/uploads/document-template');
+                    FileHelper::createDirectory($path);
+                    $fileName = 'thai-' . uniqid() . '.' . $file->extension;
+                    if (!$file->saveAs($path . DIRECTORY_SEPARATOR . $fileName)) {
+                        throw new \RuntimeException('ไม่สามารถบันทึกไฟล์ต้นแบบภาษาไทยได้');
+                    }
+                    $model->template_file = $fileName;
                 } else {
                     $model->template_file = $templateFile;
                 }
 
                 $file_eng = UploadedFile::getInstance($model, 'template_file_eng');
                 if (isset($file_eng)) {
-                    $model->template_file_eng = $file_eng;
-                    $model->template_file_eng->name = 'eng-' . uniqid() . '.' . $model->template_file_eng->extension;
-                    $path = 'uploads/document-template/';
-                    $model->template_file_eng->saveAs($path . $model->template_file_eng->name);
-                    $model->template_file_eng = $model->template_file_eng->name;
+                    $path = Yii::getAlias('@webroot/uploads/document-template');
+                    FileHelper::createDirectory($path);
+                    $fileNameEng = 'eng-' . uniqid() . '.' . $file_eng->extension;
+                    if (!$file_eng->saveAs($path . DIRECTORY_SEPARATOR . $fileNameEng)) {
+                        throw new \RuntimeException('ไม่สามารถบันทึกไฟล์ต้นแบบภาษาอังกฤษได้');
+                    }
+                    $model->template_file_eng = $fileNameEng;
                 } else {
                     $model->template_file_eng = $templateFileEng;
                 }
 
 
                 $model->save(FALSE);
-                $model = new Document();
                 // Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('app', "เพิ่มเอกสารประกอบงานวิจัยเรียบร้อยแล้ว"));
                 return [
                     'forceReload' => '#crud-datatable-document-pjax',
