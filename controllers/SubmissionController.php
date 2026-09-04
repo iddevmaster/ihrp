@@ -2722,6 +2722,7 @@ js;
 //                            if (isset($r['submission_result_document_id'])) {
 //                                continue;
 //                            }
+
                             $rd = \app\models\ResultDocument::findOne($r['result_document_id']);
                             $srdFile = false;
                             if (!empty($r['submission_result_document_id'])) {
