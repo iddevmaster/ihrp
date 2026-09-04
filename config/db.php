@@ -16,8 +16,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=27.254.149.247;dbname=ihrp',
+    'dsn' => 'mysql:host=localhost;dbname=ihrp',
     'username' => 'root',
-    'password' => '@P@SS.W0rd',
+    'password' => 'gseYvs3eL3AsrkgwZ9PP',
     'charset' => 'utf8',
 ];
