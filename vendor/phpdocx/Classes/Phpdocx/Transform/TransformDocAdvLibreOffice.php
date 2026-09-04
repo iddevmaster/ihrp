@@ -24,6 +24,51 @@ require_once dirname(__FILE__) . '/TransformDocAdv.php';
 class TransformDocAdvLibreOffice extends TransformDocAdv
 {
     /**
+     * Resolve the LibreOffice executable for the current operating system.
+     *
+     * The shared phpdocx config contains the Windows development path. A
+     * Linux production server must not try to execute that path.
+     *
+     * @return string
+     * @throws \RuntimeException
+     */
+    private function getLibreOfficePath()
+    {
+        $phpdocxconfig = PhpdocxUtilities::parseConfig();
+        $configuredPath = isset($phpdocxconfig['transform']['path'])
+            ? trim($phpdocxconfig['transform']['path'])
+            : '';
+
+        $isWindows = strncasecmp(PHP_OS, 'WIN', 3) === 0;
+        $candidates = $isWindows
+            ? array(
+                $configuredPath,
+                getenv('ProgramFiles') . '\\LibreOffice\\program\\soffice.exe',
+                getenv('ProgramFiles(x86)') . '\\LibreOffice\\program\\soffice.exe',
+            )
+            : array(
+                // Keep an explicitly configured Unix path as the first choice.
+                strpos($configuredPath, '/') === 0 ? $configuredPath : '',
+                '/usr/bin/libreoffice',
+                '/usr/bin/soffice',
+                '/usr/lib/libreoffice/program/soffice',
+                '/opt/libreoffice/program/soffice',
+                '/opt/libreoffice6.3/program/soffice',
+                '/snap/bin/libreoffice',
+            );
+
+        foreach ($candidates as $candidate) {
+            if ($candidate !== '' && is_file($candidate) && is_executable($candidate)) {
+                return $candidate;
+            }
+        }
+
+        throw new \RuntimeException(
+            'LibreOffice executable was not found. Install LibreOffice or configure its absolute path in phpdocxconfig.ini.'
+        );
+    }
+
+    /**
      * Get the document statistics: number of pages, words,
      * 
      * @param string $source Doc source
@@ -35,8 +80,7 @@ class TransformDocAdvLibreOffice extends TransformDocAdv
             PhpdocxLogger::logger('The file not exist', 'fatal');
         }
 
-        $phpdocxconfig = PhpdocxUtilities::parseConfig();
-        $libreOfficePath = $phpdocxconfig['transform']['path'];
+        $libreOfficePath = $this->getLibreOfficePath();
 
         // storage the output as ASCII text file
         $tempFile = realpath($source) . uniqid('_txt');
@@ -104,8 +148,7 @@ class TransformDocAdvLibreOffice extends TransformDocAdv
         $sourceFileInfo = pathinfo($source);
         $sourceExtension = $sourceFileInfo['extension'];
 
-        $phpdocxconfig = PhpdocxUtilities::parseConfig();
-        $libreOfficePath = $phpdocxconfig['transform']['path'];
+        $libreOfficePath = $this->getLibreOfficePath();
 
         // set outputstring for debugging
         $outputDebug = '';
