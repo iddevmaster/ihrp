@@ -2684,7 +2684,7 @@ js;
 
                                 if ($result['error']) {
                                     // throw new Exception($result['message']);
-                                    $tran->rollBack();
+                                    $transaction->rollBack();
                                     Yii::$app->response->format = Response::FORMAT_JSON;
                                     return [
                                         'title' => Yii::t('app', 'Upload เอกสารแจ้งผล'),
@@ -2726,19 +2726,33 @@ js;
                             $srdFile = false;
                             if (!empty($r['submission_result_document_id'])) {
                                 $srd = \app\models\SubmissionResultDocument::findOne($r['submission_result_document_id']);
-                                $infoFile = pathinfo($srd->document_file);
-                                if (in_array($infoFile['extension'], ['docx'])) {
+                                $extension = $srd ? strtolower(pathinfo($srd->document_file, PATHINFO_EXTENSION)) : '';
+                                $existingFile = $srd && is_file($srd->filePath);
+                                $validDocx = false;
+
+                                if ($existingFile && $extension === 'docx') {
+                                    $zip = new \ZipArchive();
+                                    $validDocx = $zip->open($srd->filePath) === true;
+                                    if ($validDocx) {
+                                        $zip->close();
+                                    }
+                                }
+
+                                if ($validDocx) {
                                     $srdFile = true;
                                     $srd->deleted = 1;
                                     $srd->save(false);
-                                } else {
+                                } elseif ($existingFile && $extension === 'pdf') {
                                     continue;
+                                } elseif ($srd) {
+                                    // A stale database record must not prevent approval.
+                                    // Fall back to the current ResultDocument template.
+                                    $srd->deleted = 1;
+                                    $srd->save(false);
                                 }
                             }
                             if ($srdFile === true) {
-                                if (in_array($infoFile['extension'], ['docx'])) {
-                                    $docx = new \Phpdocx\Create\CreateDocxFromTemplate($srd->filePath);
-                                }
+                                $docx = new \Phpdocx\Create\CreateDocxFromTemplate($srd->filePath);
                             } else {
                                 $docx = new \Phpdocx\Create\CreateDocxFromTemplate($rd->templatePathAlias);
                             }
@@ -3015,47 +3029,21 @@ js;
 //                                }
 //                            }
 
-                            if (!isset($r['submission_result_document_id'])) {
-                                $srd = \app\models\SubmissionResultDocument::findOne($r['submission_result_document_id']);
-                                $infoFile = pathinfo($srd->document_file);
-                                if (in_array($infoFile['extension'], ['docx'])) {
-                                    $newDocx = new CreateDocx();
-                                    $newDocx->transformDocument($docxPath, $pdfPath, 'libreoffice', ['homeFolder' => \Yii::getAlias('@app')]);
+                            \yii\helpers\FileHelper::createDirectory(dirname($pdfPath));
 
-                                    $nr = new \app\models\SubmissionResultDocument();
-//                            $nr->attributes = $r->attributes;
-                                    $nr->submission_id = $submission->id;
-                                    $nr->result_document_id = $r['result_document_id'];
-                                    $nr->name = $r['document_name'];
-                                    $nr->deleted = 0;
-                                    $nr->document_file = $pdfFile;
-                                    $nr->coa_token = $sig;
-                                    $nr->code = $codeRd;
-                                    $nr->qrcode = $qrPath;
-//                                $nr->is_locked = $lockedOk ? 1 : 0;
+                            $newDocx = new CreateDocx();
+                            $newDocx->transformDocument($docxPath, $pdfPath, 'libreoffice', ['homeFolder' => \Yii::getAlias('@app')]);
 
-                                    $nr->save(false);
-                                }
-                            }
-                            if ($srdFile === true) {
-
-                                $newDocx = new CreateDocx();
-                                $newDocx->transformDocument($docxPath, $pdfPath, 'libreoffice', ['homeFolder' => \Yii::getAlias('@app')]);
-
-                                $nr = new \app\models\SubmissionResultDocument();
-//                            $nr->attributes = $r->attributes;
-                                $nr->submission_id = $submission->id;
-                                $nr->result_document_id = $r['result_document_id'];
-                                $nr->name = $r['document_name'];
-                                $nr->deleted = 0;
-                                $nr->document_file = $pdfFile;
-                                $nr->coa_token = $sig;
-                                $nr->code = $codeRd;
-                                $nr->qrcode = $qrPath;
-//                                $nr->is_locked = $lockedOk ? 1 : 0;
-
-                                $nr->save(false);
-                            }
+                            $nr = new \app\models\SubmissionResultDocument();
+                            $nr->submission_id = $submission->id;
+                            $nr->result_document_id = $r['result_document_id'];
+                            $nr->name = $r['document_name'];
+                            $nr->deleted = 0;
+                            $nr->document_file = $pdfFile;
+                            $nr->coa_token = $sig;
+                            $nr->code = $codeRd;
+                            $nr->qrcode = $qrPath;
+                            $nr->save(false);
                         }
 
 
@@ -3084,7 +3072,7 @@ js;
                             'approved' => $approvedCount,
                             'rejected' => $rejectedCount,
                 ]));
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', Yii::t('app', 'เกิดข้อผิดพลาด: ') . $e->getMessage());
             }
@@ -3099,6 +3087,9 @@ js;
                 ->andWhere(['submission.status' => Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN]);
         if (isset($typeGroup)) {
             $query->submissionTypeGroup($typeGroup);
+        }
+        if (isset($panelId)) {
+            $query->andWhere(['project.panel_id' => $panelId]);
         }
 
         if ($currentRole['role_id'] == Role::PRESIDENT) {
@@ -3129,7 +3120,10 @@ js;
                 ->limit(50);
 
         if ($currentRole['role_id'] == Role::PRESIDENT) {
-            $query->andWhere(['submission.president_person' => Yii::$app->user->identity->id]);
+            $rejectedQuery->andWhere(['submission.president_person' => Yii::$app->user->identity->id]);
+        }
+        if (isset($panelId)) {
+            $rejectedQuery->andWhere(['project.panel_id' => $panelId]);
         }
 
         $rejectedSubmissions = $rejectedQuery->all();

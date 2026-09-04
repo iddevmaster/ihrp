@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
+use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 use kartik\widgets\Alert;
 
@@ -142,10 +143,15 @@ class SubmissionResultDocumentController extends RbacController {
                 }
                 if ($model->validate()) {
                     if (isset($file)) {
-                        $model->document_file->name = uniqid() . '.' . $model->document_file->extension;
-//                    $path = 'uploads/submission-result-document-file/';
-                        $model->document_file->saveAs($model->path . '/' . $model->document_file->name);
-                        $model->document_file = $model->document_file->name;
+                        $fileName = uniqid() . '.' . $model->document_file->extension;
+                        $uploadPath = Yii::getAlias('@webroot/' . $model->path);
+                        FileHelper::createDirectory($uploadPath);
+
+                        if (!$model->document_file->saveAs($uploadPath . DIRECTORY_SEPARATOR . $fileName)) {
+                            throw new \RuntimeException('Unable to save the uploaded result document.');
+                        }
+
+                        $model->document_file = $fileName;
                     }
                     $model->save(FALSE);
 //                $model = new SubmissionResultDocument();

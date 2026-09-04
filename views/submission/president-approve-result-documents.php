@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $acknowledgeSubmissions app\models\Submission[] */
@@ -31,11 +30,15 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php
-    $form = ActiveForm::begin([
-                'id' => 'president-bulk-approve-form',
-                'action' => Url::to(['submission/president-approve-result-documents']),
-                'method' => 'post',
-    ]);
+    echo Html::beginForm(
+            Url::to([
+                'submission/president-approve-result-documents',
+                'typeGroup' => Yii::$app->request->get('typeGroup'),
+                'panelId' => Yii::$app->request->get('panelId'),
+            ]),
+            'post',
+            ['id' => 'president-bulk-approve-form']
+    );
     ?>
 
     <?php // ============ TABLE 1: หนังสือแจ้งผลการพิจารณา (Acknowledge / รับทราบ) ============  ?>
@@ -183,6 +186,7 @@ use yii\widgets\ActiveForm;
                         [
                             'class' => 'btn btn-success btn-raised btn-lg',
                             'id' => 'btn-submit-decisions',
+                            'form' => 'president-bulk-approve-form',
                         ]
                 )
                 ?>
@@ -190,7 +194,7 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    <?= Html::endForm() ?>
 
 </div>
 
@@ -246,8 +250,11 @@ function updateSummary() {
     $('#count-reject').text(rejectCount);
 }
 
-// 5. Form validation before submit
-$('#president-bulk-approve-form').on('beforeSubmit', function(e) {
+// 5. Validate and submit directly. This avoids Grid/PJAX handlers swallowing
+// the form submit event on this page.
+$('#btn-submit-decisions').on('click', function(e) {
+    e.preventDefault();
+
     var hasDecision = false;
     var valid = true;
     var firstError = null;
@@ -290,7 +297,13 @@ $('#president-bulk-approve-form').on('beforeSubmit', function(e) {
     var approveCount = $('input.decision-radio[value="approve"]:checked').length;
     var rejectCount = $('input.decision-radio[value="reject"]:checked').length;
 
-    return confirm('ยืนยันผลการพิจารณา?\n\nอนุมัติ: ' + approveCount + ' รายการ\nส่งคืนแก้ไข: ' + rejectCount + ' รายการ');
+    if (!confirm('ยืนยันผลการพิจารณา?\n\nอนุมัติ: ' + approveCount + ' รายการ\nส่งคืนแก้ไข: ' + rejectCount + ' รายการ')) {
+        return false;
+    }
+
+    $('#btn-submit-decisions').prop('disabled', true);
+    document.getElementById('president-bulk-approve-form').submit();
+    return false;
 });
 
 // Initial summary
