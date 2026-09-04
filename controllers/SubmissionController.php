@@ -2799,7 +2799,15 @@ js;
                             $submissionType = $submission->submissionType->name;
                             $divisionThai = $submission->project->projectLeader->person->divisionThai;
                             $meetingNo = isset($ma) ? $ma->meeting->yearNo : "";
-//        $meetingNoEng = isset($ma) ? $ma->meeting->yearNoEng : "";
+                            $meetingNoEng = isset($ma)
+                                    ? ($ma->meeting->yearNoEng ?? $ma->meeting->yearNo ?? '')
+                                    : '';
+                            // These placeholders are optional in some result-document templates.
+                            // Initialise them so Yii does not turn an undefined-variable warning
+                            // into an exception and roll back the approval transaction.
+                            $projectType = '';
+                            $projectTypeEng = '';
+                            $submissionEcId = null;
                             $endorseMeetingNo = isset($endorseMa) ? $endorseMa->meeting->yearNo : '';
                             $agendaNo = isset($ma) ? $ma->sort_label : "";
                             $subject = isset($ma) ? $ma->agenda->name : "";
@@ -3035,6 +3043,10 @@ js;
                             $newDocx = new CreateDocx();
                             $newDocx->transformDocument($docxPath, $pdfPath, 'libreoffice', ['homeFolder' => \Yii::getAlias('@app')]);
 
+                            if (!is_file($pdfPath)) {
+                                throw new \RuntimeException("LibreOffice did not create the PDF file: {$pdfPath}");
+                            }
+
                             $nr = new \app\models\SubmissionResultDocument();
                             $nr->submission_id = $submission->id;
                             $nr->result_document_id = $r['result_document_id'];
@@ -3044,7 +3056,9 @@ js;
                             $nr->coa_token = $sig;
                             $nr->code = $codeRd;
                             $nr->qrcode = $qrPath;
-                            $nr->save(false);
+                            if (!$nr->save(false)) {
+                                throw new \RuntimeException('Unable to save the generated result document.');
+                            }
                         }
 
 
@@ -3075,6 +3089,7 @@ js;
                 ]));
             } catch (\Throwable $e) {
                 $transaction->rollBack();
+                Yii::error($e->__toString(), 'president-approve-result-documents');
                 Yii::$app->session->setFlash('error', Yii::t('app', 'เกิดข้อผิดพลาด: ') . $e->getMessage());
             }
 
