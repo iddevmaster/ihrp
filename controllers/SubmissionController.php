@@ -57,7 +57,7 @@ use Phpdocx\Create\CreateDocx;
  */
 class SubmissionController extends RbacController {
 
-    protected $allowedActions = ['project-submission-show', 'project-submission', 'submission-report', 'delete', 'index-not-isleader', 'index-isconsultant', 'coordinator', 'new-certified', 'general', 'upload-result', 'index-nostaff', 'certificate', 'submission-note', 'meeting-plan', 'set-secretary'];
+    protected $allowedActions = ['project-submission-show', 'project-submission', 'submission-report', 'delete', 'index-not-isleader', 'index-isconsultant', 'coordinator', 'new-certified', 'general', 'upload-result', 'index-nostaff', 'certificate', 'submission-note', 'meeting-plan', 'set-secretary', 'president-select-committee', 'president-assign-committee'];
 
     /**
      * @inheritdoc
@@ -866,6 +866,37 @@ class SubmissionController extends RbacController {
                     'typeGroup' => $typeGroup,
                     'type' => $type,
                     'url' => $url,
+        ]);
+    }
+
+    public function actionPresidentSelectCommittee() {
+        $searchModel = new SubmissionSearch();
+        $searchModel->deleted = 0;
+        $searchModel->noResubmit = 1;
+        $searchModel->status = Submission::STATUS_SECRETARY_SELECT_TYPE;
+        $searchModel->coiPersonId = Yii::$app->user->identity->person->id;
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('president-select-committee', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionPresidentAssignCommittee() {
+        $searchModel = new SubmissionSearch();
+        $searchModel->deleted = 0;
+        $searchModel->noResubmit = 1;
+        $searchModel->status = Submission::STATUS_SECRETARY_SELECTED;
+        $searchModel->coiPersonId = Yii::$app->user->identity->person->id;
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('president-select-committee', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'pageTitle' => Yii::t('app', 'เลือกกรรมการที่ต้องมาตรวจงานวิจัย'),
         ]);
     }
 

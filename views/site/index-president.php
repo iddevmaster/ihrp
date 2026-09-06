@@ -47,6 +47,39 @@ $this->title = Yii::$app->name;
                             </div>
                         </a>
                     </div>
+                    <div class="col-sm-6">
+                        <a href="<?= Url::to(['submission/president-select-committee']) ?>" data-pjax="0" style="text-decoration: none">
+                            <div class="widget">
+                                <div class="widget-content padding-35 bg-blue-600">
+                                    <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
+                                    <div class="counter counter-md counter-inverse text-left">
+                                        <div class="counter-number-group">
+                                                <span class="counter-number-related text-capitalize"><?= yii::t('app', 'เลือกประเภทการพิจารณาโครงการ'); ?></span>
+                                            <button type="button" class="btn btn-icon bg-blue-200 btn-round btn-floating waves-effect waves-round waves-light"><?= (int) $committeeSelectionCount; ?></button>
+                                            <?= yii::t('app', 'โครงการ'); ?>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="<?= Url::to(['submission/president-assign-committee']) ?>" data-pjax="0" style="text-decoration: none">
+                            <div class="widget">
+                                <div class="widget-content padding-35 bg-orange-600">
+                                    <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
+                                    <div class="counter counter-md counter-inverse text-left">
+                                        <div class="counter-number-group">
+                                            <span class="counter-number-related text-capitalize"><?= yii::t('app', 'เลือกกรรมการที่ต้องมาตรวจงานวิจัย'); ?></span>
+                                            <button type="button" class="btn btn-icon bg-orange-200 btn-round btn-floating waves-effect waves-round waves-light"><?= (int) $committeeAssignmentCount; ?></button>
+                                            <?= yii::t('app', 'โครงการ'); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 <div class="row" >
 

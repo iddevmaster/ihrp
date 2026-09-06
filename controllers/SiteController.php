@@ -205,10 +205,26 @@ class SiteController extends RbacController {
             ]);
         }
         if ($currentRole['role_id'] == Role::PRESIDENT) {
+            $committeeSelectionSearch = new SubmissionSearch();
+            $committeeSelectionSearch->deleted = 0;
+            $committeeSelectionSearch->noResubmit = 1;
+            $committeeSelectionSearch->status = Submission::STATUS_SECRETARY_SELECT_TYPE;
+            $committeeSelectionSearch->coiPersonId = Yii::$app->user->identity->person->id;
+            $committeeSelectionCount = $committeeSelectionSearch->search([])->getTotalCount();
+
+            $committeeAssignmentSearch = new SubmissionSearch();
+            $committeeAssignmentSearch->deleted = 0;
+            $committeeAssignmentSearch->noResubmit = 1;
+            $committeeAssignmentSearch->status = Submission::STATUS_SECRETARY_SELECTED;
+            $committeeAssignmentSearch->coiPersonId = Yii::$app->user->identity->person->id;
+            $committeeAssignmentCount = $committeeAssignmentSearch->search([])->getTotalCount();
+
             return $this->render('@app/views/site/index-president.php', [
                         'searchModel' => $searchModel,
                         'dataProviders' => $dataProviders,
                         'panels' => $panels,
+                        'committeeSelectionCount' => $committeeSelectionCount,
+                        'committeeAssignmentCount' => $committeeAssignmentCount,
             ]);
         }
     }
