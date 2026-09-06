@@ -444,23 +444,21 @@ class ResultDocumentController extends RbacController {
         $meetingNoEng = $this->renderPartial('_wrap-text', ['content' => $meetingNoEng]);
 
 // สร้าง token จาก project code + reference โดย sign ด้วย secret ของระบบ
-//        $payload = $submission->project->project_code . '|' . $model->id;
-//        $sig = substr(hash_hmac('sha256', $payload, Yii::$app->params['qrSecret']), 0, 16);
-//
-//        $verifyUrl = Yii::$app->urlManager->createAbsoluteUrl([
-//            '/site/verify',
-//            'code' => $submission->project->project_code,
-//            'id' => $submission->id,
-//            'sig' => $sig,
-//        ]);
-//
-//        $qrPath = \app\components\QrCodeHelper::generateFile($verifyUrl, 300);
-//        $qrFragment = new \Phpdocx\Elements\WordFragment($docx, 'footer');
-//        $qrFragment->addImage([
-//            'src' => $qrPath,
-//            'width' => '70px', // ปรับขนาดให้พอดีเซลล์ฟุตเตอร์
-//            'height' => '70px',
-//        ]);
+        $payload = $submission->project->project_code . '|' . $model->id;
+        $sig = substr(hash_hmac('sha256', $payload, Yii::$app->params['qrSecret']), 0, 8);
+
+        $verifyUrl = Yii::$app->urlManager->createAbsoluteUrl([
+            '/site/coa-check',
+            'sig' => $sig,
+        ]);
+
+        $qrPath = \app\components\QrCodeHelper::generateFile($verifyUrl, 300);
+        $qrFragment = new \Phpdocx\Elements\WordFragment($docx, 'footer');
+        $qrFragment->addImage([
+            'src' => $qrPath,
+            'width' => '70px',
+            'height' => '70px',
+        ]);
         $crecText = '';
         if (isset($submission->is_submit_by_api)) {
             $crecText = 'และที่ประชุมคณะกรรมการกลางพิจารณาจริยธรรมการวิจัยในคน (Central Research Ethics Committee ; CREC) ได้พิจารณา และส่งผลการพิจารณามาให้คณะกรรมการจริยธรรมในมนุษย์ มหาวิทยาลัยขอนแก่น และมีเอกสารที่ส่งมาพร้อมกันนี้)';
@@ -551,10 +549,10 @@ class ResultDocumentController extends RbacController {
         $docx->replaceVariableByHTML('issues2', 'block', $issues2, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('special-condition', 'block', $specialCondition, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('revise-remark', 'block', $reviseRemark, ['isFile' => false, 'embedFonts' => true]);
-//        $docx->replaceVariableByWordFragment(
-//                ['qrcode' => $qrFragment],
-//                ['type' => 'inline', 'target' => 'footer']   // ⭐ ต้องมี target = footer
-//        );
+        $docx->replaceVariableByWordFragment(
+                ['qrcode' => $qrFragment],
+                ['type' => 'inline', 'target' => 'footer']
+        );
         $code = str_replace(['/', ' '], ['-', '_'], $submission->project->project_code);
         $nameR = mb_substr($model->name, 0, 50, 'UTF-8');
         $file = "{$code}.docx";
@@ -783,6 +781,8 @@ class ResultDocumentController extends RbacController {
             'project-code' => $submission->project->project_code,
             'researcher-thai' => $researcherThai,
             'chairman' => $chairman->fullName,
+            'secretary' => isset($submission->secretary_person) && isset($submission->secretaryPerson->person) ? $submission->secretaryPerson->person->fullName : "",
+            'secretary-eng' => isset($submission->secretary_person) && isset($submission->secretaryPerson->person) ? $submission->secretaryPerson->person->fullNameEng : "",
             'chairman-eng' => $chairman->fullNameEng,
             'leader' => $leader,
             'leader-org' => $leaderOrg,
