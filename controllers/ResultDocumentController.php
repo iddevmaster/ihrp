@@ -492,6 +492,8 @@ class ResultDocumentController extends RbacController {
             'researcher-thai' => $researcherThai,
             'researcher-thai-title' => $rname,
             'chairman' => $chairman->fullName,
+            'secretary' => isset($submission->secretary_person) && isset($submission->secretaryPerson->person) ? $submission->secretaryPerson->person->fullName : "",
+            'secretary-eng' => isset($submission->secretary_person) && isset($submission->secretaryPerson->person) ? $submission->secretaryPerson->person->fullNameEng : "",
             'resolution-type-eng' => $resolutionEng,
             'resolution-type' => $submission->submissionType->resolution_label,
             'project-type' => $projectType,
