@@ -435,6 +435,12 @@ class ResultDocumentController extends RbacController {
         $imagesThai = $this->renderPartial('_image', ['submission' => $submission, 'type' => 'thai']);
         $imagesThai = $this->renderPartial('_wrap', ['content' => $imagesThai]);
 
+        $imagesSecretary = $this->renderPartial('_image-secretary', ['submission' => $submission, 'type' => 'eng']);
+        $imagesSecretary = $this->renderPartial('_wrap', ['content' => $imagesSecretary]);
+
+        $imagesThaiSecretary = $this->renderPartial('_image-secretary', ['submission' => $submission, 'type' => 'thai']);
+        $imagesThaiSecretary = $this->renderPartial('_wrap', ['content' => $imagesThaiSecretary]);
+
         $imagesLetter = $this->renderPartial('_image-letter', ['submission' => $submission, 'type' => 'eng']);
         $imagesLetter = $this->renderPartial('_wrap', ['content' => $imagesLetter]);
 
@@ -540,6 +546,8 @@ class ResultDocumentController extends RbacController {
         $docx->replaceVariableByHTML('chairman-signature-letter', 'block', $imagesLetter, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('chairman-signature-thai', 'block', $imagesThai, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('chairman-signature-eng', 'block', $images, ['isFile' => false, 'embedFonts' => true]);
+        $docx->replaceVariableByHTML('secretary-signature-thai', 'block', $imagesThaiSecretary, ['isFile' => false, 'embedFonts' => true]);
+        $docx->replaceVariableByHTML('secretary-signature-eng', 'block', $imagesSecretary, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => true]);
