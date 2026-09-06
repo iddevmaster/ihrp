@@ -330,8 +330,11 @@ class ResultDocumentController extends RbacController {
         $docx->setTemplateSymbol('$');
 
         $ma = $submission->meetingAgenda;
-        if (isset($submission->refSubmission)) {
+        if (!isset($ma) && isset($submission->refSubmission)) {
             $ma = $submission->refSubmission->meetingAgenda;
+        }
+        if (!isset($ma)) {
+            $ma = $submission->firstEndorseMeetingAgenda;
         }
         $endorseMa = $submission->firstEndorseMeetingAgenda;
 
@@ -366,6 +369,7 @@ class ResultDocumentController extends RbacController {
         $divisionThai = $submission->projectLeader->person->divisionThai;
         $meetingNo = isset($ma) ? $ma->meeting->yearNo : "";
 //        $meetingNoEng = isset($ma) ? $ma->meeting->yearNoEng : "";
+        $meetingNoEng = isset($ma) ? ($ma->meeting->yearNoEng ?? $ma->meeting->yearNo ?? '') : '';
         $endorseMeetingNo = isset($endorseMa) ? $endorseMa->meeting->yearNo : '';
         $agendaNo = isset($ma) ? $ma->sort_label : "";
         $subject = isset($ma) ? $ma->agenda->name : "";
@@ -391,6 +395,8 @@ class ResultDocumentController extends RbacController {
         $leaderOrg = $submission->projectLeader->person->divisionThai;
         $leaderEng = $submission->projectLeader->person->fullNameEngNoTitle;
         $leaderOrgEng = $submission->projectLeader->person->divisionEng;
+        $projectType = '';
+        $projectTypeEng = '';
         $progressNo = isset($ma) ? MeetingAgenda::find()->isDeleted(FALSE)->submission($submission->id)->agenda($ma->agenda_id)->count() : "";
 
         $rname = $researcherThai . ' ' . $divisionThai;
@@ -484,7 +490,7 @@ class ResultDocumentController extends RbacController {
             'submission-number' => isset($submission->submission_number) ? $submission->submission_number : "",
             'project-eng' => $submission->project->name_eng,
             'project-code' => $submission->project->project_code,
-            'certificate-no' => !empty($submission->project->certificate_no) ? $submission->project->certificate_no : "",
+            'certificate-no' => !empty($submission->certificate_no) ? $submission->certificate_no : ($submission->project->certificate_no ?? ""),
             'researcher-thai' => $researcherThai,
             'researcher-thai-title' => $rname,
             'chairman' => $chairman->fullName,

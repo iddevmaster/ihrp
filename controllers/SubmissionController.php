@@ -1828,7 +1828,7 @@ class SubmissionController extends RbacController {
 //        }
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-
+        if ($model->status == Submission::STATUS_CODE_GENERATED || $model->status == Submission::STATUS_SECRETARY_SELECTED) {
         if ($model->load($request->post())) {
             $project = $model->project;
             $project->certificate_no = $model->certificate_no;
@@ -1848,6 +1848,7 @@ class SubmissionController extends RbacController {
             return $this->render('certificate', [
                         'model' => $model,
             ]);
+        }
         }
     }
 
@@ -2794,8 +2795,11 @@ js;
                             $docx->setTemplateSymbol('$');
 
                             $ma = $submission->meetingAgenda;
-                            if (isset($submission->refSubmission)) {
+                            if (!isset($ma) && isset($submission->refSubmission)) {
                                 $ma = $submission->refSubmission->meetingAgenda;
+                            }
+                            if (!isset($ma)) {
+                                $ma = $submission->firstEndorseMeetingAgenda;
                             }
                             $endorseMa = $submission->firstEndorseMeetingAgenda;
 
@@ -2959,7 +2963,7 @@ js;
                                 'submission-number' => isset($submission->submission_number) ? $submission->submission_number : "",
                                 'project-eng' => $submission->project->name_eng,
                                 'project-code' => $submission->project->project_code,
-                                'certificate-no' => !empty($submission->project->certificate_no) ? $submission->project->certificate_no : "",
+                                'certificate-no' => !empty($submission->certificate_no) ? $submission->certificate_no : ($submission->project->certificate_no ?? ""),
                                 'researcher-thai' => $researcherThai,
                                 'researcher-thai-title' => $rname,
                                 'chairman' => $chairman->fullName,
@@ -3010,8 +3014,6 @@ js;
                             $docx->replaceVariableByHTML('chairman-signature-letter', 'block', $imagesLetter, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('chairman-signature-thai', 'block', $imagesThai, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('chairman-signature-eng', 'block', $images, ['isFile' => false, 'embedFonts' => true]);
-                            $docx->replaceVariableByHTML('secretary-signature-thai', 'block', $imagesThaiSecretary, ['isFile' => false, 'embedFonts' => true]);
-                            $docx->replaceVariableByHTML('secretary-signature-eng', 'block', $imagesSecretary, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => true]);
@@ -3205,6 +3207,46 @@ js;
                     if ($currentRole['role_id'] == Role::SECRETARY && $model->secretary_person != Yii::$app->user->identity->id) {
                         continue;
                     }
+
+                    $secretarySignatureEng = $this->renderPartial('@app/views/result-document/_image-secretary', [
+                        'submission' => $model,
+                        'type' => 'eng',
+                    ]);
+                    $secretarySignatureEng = $this->renderPartial('@app/views/result-document/_wrap', [
+                        'content' => $secretarySignatureEng,
+                    ]);
+                    $secretarySignatureThai = $this->renderPartial('@app/views/result-document/_image-secretary', [
+                        'submission' => $model,
+                        'type' => 'thai',
+                    ]);
+                    $secretarySignatureThai = $this->renderPartial('@app/views/result-document/_wrap', [
+                        'content' => $secretarySignatureThai,
+                    ]);
+
+                    foreach ($model->getResultDocuments()->all() as $resultDocument) {
+                        $submissionResultDocument = !empty($resultDocument['submission_result_document_id'])
+                                ? \app\models\SubmissionResultDocument::findOne($resultDocument['submission_result_document_id'])
+                                : null;
+                        if (!$submissionResultDocument || !is_file($submissionResultDocument->filePath)) {
+                            continue;
+                        }
+
+                        $docxPath = Yii::getAlias('@app/web/tmp/' . preg_replace('/\.pdf$/i', '.docx', basename($submissionResultDocument->document_file)));
+                        if (!is_file($docxPath)) {
+                            continue;
+                        }
+
+                        $docx = new \Phpdocx\Create\CreateDocxFromTemplate($docxPath);
+                        $docx->setTemplateSymbol('$');
+                        $docx->replaceVariableByHTML('secretary-signature-thai', 'block', $secretarySignatureThai, ['isFile' => false, 'embedFonts' => true]);
+                        $docx->replaceVariableByHTML('secretary-signature-eng', 'block', $secretarySignatureEng, ['isFile' => false, 'embedFonts' => true]);
+                        $docx->createDocx($docxPath);
+
+                        $newDocx = new CreateDocx();
+                        $newDocx->transformDocument($docxPath, $submissionResultDocument->filePath, 'libreoffice', ['homeFolder' => Yii::getAlias('@app')]);
+                        $this->applyApprovalWatermark($submissionResultDocument->filePath);
+                    }
+
                     $model->status = Submission::STATUS_STAFF_UPLOAD_RESULTDOCUMENT;
                     $model->save(FALSE);
                     EmailQueue::addQueueNoExec(EmailQueue::TYPE_INFO_RESULT_PROJECTLEADER, $model->id);
@@ -3558,6 +3600,27 @@ js;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    private function applyApprovalWatermark($pdfPath) {
+        $temporaryPath = $pdfPath . '.watermark.tmp';
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' => Yii::getAlias('@app/runtime/mpdf'),
+        ]);
+        $pageCount = $mpdf->setSourceFile($pdfPath);
+        $mpdf->SetWatermarkText('อนุมัติแล้ว', 0.12);
+        $mpdf->showWatermarkText = true;
+
+        for ($page = 1; $page <= $pageCount; $page++) {
+            $template = $mpdf->importPage($page);
+            $size = $mpdf->getTemplateSize($template);
+            $orientation = $size['width'] > $size['height'] ? 'L' : 'P';
+            $mpdf->AddPage($orientation);
+            $mpdf->useTemplate($template);
+        }
+
+        $mpdf->Output($temporaryPath, \Mpdf\Output\Destination::FILE);
+        rename($temporaryPath, $pdfPath);
     }
 
     public function actionSubmissionContinue() {
