@@ -549,12 +549,13 @@ class ResultDocumentController extends RbacController {
 //                ['qrcode' => $qrFragment],
 //                ['type' => 'inline', 'target' => 'footer']   // ⭐ ต้องมี target = footer
 //        );
-        $code = str_replace('/', '-', $submission->project->project_code);
+        $code = str_replace(['/', ' '], ['-', '_'], $submission->project->project_code);
         $nameR = mb_substr($model->name, 0, 50, 'UTF-8');
         $file = "{$code}.docx";
 
 // สร้างไฟล์ DOCX ชั่วคราว
         $docxPath = Yii::getAlias("@app/web/tmp/{$file}");
+        \yii\helpers\FileHelper::createDirectory(dirname($docxPath));
         $docx->createDocx($docxPath);
 
 // แปลง DOCX เป็น PDF
