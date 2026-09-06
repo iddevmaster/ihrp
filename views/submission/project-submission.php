@@ -83,7 +83,7 @@ if ($currentRoles['role_id'] == \app\models\Role::COPRESIDENT || $currentRoles['
                                     $rc = '<font class="red-700">' . Submission::getResolutionLables()[$submission->resolution] . '</font>';
                                 }
                             }
-                            echo Yii::t('app', ' <span class="font-weight-900" style="font-weight: bold;">  ผลการพิจารณา ECKKU : </span>') . $rc;
+                            echo Yii::t('app', ' <span class="font-weight-900" style="font-weight: bold;">  ผลการพิจารณา EC : </span>') . $rc;
                         }
                         ?>
                         <?php

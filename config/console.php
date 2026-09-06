@@ -47,9 +47,9 @@ $config = [
         'urlManager' => [
            // 'enablePrettyUrl' => true,
            // 'showScriptName' => false,
-            'baseUrl' => 'https://phoenixirb.com/ihrp',
+            'baseUrl' => 'https://esubmission-ihrp.hsri.or.th',
             'scriptUrl' => '/index.php',
-            'hostInfo' => 'https://phoenixirb.com/ihrp/web',
+            'hostInfo' => 'https://esubmission-ihrp.hsri.or.th',
 	    'rules' => [
             ],
         ],
