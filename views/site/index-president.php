@@ -71,7 +71,7 @@ $this->title = Yii::$app->name;
                                     <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                     <div class="counter counter-md counter-inverse text-left">
                                         <div class="counter-number-group">
-                                            <span class="counter-number-related text-capitalize"><?= yii::t('app', 'เลือกกรรมการที่ต้องมาตรวจงานวิจัย'); ?></span>
+                                            <span class="counter-number-related text-capitalize"><?= yii::t('app', 'เลือกผู้ทบทวนโครงการวิจัย'); ?></span>
                                             <button type="button" class="btn btn-icon bg-orange-200 btn-round btn-floating waves-effect waves-round waves-light"><?= (int) $committeeAssignmentCount; ?></button>
                                             <?= yii::t('app', 'โครงการ'); ?>
                                         </div>
