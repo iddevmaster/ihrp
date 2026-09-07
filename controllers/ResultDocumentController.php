@@ -590,8 +590,11 @@ class ResultDocumentController extends RbacController {
 // ใช้ LibreOffice หรือ unoconv แปลงเป็น PDF
 // $cmd = "libreoffice --headless --convert-to pdf --outdir " . Yii::getAlias("@app/web/tmp") . " " . escapeshellarg($docxPath);
 // exec($cmd);
+        $libreOfficeHome = \Yii::getAlias('@runtime/libreoffice');
+        \yii\helpers\FileHelper::createDirectory($libreOfficeHome);
+
         $newDocx = new CreateDocx();
-        $newDocx->transformDocument($docxPath, $pdfPath, 'libreoffice', ['homeFolder' => \Yii::getAlias('@app')]);
+        $newDocx->transformDocument($docxPath, $pdfPath, 'libreoffice', ['homeFolder' => $libreOfficeHome]);
 //        ResultDocument::addNoApproveWatermark($pdfPath, $pdfPath);
 // ตรวจสอบว่าไฟล์ PDF ถูกสร้างแล้ว
         if (file_exists($pdfPath)) {
