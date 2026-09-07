@@ -59,6 +59,12 @@ class SubmissionResultDocumentController extends RbacController {
 //        $request = Yii::$app->request;
 //        $response = \Yii::$app->response;
         $model = $this->findModel($id);
+        $currentRole = Yii::$app->session->get('currentRole');
+        if (isset($currentRole['role_id'])
+                && $currentRole['role_id'] == \app\models\Role::RESEARCHER
+                && $model->submission->status < \app\models\Submission::STATUS_STAFF_UPLOAD_RESULTDOCUMENT) {
+            throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'ยังไม่สามารถดูหนังสือรับรองได้'));
+        }
         $info = pathinfo($model->document_file);
         $fileName = "{$model->name}.{$info['extension']}";
 //        echo $model->filePath;
@@ -363,6 +369,12 @@ class SubmissionResultDocumentController extends RbacController {
         //        $request = Yii::$app->request;
         //        $response = \Yii::$app->response;
         $model = $this->findModel($id);
+        $currentRole = Yii::$app->session->get('currentRole');
+        if (isset($currentRole['role_id'])
+                && $currentRole['role_id'] == \app\models\Role::RESEARCHER
+                && $model->submission->status < \app\models\Submission::STATUS_STAFF_UPLOAD_RESULTDOCUMENT) {
+            throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'ยังไม่สามารถดูหนังสือรับรองได้'));
+        }
         $info = pathinfo($model->filePath);
         // $fileName = "{$model->name}.{$info['extension']}";
         $fileName = $model->document_file;

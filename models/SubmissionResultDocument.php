@@ -245,6 +245,13 @@ class SubmissionResultDocument extends \yii\db\ActiveRecord {
     }
 
     public function getFileLink() {
+        $currentRole = Yii::$app->session->get('currentRole');
+        if (isset($currentRole['role_id'])
+                && $currentRole['role_id'] == Role::RESEARCHER
+                && $this->submission->status < Submission::STATUS_STAFF_UPLOAD_RESULTDOCUMENT) {
+            return '';
+        }
+
         if (!isset($this->srd_crec_id) && !isset($this->document_file)) {
             return Yii::t('app', "ไม่มีไฟล์");
         }
