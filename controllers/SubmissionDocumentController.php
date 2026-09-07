@@ -1035,7 +1035,7 @@ class SubmissionDocumentController extends RbacController {
         $stampHtml = '<div style="font-family: thsarabunnew; color: #003399; text-align: center; font-weight: bold; line-height: 1.05;">'
             . '<div style="font-size: 22pt; margin-top: 15mm;">อนุมัติ</div>'
             . '<div style="font-size: 15pt; margin-top: 1mm;">' . htmlspecialchars($certifiedDate, ENT_QUOTES, 'UTF-8') . '</div>'
-            . '<div style="font-size: 13pt; margin-top: 4mm;">คณะกรรมการจริยธรรมการวิจัยในมนุษย์</div>'
+            . '<div style="font-size: 13pt; margin-top: 1mm;">คณะกรรมการจริยธรรมการวิจัยในมนุษย์</div>'
             . '<div style="font-size: 13pt;">สำนักพัฒนาการคุ้มครองการวิจัยในมนุษย์ (สคม.)</div>'
             . '</div>';
 
