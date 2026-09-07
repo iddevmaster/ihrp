@@ -102,6 +102,7 @@ $items[] = [
 if ($submission->status != NULL) {
     $items[] = [
         'class' => 'kartik\grid\ActionColumn',
+        'header' => Yii::t('app', $submission->resolution === app\models\Submission::RESOLUTION_Y ? 'เอกสารรับรอง' : 'ดำเนินการ'),
         'dropdown' => false,
         'noWrap' => true,
         'vAlign' => 'middle',
