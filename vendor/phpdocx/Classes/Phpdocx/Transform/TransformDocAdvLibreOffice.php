@@ -199,7 +199,16 @@ class TransformDocAdvLibreOffice extends TransformDocAdv
                 // default
 //                echo $libreOfficePath . ' --invisible --convert-to ' . $filesExtensions['targetExtension'] . ' ' . $source . ' --outdir ' . $outdir . $outputDebug;
 //                exit;
-                passthru($libreOfficePath . ' --invisible --convert-to ' . $filesExtensions['targetExtension'] . ' ' . $source . ' --outdir ' . $outdir . $outputDebug);
+                $command = escapeshellarg($libreOfficePath)
+                    . ' --headless --convert-to ' . escapeshellarg($filesExtensions['targetExtension'])
+                    . ' ' . escapeshellarg($source)
+                    . ' --outdir ' . escapeshellarg($outdir)
+                    . $outputDebug;
+                $exitCode = 0;
+                passthru($command, $exitCode);
+                if ($exitCode !== 0) {
+                    throw new \RuntimeException('LibreOffice conversion failed with exit code ' . $exitCode . '.');
+                }
                 //exec($libreOfficePath . ' --invisible --convert-to ' . $filesExtensions['targetExtension'] . ' ' . $source . ' --outdir ' . $outdir . $outputDebug);
 //                exec('/opt/libreoffice6.3/program/soffice --invisible --convert-to pdf /app/web/echr/web/tmp/HE621503_2.docx --outdir /app/web/echr/web/tmp > /dev/null &');
 //                exit;
@@ -209,8 +218,22 @@ class TransformDocAdvLibreOffice extends TransformDocAdv
         // get the converted document, this is the name of the source and the extension
         $newDocumentPath = $outdir . '/' . $sourceFileInfo['filename'] . '.' . $filesExtensions['targetExtension'];
 
-        // move the document to the guessed destination
-        rename($newDocumentPath, $target);
+        if (!file_exists($newDocumentPath)) {
+            throw new \RuntimeException('LibreOffice did not create the converted document: ' . $newDocumentPath);
+        }
+
+        // Move only when PHPDocX was given a different target path. Windows
+        // cannot rename a file to the exact same path.
+        $normalizedSource = str_replace('\\', '/', $newDocumentPath);
+        $normalizedTarget = str_replace('\\', '/', $target);
+        if (strcasecmp($normalizedSource, $normalizedTarget) !== 0) {
+            if (file_exists($target)) {
+                @unlink($target);
+            }
+            if (!rename($newDocumentPath, $target)) {
+                throw new \RuntimeException('Unable to move the converted document to: ' . $target);
+            }
+        }
 
         // restore the previous HOME value
         if (isset($options['homeFolder'])) {

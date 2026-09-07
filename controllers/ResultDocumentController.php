@@ -121,11 +121,13 @@ class ResultDocumentController extends RbacController {
                 ];
             } else if ($model->load($request->post()) && $model->validate()) {
                 $file = UploadedFile::getInstance($model, 'template_file');
-                $model->template_file = $file;
-                $model->template_file->name = uniqid() . '.' . $model->template_file->extension;
-                $path = 'uploads/result-document-template/';
-                $model->template_file->saveAs($path . $model->template_file->name);
-                $model->template_file = $model->template_file->name;
+                $fileName = uniqid() . '.' . $file->extension;
+                $uploadPath = Yii::getAlias('@webroot/uploads/result-document-template');
+                \yii\helpers\FileHelper::createDirectory($uploadPath);
+                if (!$file->saveAs($uploadPath . DIRECTORY_SEPARATOR . $fileName)) {
+                    throw new \RuntimeException('Unable to save the result document template.');
+                }
+                $model->template_file = $fileName;
                 $model->save(FALSE);
                 $model = new ResultDocument();
                 Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('app', "เพิ่มหนังสือแจ้งผลต้นแบบเรียบร้อยแล้ว"));
@@ -193,11 +195,13 @@ class ResultDocumentController extends RbacController {
             } else if ($model->load($request->post())) {
                 $file = UploadedFile::getInstance($model, 'template_file');
                 if (isset($file)) {
-                    $model->template_file = $file;
-                    $model->template_file->name = uniqid() . '.' . $model->template_file->extension;
-                    $path = 'uploads/result-document-template/';
-                    $model->template_file->saveAs($path . $model->template_file->name);
-                    $model->template_file = $model->template_file->name;
+                    $fileName = uniqid() . '.' . $file->extension;
+                    $uploadPath = Yii::getAlias('@webroot/uploads/result-document-template');
+                    \yii\helpers\FileHelper::createDirectory($uploadPath);
+                    if (!$file->saveAs($uploadPath . DIRECTORY_SEPARATOR . $fileName)) {
+                        throw new \RuntimeException('Unable to save the result document template.');
+                    }
+                    $model->template_file = $fileName;
                 } else {
                     $model->template_file = $templateFile;
                 }
@@ -540,25 +544,25 @@ class ResultDocumentController extends RbacController {
         ];
 
 
-        $docx->replaceVariableByText($variables);
-        $docx->replaceVariableByText($variables, ['target' => 'footer']);
-        $docx->replaceVariableByHTML('chairman-signature-letter-thai', 'block', $imagesLetterThai, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('chairman-signature-letter', 'block', $imagesLetter, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('chairman-signature-thai', 'block', $imagesThai, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('chairman-signature-eng', 'block', $images, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('secretary-signature-thai', 'block', $imagesThaiSecretary, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('secretary-signature-eng', 'block', $imagesSecretary, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('volunteer', 'block', $volunteer, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('researcherEng', 'block', $researcherEng, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('issues', 'block', $issues, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('issues-eng', 'block', $issuesEng, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('meeting-no-eng', 'block', $meetingNoEng, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('issues2', 'block', $issues2, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('special-condition', 'block', $specialCondition, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('revise-remark', 'block', $reviseRemark, ['isFile' => false, 'embedFonts' => true]);
+        $this->replaceTextVariablesWithFont($docx, $variables);
+        $this->replaceTextVariablesWithFont($docx, $variables, 'footer');
+        $docx->replaceVariableByHTML('chairman-signature-letter-thai', 'block', $imagesLetterThai, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('chairman-signature-letter', 'block', $imagesLetter, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('chairman-signature-thai', 'block', $imagesThai, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('chairman-signature-eng', 'block', $images, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('secretary-signature-thai', 'block', $imagesThaiSecretary, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('secretary-signature-eng', 'block', $imagesSecretary, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('volunteer', 'block', $volunteer, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('researcherEng', 'block', $researcherEng, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('issues', 'block', $issues, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('issues-eng', 'block', $issuesEng, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('meeting-no-eng', 'block', $meetingNoEng, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('issues2', 'block', $issues2, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('special-condition', 'block', $specialCondition, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('revise-remark', 'block', $reviseRemark, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByWordFragment(
                 ['qrcode' => $qrFragment],
                 ['type' => 'inline', 'target' => 'footer']
@@ -574,7 +578,13 @@ class ResultDocumentController extends RbacController {
 
 // แปลง DOCX เป็น PDF
         $pdfFile = str_replace('.docx', '.pdf', $file);
-        $pdfPath = Yii::getAlias("@app/web/tmp/{$pdfFile}");
+        // PHPDocX renames LibreOffice output to the target path. On Windows,
+        // renaming a file to the exact same path fails, so use a distinct
+        // internal target filename while keeping the download name unchanged.
+        $pdfPath = Yii::getAlias("@app/web/tmp/preview-{$pdfFile}");
+        if (file_exists($pdfPath)) {
+            @unlink($pdfPath);
+        }
 
 
 // ใช้ LibreOffice หรือ unoconv แปลงเป็น PDF
@@ -818,18 +828,18 @@ class ResultDocumentController extends RbacController {
             'resolution-type' => $submission->submissionType->resolution_label,
         ];
 
-        $docx->replaceVariableByText($variables);
-        $docx->replaceVariableByText($variables, ['target' => 'footer']);
-        $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('volunteer', 'block', $volunteer, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('researcherEng', 'block', $researcherEng, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('issues', 'block', $issues, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('issues-eng', 'block', $issuesEng, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('issues2', 'block', $issues2, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('revise-remark', 'block', $reviseRemark, ['isFile' => false, 'embedFonts' => true]);
-        $docx->replaceVariableByHTML('special-condition', 'block', $specialCondition, ['isFile' => false, 'embedFonts' => true]);
+        $this->replaceTextVariablesWithFont($docx, $variables);
+        $this->replaceTextVariablesWithFont($docx, $variables, 'footer');
+        $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('volunteer', 'block', $volunteer, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('researcherEng', 'block', $researcherEng, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('issues', 'block', $issues, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('issues-eng', 'block', $issuesEng, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('issues2', 'block', $issues2, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('revise-remark', 'block', $reviseRemark, ['isFile' => false, 'embedFonts' => false]);
+        $docx->replaceVariableByHTML('special-condition', 'block', $specialCondition, ['isFile' => false, 'embedFonts' => false]);
 
         $docx->createDocxAndDownload($model->template_file);
 
@@ -877,6 +887,27 @@ class ResultDocumentController extends RbacController {
             throw new NotFoundHttpException(Yii::t('app', 'ไม่พบไฟล์'));
         }
         exit;
+    }
+
+
+    /**
+     * Replace template text variables while forcing a font family.
+     *
+     * replaceVariableByText inherits the font from each template run and does
+     * not provide a font option. Word fragments let us explicitly set it.
+     */
+    private function replaceTextVariablesWithFont($docx, array $variables, $target = 'document') {
+        foreach ($variables as $variable => $value) {
+            $fragment = new \Phpdocx\Elements\WordFragment($docx, $target);
+            $fragment->addText((string) ($value === null ? '' : $value), [
+                'font' => 'TH SarabunPSK',
+            ]);
+
+            $docx->replaceVariableByWordFragment(
+                [$variable => $fragment],
+                ['type' => 'inline', 'target' => $target]
+            );
+        }
     }
 
     /**
