@@ -997,12 +997,47 @@ class SubmissionDocumentController extends RbacController {
 
         $mpdfTemporaryDirectory = Yii::getAlias('@runtime/mpdf');
         \yii\helpers\FileHelper::createDirectory($mpdfTemporaryDirectory);
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
         $mpdf = new \Mpdf\Mpdf([
             'tempDir' => $mpdfTemporaryDirectory,
+            'fontDir' => array_merge($defaultConfig['fontDir'], [Yii::getAlias('@webroot/fonts')]),
+            'fontdata' => $defaultFontConfig['fontdata'] + [
+                'thsarabunnew' => [
+                    'R' => 'THSarabunNew.ttf',
+                    'B' => 'THSarabunNew-Bold.ttf',
+                    'I' => 'THSarabunNew-Italic.ttf',
+                    'BI' => 'THSarabunNew-BoldItalic.ttf',
+                ],
+            ],
+            'default_font' => 'thsarabunnew',
         ]);
         $pageCount = $mpdf->setSourceFile($sourcePdf);
-        $logoSize = 80 * 25.4 / 96; // 80 CSS pixels converted to millimetres.
+
+        $thaiMonthAbbreviations = [
+            1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.',
+            5 => 'พ.ค.', 6 => 'มิ.ย.', 7 => 'ก.ค.', 8 => 'ส.ค.',
+            9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.',
+        ];
+        $certifiedTimestamp = !empty($model->submission->certified_date)
+            ? strtotime($model->submission->certified_date)
+            : false;
+        $certifiedDate = $certifiedTimestamp
+            ? date('j', $certifiedTimestamp) . ' '
+                . $thaiMonthAbbreviations[(int) date('n', $certifiedTimestamp)] . ' '
+                . ((int) date('Y', $certifiedTimestamp) + 543)
+            : '';
+
+        // mPDF positions and sizes are millimetres. The requested stamp is 80 x 80.
+        $stampWidth = 80;
+        $stampHeight = 80;
         $edgeMargin = 5;
+        $stampHtml = '<div style="font-family: thsarabunnew; color: #003399; text-align: center; font-weight: bold; line-height: 1.05;">'
+            . '<div style="font-size: 30pt; margin-top: 5mm;">อนุมัติ</div>'
+            . '<div style="font-size: 20pt; margin-top: 1mm;">' . htmlspecialchars($certifiedDate, ENT_QUOTES, 'UTF-8') . '</div>'
+            . '<div style="font-size: 13pt; margin-top: 5mm;">คณะกรรมการจริยธรรมการวิจัยในมนุษย์</div>'
+            . '<div style="font-size: 13pt;">สำนักพัฒนาการคุ้มครองการวิจัยในมนุษย์ (สคม.)</div>'
+            . '</div>';
 
         for ($page = 1; $page <= $pageCount; $page++) {
             $template = $mpdf->importPage($page);
@@ -1019,18 +1054,16 @@ class SubmissionDocumentController extends RbacController {
                 'sheet-size' => [$size['width'], $size['height']],
             ]);
             $mpdf->useTemplate($template);
-            $mpdf->SetAlpha(0.20);
-            $mpdf->Image(
-                $logoPath,
-                $size['width'] - $logoSize - $edgeMargin,
-                $size['height'] - $logoSize - $edgeMargin,
-                $logoSize,
-                $logoSize,
-                'png'
-            );
-            $mpdf->SetAlpha(1);
-        }
 
+            $stampX = max($edgeMargin, $size['width'] - $stampWidth - $edgeMargin);
+            $stampY = max($edgeMargin, $size['height'] - $stampHeight - $edgeMargin);
+
+            // Logo is the translucent background of the approval stamp.
+            $mpdf->SetAlpha(0.12);
+            $mpdf->Image($logoPath, $stampX + 5, $stampY + 18, 70, 42, 'png');
+            $mpdf->SetAlpha(1);
+            $mpdf->WriteFixedPosHTML($stampHtml, $stampX, $stampY, $stampWidth, $stampHeight, 'hidden');
+        }
         $mpdf->Output($outputPdf, \Mpdf\Output\Destination::FILE);
 
         return [$outputPdf, $baseName . '.pdf', true];
