@@ -1033,9 +1033,9 @@ class SubmissionDocumentController extends RbacController {
         $stampHeight = 80;
         $edgeMargin = 5;
         $stampHtml = '<div style="font-family: thsarabunnew; color: #003399; text-align: center; font-weight: bold; line-height: 1.05;">'
-            . '<div style="font-size: 30pt; margin-top: 5mm;">อนุมัติ</div>'
-            . '<div style="font-size: 20pt; margin-top: 1mm;">' . htmlspecialchars($certifiedDate, ENT_QUOTES, 'UTF-8') . '</div>'
-            . '<div style="font-size: 13pt; margin-top: 5mm;">คณะกรรมการจริยธรรมการวิจัยในมนุษย์</div>'
+            . '<div style="font-size: 22pt; margin-top: 10mm;">อนุมัติ</div>'
+            . '<div style="font-size: 15pt; margin-top: 1mm;">' . htmlspecialchars($certifiedDate, ENT_QUOTES, 'UTF-8') . '</div>'
+            . '<div style="font-size: 13pt; margin-top: 9mm;">คณะกรรมการจริยธรรมการวิจัยในมนุษย์</div>'
             . '<div style="font-size: 13pt;">สำนักพัฒนาการคุ้มครองการวิจัยในมนุษย์ (สคม.)</div>'
             . '</div>';
 
@@ -1060,7 +1060,7 @@ class SubmissionDocumentController extends RbacController {
 
             // Logo is the translucent background of the approval stamp.
             $mpdf->SetAlpha(0.12);
-            $mpdf->Image($logoPath, $stampX + 5, $stampY + 18, 70, 42, 'png');
+            $mpdf->Image($logoPath, $stampX + 5, $stampY + 4, 70, 42, 'png');
             $mpdf->SetAlpha(1);
             $mpdf->WriteFixedPosHTML($stampHtml, $stampX, $stampY, $stampWidth, $stampHeight, 'hidden');
         }
