@@ -565,7 +565,12 @@ class ResultDocumentController extends RbacController {
         );
         $code = str_replace(['/', ' '], ['-', '_'], $submission->project->project_code);
         $nameR = mb_substr($model->name, 0, 50, 'UTF-8');
-        $file = "{$code}.docx";
+        // Use a unique temporary filename for every preview request. Reusing the
+        // project code can cause LibreOffice to return a stale PDF left by a
+        // previous or concurrent conversion.
+        $temporaryId = Yii::$app->security->generateRandomString(12);
+        $file = "{$code}-{$temporaryId}.docx";
+        $downloadFile = "{$code}.pdf";
 
 // สร้างไฟล์ DOCX ชั่วคราว
         $docxPath = Yii::getAlias("@app/web/tmp/{$file}");
@@ -588,9 +593,10 @@ class ResultDocumentController extends RbacController {
 // แสดง PDF บน browser
             header('Content-Description: Preview');
             header('Content-Type: application/pdf');
-            header('Content-Disposition: inline; filename="' . $pdfFile . '"');
+            header('Content-Disposition: inline; filename="' . $downloadFile . '"');
             header('Expires: 0');
-            header('Pragma: public');
+            header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+            header('Pragma: no-cache');
             header('Content-Length: ' . filesize($pdfPath));
             readfile($pdfPath);
 
