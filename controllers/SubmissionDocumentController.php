@@ -764,50 +764,31 @@ class SubmissionDocumentController extends RbacController {
     }
 
     public function actionViewFile($id) {
-//        $request = Yii::$app->request;
-//        $response = \Yii::$app->response;
         $model = $this->findModel($id);
-        $info = pathinfo($model->file_name);
-        $fileName = "{$model->name}.{$info['extension']}";
-//        echo $model->filePath;
-        if (file_exists($model->filePath)) {
-            header('Content-Description: Preview');
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: inline; filename="' . $model->submission->project->project_code . '_' . $fileName . '"');
-            header('Expires: 0');
-//            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($model->filePath));
-            readfile($model->filePath);
-        } else {
-            throw new NotFoundHttpException(Yii::t('app', 'ไม่พบไฟล์'));
-        }
-        exit;
+        list($filePath, $fileName, $deleteAfterSend) = $this->prepareRelatedDocumentForOutput($model);
+
+        return Yii::$app->response->sendFile($filePath, $fileName, [
+            'inline' => true,
+            'mimeType' => 'application/pdf',
+        ])->on(Response::EVENT_AFTER_SEND, function () use ($filePath, $deleteAfterSend) {
+            if ($deleteAfterSend && is_file($filePath)) {
+                @unlink($filePath);
+            }
+        });
     }
 
     public function actionDownload($id) {
-//        $request = Yii::$app->request;
-//        $response = \Yii::$app->response;
         $model = $this->findModel($id);
-        $info = pathinfo($model->file_name);
-        $name = mb_substr($model->name, 0, 75, 'UTF-8');
-        $fileName = "{$model->name}.{$info['extension']}";
-//        echo $model->filePath;
-        if (file_exists($model->filePath)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream; charset=utf-8');
-            header('Content-Disposition: attachment; filename="' . $model->submission->project->project_code . '_' . $fileName . '"');
-            header('Expires: 0');
-//            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($model->filePath));
-            readfile($model->filePath);
-        } else {
-            throw new NotFoundHttpException(Yii::t('app', 'ไม่พบไฟล์'));
-        }
-        exit;
-    }
+        list($filePath, $fileName, $deleteAfterSend) = $this->prepareRelatedDocumentForOutput($model);
 
+        return Yii::$app->response->sendFile($filePath, $fileName, [
+            'inline' => false,
+        ])->on(Response::EVENT_AFTER_SEND, function () use ($filePath, $deleteAfterSend) {
+            if ($deleteAfterSend && is_file($filePath)) {
+                @unlink($filePath);
+            }
+        });
+    }
     public function actionDownloadMerge($submissionId, $selections) {
 //        $request = Yii::$app->request;
 //        $response = \Yii::$app->response;
@@ -974,6 +955,86 @@ class SubmissionDocumentController extends RbacController {
         }
     }
 
+    /**
+     * Builds a temporary watermarked PDF only for approved related documents
+     * that are marked as certificate documents. In this legacy schema,
+     * is_certificate = 0 means the check mark is selected.
+     */
+    private function prepareRelatedDocumentForOutput(SubmissionDocument $model) {
+        if (!is_file($model->filePath)) {
+            throw new NotFoundHttpException(Yii::t('app', 'ไม่พบไฟล์'));
+        }
+
+        $extension = strtolower(pathinfo($model->file_name, PATHINFO_EXTENSION));
+        $projectCode = $model->submission->project->project_code;
+        $baseName = $projectCode . '_' . mb_substr($model->name, 0, 75, 'UTF-8');
+        $mustWatermark = $model->submission->resolution === Submission::RESOLUTION_Y
+                && (int) $model->is_certificate === 0;
+
+        if (!$mustWatermark) {
+            return [$model->filePath, $baseName . '.' . $extension, false];
+        }
+
+        if ($extension === 'pdf') {
+            $sourcePdf = $model->filePath;
+        } else {
+            $model->convertToPdf();
+            $sourcePdf = $model->pdfFilePath;
+        }
+
+        if (!is_file($sourcePdf)) {
+            throw new \RuntimeException(Yii::t('app', 'ไม่สามารถสร้างไฟล์ PDF สำหรับใส่ลายน้ำได้'));
+        }
+
+        $logoPath = Yii::getAlias('@webroot/images/logo.png');
+        if (!is_file($logoPath)) {
+            throw new NotFoundHttpException(Yii::t('app', 'ไม่พบไฟล์รูปภาพลายน้ำ'));
+        }
+
+        $temporaryDirectory = Yii::getAlias('@runtime/submission-document-watermark');
+        \yii\helpers\FileHelper::createDirectory($temporaryDirectory);
+        $outputPdf = $temporaryDirectory . DIRECTORY_SEPARATOR . uniqid('watermark-', true) . '.pdf';
+
+        $mpdfTemporaryDirectory = Yii::getAlias('@runtime/mpdf');
+        \yii\helpers\FileHelper::createDirectory($mpdfTemporaryDirectory);
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' => $mpdfTemporaryDirectory,
+        ]);
+        $pageCount = $mpdf->setSourceFile($sourcePdf);
+        $logoSize = 80 * 25.4 / 96; // 80 CSS pixels converted to millimetres.
+        $edgeMargin = 5;
+
+        for ($page = 1; $page <= $pageCount; $page++) {
+            $template = $mpdf->importPage($page);
+            $size = $mpdf->getTemplateSize($template);
+            $orientation = $size['width'] > $size['height'] ? 'L' : 'P';
+            $mpdf->AddPageByArray([
+                'orientation' => $orientation,
+                'margin-left' => 0,
+                'margin-right' => 0,
+                'margin-top' => 0,
+                'margin-bottom' => 0,
+                'margin-header' => 0,
+                'margin-footer' => 0,
+                'sheet-size' => [$size['width'], $size['height']],
+            ]);
+            $mpdf->useTemplate($template);
+            $mpdf->SetAlpha(0.20);
+            $mpdf->Image(
+                $logoPath,
+                $size['width'] - $logoSize - $edgeMargin,
+                $size['height'] - $logoSize - $edgeMargin,
+                $logoSize,
+                $logoSize,
+                'png'
+            );
+            $mpdf->SetAlpha(1);
+        }
+
+        $mpdf->Output($outputPdf, \Mpdf\Output\Destination::FILE);
+
+        return [$outputPdf, $baseName . '.pdf', true];
+    }
     /**
      * Finds the SubmissionDocument model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
