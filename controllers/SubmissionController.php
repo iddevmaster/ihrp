@@ -3123,8 +3123,15 @@ js;
                     }
                 }
 
-                EmailQueue::execSendMailCmd();
+                // Persist the approval before starting the background mail command.
+                // exec() may be disabled or the command may fail on some servers;
+                // email dispatch must not roll back the approved status/documents.
                 $transaction->commit();
+                try {
+                    EmailQueue::execSendMailCmd();
+                } catch (\Throwable $mailException) {
+                    Yii::error($mailException->__toString(), 'president-approve-result-documents-mail');
+                }
                 Yii::$app->session->setFlash('success', Yii::t('app', 'บันทึกข้อมูลเรียบร้อยแล้ว (อนุมัติ {approved} รายการ, ส่งคืน {rejected} รายการ)', [
                             'approved' => $approvedCount,
                             'rejected' => $rejectedCount,
@@ -3232,7 +3239,7 @@ js;
                         'content' => $secretarySignatureThai,
                     ]);
 
-                    foreach ($model->getResultDocuments()->all() as $resultDocument) {
+                    foreach ($model->getResultDocuments() as $resultDocument) {
                         $submissionResultDocument = !empty($resultDocument['submission_result_document_id'])
                                 ? \app\models\SubmissionResultDocument::findOne($resultDocument['submission_result_document_id'])
                                 : null;
