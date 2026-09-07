@@ -1822,13 +1822,14 @@ class SubmissionController extends RbacController {
     }
 
     public function actionCertificate($id) {
-//        $currentRole = \Yii::$app->session->get('currentRole');
-//        if ($currentRole['role_id'] != Role::STAFF || $currentRole['role_id'] != Role::ADMIN) {
-//            throw new \yii\web\UnauthorizedHttpException(Yii::t('app', 'ไม่มีสิทธิ์เข้าถึงข้อมูลโครงการ'));
-//        }
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-        if ($model->status == Submission::STATUS_CODE_GENERATED || $model->status == Submission::STATUS_SECRETARY_SELECTED) {
+        $currentRole = Yii::$app->session->get('currentRole');
+
+        if ($request->isPost && !in_array($currentRole['role_id'], [Role::STAFF, Role::ADMIN])) {
+            throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'ไม่มีสิทธิ์แก้ไขข้อมูลการรับรองโครงการ'));
+        }
+
         if ($model->load($request->post())) {
             $project = $model->project;
             $project->certificate_no = $model->certificate_no;
@@ -1836,20 +1837,28 @@ class SubmissionController extends RbacController {
             $project->expire_at = $model->expire_at;
             $project->next_progress_at = $model->next_progress_at;
             $project->progress_period = $model->progress_period;
-            $project->save(FALSE);
+            $project->save(false);
             $model->save(false);
+
             Yii::$app->response->format = Response::FORMAT_JSON;
-//            Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('app', "บันทึกเรียบร้อยแล้ว"));
             return [
-                'content' => '<div class="alert alert-success dark">' . Yii::t('app', "บันทึกเรียบร้อยแล้ว") . '</div>',
+                'content' => '<div class="alert alert-success dark">' . Yii::t('app', 'บันทึกเรียบร้อยแล้ว') . '</div>',
                 'forceReload' => '#submission-status-pjax',
             ];
-        } else {
-            return $this->render('certificate', [
-                        'model' => $model,
-            ]);
         }
+
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'content' => Html::errorSummary($model, ['class' => 'alert alert-danger']),
+            ];
         }
+
+        return $this->render('certificate', [
+            'model' => $model,
+            'submission' => $model,
+            'action' => Url::to(['submission/certificate', 'id' => $model->id]),
+        ]);
     }
 
     public function actionMeetingPlan($id) {
