@@ -544,8 +544,8 @@ class ResultDocumentController extends RbacController {
         ];
 
 
-        $this->replaceTextVariablesWithFont($docx, $variables);
-        $this->replaceTextVariablesWithFont($docx, $variables, 'footer');
+        $docx->replaceVariableByText($variables);
+        $docx->replaceVariableByText($variables, ['target' => 'footer']);
         $docx->replaceVariableByHTML('chairman-signature-letter-thai', 'block', $imagesLetterThai, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByHTML('chairman-signature-letter', 'block', $imagesLetter, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByHTML('chairman-signature-thai', 'block', $imagesThai, ['isFile' => false, 'embedFonts' => false]);
@@ -828,8 +828,8 @@ class ResultDocumentController extends RbacController {
             'resolution-type' => $submission->submissionType->resolution_label,
         ];
 
-        $this->replaceTextVariablesWithFont($docx, $variables);
-        $this->replaceTextVariablesWithFont($docx, $variables, 'footer');
+        $docx->replaceVariableByText($variables);
+        $docx->replaceVariableByText($variables, ['target' => 'footer']);
         $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => false]);

@@ -1,3 +1,3 @@
-<div style="font-family: 'TH SarabunPSK', Tahoma, sans-serif !important; font-size: 22px !important;">
+<div style="font-family: Tahoma, sans-serif !important; font-size: 22px !important;">
  <?= $content ?>
 </div>
