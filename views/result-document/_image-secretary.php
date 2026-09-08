@@ -15,6 +15,6 @@ $signValue = ($type == 'thai') ? $person->signature_thai : $person->signature;
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->buffer($rawData) ?: 'image/png';
         ?>
-        <p style="padding-left: 250px; padding-bottom: -50px;"><img src="data:<?= $mimeType ?>;base64,<?= $imageData ?>" /></p>
+        <p style="padding-bottom: -50px;"><img src="data:<?= $mimeType ?>;base64,<?= $imageData ?>" /></p>
     <?php endif; ?>
 <?php } ?>
