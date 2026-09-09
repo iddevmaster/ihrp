@@ -166,15 +166,15 @@ class ProjectResearcherController extends RbacController {
                 } else {
                     return [
                         'forceReload' => '#crud-datatable-project-researcher-pjax',
-                        'title' => Yii::t('app', 'เพิ่มนักวิจัยเรียบร้อยแล้ว'),
-                        'content' => '<div class="alert alert-success dark">' . Yii::t('app', 'เพิ่มนักวิจัยเรียบร้อยแล้ว') . '</div>',
+                        'title' => Yii::t('app', 'เพิ่มผู้วิจัยเรียบร้อยแล้ว'),
+                        'content' => '<div class="alert alert-success dark">' . Yii::t('app', 'เพิ่มผู้วิจัยเรียบร้อยแล้ว') . '</div>',
                         'footer' => Html::button(Yii::t('app', 'ปิด'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
                         Html::a(Yii::t('app', 'เพิ่มอีก'), ['create', 'submissionId' => $submissionId], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
                     ];
                 }
             } else {
                 return [
-                    'title' => \Yii::t('app', 'เพิ่มนักวิจัย'),
+                    'title' => \Yii::t('app', 'เพิ่มผู้วิจัย'),
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                         'submission' => $submission
@@ -257,7 +257,7 @@ class ProjectResearcherController extends RbacController {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => \Yii::t('app', 'แก้ไขนักวิจัย'),
+                    'title' => \Yii::t('app', 'แก้ไขผู้วิจัย'),
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -267,13 +267,13 @@ class ProjectResearcherController extends RbacController {
             } else if ($model->load($request->post()) && $model->save()) {
                 return [
                     'forceReload' => '#crud-datatable-project-researcher-pjax',
-                    'title' => \Yii::t('app', 'แก้ไขนักวิจัย'),
-                    'content' => '<div class="alert alert-success dark">' . Yii::t('app', 'แก้ไขนักวิจัยเรียบร้อยแล้ว') . '</div>',
+                    'title' => \Yii::t('app', 'แก้ไขผู้วิจัย'),
+                    'content' => '<div class="alert alert-success dark">' . Yii::t('app', 'แก้ไขผู้วิจัยเรียบร้อยแล้ว') . '</div>',
                     'footer' => Html::button(Yii::t('app', 'ปิด'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
                 ];
             } else {
                 return [
-                    'title' => \Yii::t('app', 'แก้ไขนักวิจัย'),
+                    'title' => \Yii::t('app', 'แก้ไขผู้วิจัย'),
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -385,7 +385,7 @@ class ProjectResearcherController extends RbacController {
         $message = '';
         if (isset($pr)) {
             if ($pr->deleted) {
-                $message = \Yii::t('app', '<div class="alert alert-danger dark">หัวหน้าโครงการวิจัยได้ลบรายการผู้ร่วมนี้ของท่านออกจากโครงการวิจัย โปรดตรวจสอบในระบบออนไลน์อีกครั้ง หรือติดต่อเจ้าหน้าที่ศูนย์ฯ</div>');
+                $message = \Yii::t('app', '<div class="alert alert-danger dark">ผู้วิจัยหลักได้ลบรายการผู้ร่วมนี้ของท่านออกจากโครงการวิจัย โปรดตรวจสอบในระบบออนไลน์อีกครั้ง หรือติดต่อเจ้าหน้าที่ศูนย์ฯ</div>');
             } else if ($pr->acknowledge_status != ProjectResearcher::STATUS_PENDING_ACK) {
                 if ($pr->acknowledge_status == ProjectResearcher::STATUS_ACCEPTED) {
                     $message = \Yii::t('app', '<div class="alert alert-success dark">ท่านได้ตอบรับโครงการวิจัยแล้ว</div>');

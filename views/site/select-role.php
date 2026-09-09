@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         foreach ($roles as $role):
             if ($role->role_id == app\models\Role::COORDINATOR) {
-                $p = '<br>' . yii::t('app', '(กรณียื่นโครงการแทนหัวหน้าโครงการวิจัย)');
+                $p = '<br>' . yii::t('app', '(กรณียื่นโครงการแทนผู้วิจัยหลัก)');
             } else {
                 $p = NULL;
             }

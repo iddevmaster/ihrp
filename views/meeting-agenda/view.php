@@ -85,8 +85,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <td colspan="2"><strong>ชื่อโครงการ(ภาษาอังกฤษ)</strong> The characteristics, supports and barriers of feedback provided to medical students: A mixed method study in a Tertiary care medical institute in Northeastern Thailand</td>
                             </tr>
                             <tr>
-                                <td><strong>ชื่อหัวหน้าโครงการ</strong> ผศ.พญ.รสวันต์ อารีมิตร</td>
-                                <td><strong>สังกัดหัวหน้าโครงการ </strong>
+                                <td><strong>ชื่อผู้วิจัยหลัก</strong> ผศ.พญ.รสวันต์ อารีมิตร</td>
+                                <td><strong>สังกัดผู้วิจัยหลัก </strong>
                                     คณะแพทยศาสตร์      </td>
                             </tr>
  

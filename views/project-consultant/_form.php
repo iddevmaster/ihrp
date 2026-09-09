@@ -22,7 +22,7 @@ $currentRole = \Yii::$app->session->get('currentRole');
     ]); ?>
     <?= $form->errorSummary($model); ?>
     <?=
-    $form->field($model, 'person_id')->label('นักวิจัย')->widget(Select2::classname(), [
+    $form->field($model, 'person_id')->label('ผู้วิจัย')->widget(Select2::classname(), [
         'pluginOptions' => [
 //            'data' =>[['id' => $model->person_id, 'name' => isset($model->person) ? $model->person->fullName : ""]],
             'data' => $data,

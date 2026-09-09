@@ -12,7 +12,7 @@ use app\models\Submission;
 /* @var $searchModel app\models\SubmissionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'งานวิจัยที่เป็นนักวิจัยร่วม');
+$this->title = Yii::t('app', 'งานวิจัยที่เป็นผู้ร่วมวิจัย');
 $this->params['breadcrumbs'][] = $this->title;
 
 //CrudAsset::register($this);

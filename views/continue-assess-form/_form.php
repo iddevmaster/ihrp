@@ -31,7 +31,7 @@ $agendaCheck = $model->submission->getFirstEndorseMeetingAgenda();
         <tbody>
             <tr>
                 <td class="text-center font-weight-900" style="background-color: #DCDCDC;"><?= Yii::t('app', 'หมายเลขโครงการ') ?></td>
-                <td class="text-center font-weight-900" style="background-color: #DCDCDC;"><?= Yii::t('app', 'ชื่อหัวหน้าโครงการวิจัย') ?></td>
+                <td class="text-center font-weight-900" style="background-color: #DCDCDC;"><?= Yii::t('app', 'ชื่อผู้วิจัยหลัก') ?></td>
                 <td class="text-center font-weight-900" style="background-color: #DCDCDC;"><?= Yii::t('app', 'หน่วยงานที่สังกัด') ?></td>
             </tr>
             <tr>

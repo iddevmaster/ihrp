@@ -44,7 +44,7 @@ use yii\helpers\Url;
     <div class="col-md-6">
         <div class="panel panel-bordered panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">ข้อมูลนักวิจัย</h3>
+                <h3 class="panel-title">ข้อมูลผู้วิจัย</h3>
             </div>
             <div class="panel-body">
                 <table class="table table-striped">

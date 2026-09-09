@@ -60,8 +60,8 @@ use yii\helpers\VarDumper;
  * @property int $project_coordinator_2nd_id ผู้ประสานงานโครงการคนที่ 2
  * @property int $project_coordinator_3rd_id ผู้ประสานงานโครงการคนที่ 3
  * @property int $project_viewer_id  viewer
- * @property int $is_accept สถานะหัวหน้าโครงการยืนยันการส่ง
- * @property int $leader_comment คอมเมันเพิ่มเติมของหัวหน้าโครงการ
+ * @property int $is_accept สถานะผู้วิจัยหลักยืนยันการส่ง
+ * @property int $leader_comment คอมเมันเพิ่มเติมของผู้วิจัยหลัก
  * @property string $note  note
  * @property string $event_amendment  event_amendment
  * @property int $events จำนวนเหตุการณ์ของ Deviation
@@ -71,7 +71,7 @@ use yii\helpers\VarDumper;
  * @property int $is_submit_by_api สร้างโดย API
  * @property int $send_to_crec ส่ง Submission ไป CREC
  * @property int $acknowledged_crec_result 0=ไม่ต้องรับทราบ, 1=รับทราบผล, 2=รอตอบรับผลจาก CREC
- * @property int $notify_crec_result_leader 0=ไม่ส่งให้หัวหน้าโครงการ, 1=ส่งให้หัวหน้าโครงการ
+ * @property int $notify_crec_result_leader 0=ไม่ส่งให้ผู้วิจัยหลัก, 1=ส่งให้ผู้วิจัยหลัก
  * @property string $crec_certified_date วันที่รับรองจาก CREC
  * @property string $crec_expire_at วันที่หมดอายุรับรองจาก CREC
  * @property string $crec_next_progress_at วันที่รายงานความก้าวหน้าจาก CREC
@@ -282,7 +282,7 @@ class Submission extends \yii\db\ActiveRecord {
             'send_plan_date' => Yii::t('app', 'กรุณาส่งแบบประเมินก่อนวันที่'),
             'correspondence_no' => Yii::t('app', 'เลขที่หนังสือ'),
             'correspondence_at' => Yii::t('app', 'วันที่ออกหนังสือ'),
-            'isLeader' => Yii::t('app', 'หัวหน้าโครงการ'),
+            'isLeader' => Yii::t('app', 'ผู้วิจัยหลัก'),
             'secretary_person' => Yii::t('app', 'เลขา'),
             'president_person' => Yii::t('app', 'ประธานเพื่อตรวจสอบหนังสือแจ้งผล'),
             'is_meeting' => Yii::t('app', 'ต้องเข้าพิจารณาเต็มรูปแบบ'),
@@ -308,7 +308,7 @@ class Submission extends \yii\db\ActiveRecord {
             'issue1' => Yii::t('app', 'ผลการพิจารณาสำหรับผู้วิจัย'),
             'issue1_eng' => Yii::t('app', 'ผลการพิจารณาสำหรับผู้วิจัย (ภาษาอังกฤษ)'),
             'issue2' => Yii::t('app', 'ประเด็นเพิ่มเติม 2'),
-            'projectLeader.person.fullName' => Yii::t('app', 'หัวหน้าโครงการ'),
+            'projectLeader.person.fullName' => Yii::t('app', 'ผู้วิจัยหลัก'),
             'typeAndRef' => Yii::t('app', 'ประเภทการขอรับพิจารณา'),
             'remark_checkdoc_staff' => Yii::t('app', 'ข้อเสนอแนะแก้ไขเอกสารจากเจ้าหน้าที่'),
             'remark_assessed_staff' => Yii::t('app', 'ข้อเสนอแนะในการแก้ไขเอกสารหลังการประเมิน'),
@@ -323,7 +323,7 @@ class Submission extends \yii\db\ActiveRecord {
             'projectCoordinator3rd.person.i18nFullName' => Yii::t('app', 'ผู้ประสานงานโครงการคนที่ 3'),
             'projectViewer.person.i18nFullName' => Yii::t('app', 'viewer'),
             'is_accept' => Yii::t('app', 'การยืนยัน'),
-            'leader_comment' => Yii::t('app', 'รายละเอียดเพิ่มเติมจากหัวหน้าโครงการ'),
+            'leader_comment' => Yii::t('app', 'รายละเอียดเพิ่มเติมจากผู้วิจัยหลัก'),
             'project.i18nName' => Yii::t('app', 'ชื่อโครงการวิจัย'),
             'project.name_thai' => Yii::t('app', 'ชื่อโครงการวิจัย'),
             'note' => Yii::t('app', 'หมายเหตุเพิ่มเติมสำหรับเจ้าหน้า กรรมการ เลขา'),
@@ -340,7 +340,7 @@ class Submission extends \yii\db\ActiveRecord {
             'is_submit_by_api' => Yii::t('app', 'สร้างโดย API'),
             'send_to_crec' => Yii::t('app', 'ส่ง Submission ไป CREC'),
             'acknowledged_crec_result' => Yii::t('app', 'รับทราบผลประเมินจาก CREC'),
-            'notify_crec_result_leader' => Yii::t('app', 'ส่งผลประเมิน CREC ให้หัวหน้าโครงการ'),
+            'notify_crec_result_leader' => Yii::t('app', 'ส่งผลประเมิน CREC ให้ผู้วิจัยหลัก'),
             'startYear' => Yii::t('app', 'จากปี'),
             'endYear' => Yii::t('app', 'ถึงปี'),
             'assess_type' => Yii::t('app', 'ประเภทการพิจารณา'),
@@ -1705,13 +1705,13 @@ class Submission extends \yii\db\ActiveRecord {
 
     public static function getStatusLabelsResearcherCrec() {
         return [
-            self::STATUS_PENDING_SUBMISSION => Yii::t('app', 'นักวิจัยเตรียมการยื่นโครงการเข้าสู่ระบบ'),
+            self::STATUS_PENDING_SUBMISSION => Yii::t('app', 'ผู้วิจัยเตรียมการยื่นโครงการเข้าสู่ระบบ'),
             //ไม่ได้แก้ไข
             self::STATUS_DOC_REJECTED_BY_COMMITTEE => Yii::t('app', 'กรรมการขอให้แก้ไขเอกสาร'),
             self::STATUS_DOC_REJECTED => Yii::t('app', 'เจ้าหน้าที่ตีกลับเอกสาร'),
             self::STATUS_SUBMITTED => Yii::t('app', 'ระบบ CREC ส่งโครงการเข้าระบบ KKU'),
             self::STATUS_DOC_APPROVED => Yii::t('app', 'เจ้าหน้าที่ตรวจสอบเอกสาร'),
-            self::STATUS_CODE_GENERATED => Yii::t('app', 'นักวิจัย site ได้รับเลขที่โครงการ (HE)'),
+            self::STATUS_CODE_GENERATED => Yii::t('app', 'ผู้วิจัย site ได้รับเลขที่โครงการ (HE)'),
             self::STATUS_MEETING_APPOINTMENT => Yii::t('app', 'เจ้าหน้าที่กำหนดวันประชุม'),
             self::STATUS_SECRETARY_SELECTED => Yii::t('app', 'เจ้าหน้าที่เสนอเลขาฯ'),
             self::STATUS_COMMITTEE_SELECTED => Yii::t('app', 'เลขาฯเลือกกรรมการประเมิน local issue'),
@@ -1721,24 +1721,24 @@ class Submission extends \yii\db\ActiveRecord {
             //ไม่ได้แก้ไข
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::CUSTOM_STATUS_MEETING_PENDING => Yii::t('app', 'อยู่ระหว่างพิจารณาโดยกรรมการ'),
-            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'ผู้ประสานงานกดส่งหัวหน้าโครงการตรวจสอบ'),
-            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'โครงการไม่ผ่านการยืนยันจากหัวหน้าโครงการ'),
+            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'ผู้ประสานงานกดส่งผู้วิจัยหลักตรวจสอบ'),
+            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'โครงการไม่ผ่านการยืนยันจากผู้วิจัยหลัก'),
             self::STATUS_STAFF_APPROVE_AGENDA => Yii::t('app', 'คณะกรรมการพิจารณาโครงการ'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'เลขาฯตรวจสอบรายงานการประชุม'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'ประธานตรวจสอบรายงานการประชุม'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัย site ได้รับหนังสือแจ้งผลการพิจารณา'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัย site ได้รับหนังสือแจ้งผลการพิจารณา'),
         ];
     }
 
     public static function getStatusLabelsResearcher() {
         return [
-            self::STATUS_PENDING_SUBMISSION => Yii::t('app', 'นักวิจัยเตรียมการยื่นโครงการเข้าสู่ระบบ'),
+            self::STATUS_PENDING_SUBMISSION => Yii::t('app', 'ผู้วิจัยเตรียมการยื่นโครงการเข้าสู่ระบบ'),
             //ไม่ได้แก้ไข
             self::STATUS_DOC_REJECTED_BY_COMMITTEE => Yii::t('app', 'กรรมการขอให้แก้ไขเอกสาร'),
             self::STATUS_DOC_REJECTED => Yii::t('app', 'เจ้าหน้าที่ตีกลับเอกสาร'),
-            self::STATUS_SUBMITTED => Yii::t('app', 'นักวิจัยยื่นเอกสาร'),
+            self::STATUS_SUBMITTED => Yii::t('app', 'ผู้วิจัยยื่นเอกสาร'),
             self::STATUS_DOC_APPROVED => Yii::t('app', 'เจ้าหน้าที่ตรวจสอบเอกสาร'),
-            self::STATUS_CODE_GENERATED => Yii::t('app', 'นักวิจัยได้รับเลขที่โครงการ'),
+            self::STATUS_CODE_GENERATED => Yii::t('app', 'ผู้วิจัยได้รับเลขที่โครงการ'),
             self::STATUS_MEETING_APPOINTMENT => Yii::t('app', 'เจ้าหน้าที่กำหนดวันประชุม'),
             self::STATUS_SECRETARY_SELECT_TYPE => Yii::t('app', 'เจ้าหน้าที่เสนอประธานฯ เลือกประเภทการพิจารณา'),
             self::STATUS_SECRETARY_SELECTED => Yii::t('app', 'เจ้าหน้าที่เสนอเลขาฯเลือกกรรมการ'),
@@ -1749,20 +1749,20 @@ class Submission extends \yii\db\ActiveRecord {
             //ไม่ได้แก้ไข
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::CUSTOM_STATUS_MEETING_PENDING => Yii::t('app', 'อยู่ระหว่างพิจารณาโดยกรรมการ'),
-            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'ผู้ประสานงานกดส่งหัวหน้าโครงการตรวจสอบ'),
-            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'โครงการไม่ผ่านการยืนยันจากหัวหน้าโครงการ'),
+            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'ผู้ประสานงานกดส่งผู้วิจัยหลักตรวจสอบ'),
+            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'โครงการไม่ผ่านการยืนยันจากผู้วิจัยหลัก'),
             self::STATUS_STAFF_APPROVE_AGENDA => Yii::t('app', 'คณะกรรมการพิจารณาโครงการ'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'เลขาฯตรวจสอบรายงานการประชุม'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'ประธานตรวจสอบรายงานการประชุม'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'ประธานตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'เลขาฯตรวจสอบหนังสือแจ้งผล'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผล'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัยได้รับหนังสือแจ้งผล'),
         ];
     }
 
     public static function getStatusLabelsResearcherContinueCrecC() {
         return [
-            self::STATUS_PENDING_SUBMISSION => Yii::t('app', 'นักวิจัยเตรียมการยื่นโครงการเข้าสู่ระบบ'),
+            self::STATUS_PENDING_SUBMISSION => Yii::t('app', 'ผู้วิจัยเตรียมการยื่นโครงการเข้าสู่ระบบ'),
             //ไม่ได้แก้ไข
             self::STATUS_DOC_REJECTED_BY_COMMITTEE => Yii::t('app', 'กรรมการขอให้แก้ไขเอกสาร'),
             self::STATUS_DOC_REJECTED => Yii::t('app', 'เจ้าหน้าที่ตีกลับเอกสาร'),
@@ -1778,23 +1778,23 @@ class Submission extends \yii\db\ActiveRecord {
             //ไม่ได้แก้ไข
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::CUSTOM_STATUS_MEETING_PENDING => Yii::t('app', 'อยู่ระหว่างพิจารณาโดยกรรมการ'),
-            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'ผู้ประสานงานกดส่งหัวหน้าโครงการตรวจสอบ'),
-            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'โครงการไม่ผ่านการยืนยันจากหัวหน้าโครงการ'),
+            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'ผู้ประสานงานกดส่งผู้วิจัยหลักตรวจสอบ'),
+            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'โครงการไม่ผ่านการยืนยันจากผู้วิจัยหลัก'),
             self::STATUS_STAFF_APPROVE_AGENDA => Yii::t('app', 'คณะกรรมการพิจารณาโครงการ'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'ส่งผลการพิจารณาจากเลขา'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'ส่งผลการพิจารณาจากประธาน'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'ส่งผลการพิจารณาจากประธาน'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัย site ได้รับหนังสือแจ้งผลการพิจารณา'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัย site ได้รับหนังสือแจ้งผลการพิจารณา'),
         ];
     }
 
     public static function getStatusLabelsResearcherContinueC() {
         return [
-            self::STATUS_PENDING_SUBMISSION => Yii::t('app', 'นักวิจัยเตรียมการยื่นโครงการเข้าสู่ระบบ'),
+            self::STATUS_PENDING_SUBMISSION => Yii::t('app', 'ผู้วิจัยเตรียมการยื่นโครงการเข้าสู่ระบบ'),
             //ไม่ได้แก้ไข
             self::STATUS_DOC_REJECTED_BY_COMMITTEE => Yii::t('app', 'กรรมการขอให้แก้ไขเอกสาร'),
             self::STATUS_DOC_REJECTED => Yii::t('app', 'เจ้าหน้าที่ตีกลับเอกสาร'),
-            self::STATUS_SUBMITTED => Yii::t('app', 'นักวิจัยยื่นเอกสาร'),
+            self::STATUS_SUBMITTED => Yii::t('app', 'ผู้วิจัยยื่นเอกสาร'),
             self::STATUS_DOC_APPROVED => Yii::t('app', 'เจ้าหน้าที่ตรวจสอบเอกสาร'),
             self::STATUS_CODE_GENERATED => Yii::t('app', 'เจ้าหน้าที่ตรวจสอบเอกสารแล้ว'),
             self::STATUS_MEETING_APPOINTMENT => Yii::t('app', 'เจ้าหน้าที่กำหนดวันประชุม'),
@@ -1807,15 +1807,15 @@ class Submission extends \yii\db\ActiveRecord {
             //ไม่ได้แก้ไข
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::CUSTOM_STATUS_MEETING_PENDING => Yii::t('app', 'อยู่ระหว่างพิจารณาโดยกรรมการ'),
-            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'ผู้ประสานงานกดส่งหัวหน้าโครงการตรวจสอบ'),
-            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'โครงการไม่ผ่านการยืนยันจากหัวหน้าโครงการ'),
+            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'ผู้ประสานงานกดส่งผู้วิจัยหลักตรวจสอบ'),
+            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'โครงการไม่ผ่านการยืนยันจากผู้วิจัยหลัก'),
             self::STATUS_STAFF_APPROVE_AGENDA => Yii::t('app', 'คณะกรรมการพิจารณาโครงการ'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'ส่งผลการพิจารณาจากเลขา'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'ส่งผลการพิจารณาจากประธาน'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
 
@@ -1836,8 +1836,8 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_AGENDA_ADDED => Yii::t('app', 'รอรายงานในที่ประชุมคณะกรรมการ KKU'),
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::CUSTOM_STATUS_MEETING_PENDING => Yii::t('app', 'อยู่ระหว่างพิจารณาโดยกรรมการ'),
-            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยยังรอการยืนยันจากหัวหน้าโครงการ'),
-            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยไม่ผ่านการยืนยันจากหัวหน้าโครงการ'),
+            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยยังรอการยืนยันจากผู้วิจัยหลัก'),
+            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยไม่ผ่านการยืนยันจากผู้วิจัยหลัก'),
             self::STATUS_STAFF_APPROVE_AGENDA => Yii::t('app', 'รอการตรวจสอบผลพิจารณาจากเลขา'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'รอการตรวจสอบผลพิจารณาจากประธาน'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่อัปโหลดหนังสือแจ้งผล'),
@@ -1878,14 +1878,14 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_AGENDA_ADDED => Yii::t('app', 'รอผลพิจารณาจากคณะกรรมการ'),
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::CUSTOM_STATUS_MEETING_PENDING => Yii::t('app', 'อยู่ระหว่างพิจารณาโดยกรรมการ'),
-            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยยังรอการยืนยันจากหัวหน้าโครงการ'),
-            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยไม่ผ่านการยืนยันจากหัวหน้าโครงการ'),
+            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยยังรอการยืนยันจากผู้วิจัยหลัก'),
+            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยไม่ผ่านการยืนยันจากผู้วิจัยหลัก'),
             self::STATUS_STAFF_APPROVE_AGENDA => Yii::t('app', 'รอการตรวจสอบผลพิจารณาจากเลขา'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'รอการตรวจสอบผลพิจารณาจากประธาน'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
 
@@ -1915,14 +1915,14 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_AGENDA_ADDED => Yii::t('app', 'รอผลพิจารณาจากคณะกรรมการ'),
             self::STATUS_MEETING_DONE => Yii::t('app', 'พิจารณาแล้วแต่ยังไม่ได้รับการตรวจสอบ'),
             self::CUSTOM_STATUS_MEETING_PENDING => Yii::t('app', 'อยู่ระหว่างพิจารณาโดยกรรมการ'),
-            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยยังรอการยืนยันจากหัวหน้าโครงการ'),
-            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยไม่ผ่านการยืนยันจากหัวหน้าโครงการ'),
+            self::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยยังรอการยืนยันจากผู้วิจัยหลัก'),
+            self::STATUS_NOT_APPROVE_PROJECT_RESEARCHER => Yii::t('app', 'วิจัยไม่ผ่านการยืนยันจากผู้วิจัยหลัก'),
             self::STATUS_STAFF_APPROVE_AGENDA => Yii::t('app', 'รอการตรวจสอบผลพิจารณาจากเลขา'),
             self::STATUS_WAITING_PRE_APPROVE_AGENDA => Yii::t('app', 'รอการตรวจสอบผลพิจารณาจากประธาน'),
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
 
@@ -1940,7 +1940,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
 
@@ -1956,7 +1956,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_SECRETARY_APPROVE_AGENDA => Yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
 
@@ -2199,7 +2199,7 @@ class Submission extends \yii\db\ActiveRecord {
             self::STATUS_SECRETARY_APPROVE_AGENDA => yii::t('app', 'รอเจ้าหน้าที่ตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอประธานตรวจสอบหนังสือแจ้งผล'),
             self::STATUS_SECRETARY_APPROVE_RESULTDOCUMEN => Yii::t('app', 'รอเลขาฯตรวจสอบหนังสือแจ้งผล'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
 
@@ -2251,11 +2251,11 @@ class Submission extends \yii\db\ActiveRecord {
 
     public static function getStatusStepLabel() {
         return [
-            self::STATUS_DOC_REJECTED_BY_COMMITTEE => Yii::t('app', 'นักวิจัยชี้แจงและแก้ไขเพิ่มเติม'),
+            self::STATUS_DOC_REJECTED_BY_COMMITTEE => Yii::t('app', 'ผู้วิจัยชี้แจงและแก้ไขเพิ่มเติม'),
             self::STATUS_SUBMITTED => Yii::t('app', 'ตรวจสอบเอกสาร'),
             self::CUSTOM_STATUS_STEP_PENDING => Yii::t('app', 'รอผลประเมินจากกรรมการ'),
             self::STATUS_AGENDA_ADDED => Yii::t('app', 'เข้าประชุมพิจารณา'),
-            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'นักวิจัยได้รับหนังสือแจ้งผลแล้ว'),
+            self::STATUS_STAFF_UPLOAD_RESULTDOCUMENT => Yii::t('app', 'ผู้วิจัยได้รับหนังสือแจ้งผลแล้ว'),
         ];
     }
 

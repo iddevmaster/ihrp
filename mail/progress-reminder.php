@@ -24,7 +24,7 @@ use yii\helpers\Url;
             <td colspan="1"><?= $submission->project->name_eng ?></td>
         </tr>
         <tr>
-            <td colspan="2">หัวหน้าโครงการ</td>
+            <td colspan="2">ผู้วิจัยหลัก</td>
         </tr>
         <tr>
             <td>ชื่อ-สกุล </td>

@@ -44,7 +44,7 @@ $dataProvider->pagination = false;
                         'class' => '',
                     ],
                     'content' =>
-                    (((($submission->submission_type_id == 9 && isset($submission->responsible_person)) || $submission->status < app\models\Submission::STATUS_MEETING_DONE || $submission->submissionType->submission_type_group_id == app\models\SubmissionTypeGroup::GROUP_NEW) && $currentRole['role_id'] == app\models\Role::STAFF && !$submission->isFromCrec()) ? Html::a('<i class="glyphicon glyphicon-plus"></i> ' . Yii::t('app', 'นักวิจัยร่วมโครงการ'), ['project-researcher/create', 'submissionId' => $submission->id, 'staff' => $staff], ['role' => 'modal-remote', 'class' => 'btn btn-success btn-raised']) : "" ) .
+                    (((($submission->submission_type_id == 9 && isset($submission->responsible_person)) || $submission->status < app\models\Submission::STATUS_MEETING_DONE || $submission->submissionType->submission_type_group_id == app\models\SubmissionTypeGroup::GROUP_NEW) && $currentRole['role_id'] == app\models\Role::STAFF && !$submission->isFromCrec()) ? Html::a('<i class="glyphicon glyphicon-plus"></i> ' . Yii::t('app', 'ผู้ร่วมวิจัยโครงการ'), ['project-researcher/create', 'submissionId' => $submission->id, 'staff' => $staff], ['role' => 'modal-remote', 'class' => 'btn btn-success btn-raised']) : "" ) .
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', Url::current(), ['data-pjax' => 1, 'class' => 'btn btn-default grey-600', 'title' => 'โหลดใหม่'])
                 ],
             ],

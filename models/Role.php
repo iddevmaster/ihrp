@@ -120,7 +120,7 @@ class Role extends \yii\db\ActiveRecord {
 
     public static function roleLabels() {
         return [
-            self::RESEARCHER => 'นักวิจัย',
+            self::RESEARCHER => 'ผู้วิจัย',
             self::COMMITTEE => 'กรรมการ',
             self::COPRESIDENT => 'รองประธานคณะกรรมการ',
             self::SECRETARY => 'เลขานุการ',
@@ -140,7 +140,7 @@ class Role extends \yii\db\ActiveRecord {
 
     public static function getRegisterRoles() {
         return [
-            self::RESEARCHER => Yii::t('app', 'นักวิจัย'),
+            self::RESEARCHER => Yii::t('app', 'ผู้วิจัย'),
             self::COORDINATOR => Yii::t('app', 'ผู้ประสานงานโครงการ'),
         ];
     }

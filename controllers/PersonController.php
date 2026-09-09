@@ -135,7 +135,7 @@ class PersonController extends RbacController {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => Yii::t('app', "แก้ไขชื่อนักวิจัย"),
+                    'title' => Yii::t('app', "แก้ไขชื่อผู้วิจัย"),
                     'size' => 'large',
                     'content' => $this->renderAjax('edit-name', [
                         'model' => $model,
@@ -147,10 +147,10 @@ class PersonController extends RbacController {
                 return [
                     'forceReload' => '#crud-datatable-project-researcher-pjax',
                     'forceClose' => true,
-                    'title' => Yii::t('app', "แก้ไขชื่อนักวิจัย"),
+                    'title' => Yii::t('app', "แก้ไขชื่อผู้วิจัย"),
                     'content' => Alert::widget([
                         'type' => Alert::TYPE_SUCCESS,
-                        'body' => \Yii::t('app', 'แก้ไขชื่อนักวิจัยเรียบร้อยแล้ว'),
+                        'body' => \Yii::t('app', 'แก้ไขชื่อผู้วิจัยเรียบร้อยแล้ว'),
                         'delay' => false,
                         'options' => [
                             'class' => 'dark',
@@ -160,7 +160,7 @@ class PersonController extends RbacController {
                 ];
             } else {
                 return [
-                    'title' => Yii::t('app', "แก้ไขชื่อนักวิจัย"),
+                    'title' => Yii::t('app', "แก้ไขชื่อผู้วิจัย"),
                     'content' => $this->renderAjax('edit-name', [
                         'model' => $model,
                     ]),

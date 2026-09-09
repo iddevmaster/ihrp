@@ -20,7 +20,7 @@ use yii\helpers\Url;
 <table >
     <thead>
         <tr >
-            <th colspan="4" style=" text-align: left;">หัวหน้าโครงการ</th>
+            <th colspan="4" style=" text-align: left;">ผู้วิจัยหลัก</th>
         </tr>
     </thead>
     <tbody>

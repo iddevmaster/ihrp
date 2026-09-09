@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="panel panel-bordered margin-bottom-10">
             <div class="padding-10" style="padding: 10px;">
-                <h3 class="card-title"><font style="font-weight: bold;" color="#073453;"><?= Yii::t('app', 'หมายเลขโครงการ : ') . $m->project->project_code ?> <?= Yii::t('app', 'หัวหน้าโครงการ :  ') . isset($m->projectLeader->person_id) ? $m->projectLeader->person->fullName : "" ?></font></h3>
+                <h3 class="card-title"><font style="font-weight: bold;" color="#073453;"><?= Yii::t('app', 'หมายเลขโครงการ : ') . $m->project->project_code ?> <?= Yii::t('app', 'ผู้วิจัยหลัก :  ') . isset($m->projectLeader->person_id) ? $m->projectLeader->person->fullName : "" ?></font></h3>
                 <div class="card-block">
                     <h4 class="card-title"> รายงานเบี่ยงเบนทั้งสิ้นจำนวน <?= $dcount; ?>  เหตุการณ์ ได้แก่
                         <?php

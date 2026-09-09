@@ -87,7 +87,7 @@ return [
         'format' => 'raw',
         'vAlign' => 'middle',
 //        'hAlign' => 'right',
-        'label' => Yii::t('app', 'นักวิจัยในโครงการของ CREC'),
+        'label' => Yii::t('app', 'ผู้วิจัยในโครงการของ CREC'),
         'value' => function($model) {
             if ($model->is_researcher_crec == 1) {
                 return '<span class="badge badge-info bg-green-500">' . Yii::t('app', 'yes') . '</span>';

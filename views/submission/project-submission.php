@@ -213,7 +213,7 @@ if ($currentRoles['role_id'] == \app\models\Role::COPRESIDENT || $currentRoles['
                     <div class="col-md-12 margin-top-10">
                         <button type="button" class="btn btn-danger btn-block" data-toggle="collapse" data-target="#revise-pm"
                                 aria-expanded="false" aria-controls="exampleCollapseExample">
-                                    <?= Yii::t('app', 'รายละเอียดข้อเสนอแนะการแก้ไขเพิ่มเติมเอกสารจากหัวหน้าโครงการ คลิกเพื่ออ่าน') ?>
+                                    <?= Yii::t('app', 'รายละเอียดข้อเสนอแนะการแก้ไขเพิ่มเติมเอกสารจากผู้วิจัยหลัก คลิกเพื่ออ่าน') ?>
                         </button>
                         <div class="collapse alert alert-danger" id="revise-pm">
 

@@ -75,7 +75,7 @@ if (isset($staff)) {
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <?= $form->field($searchModel, 'personName')->label(FALSE)->textInput(['placeholder' => yii::t('app', 'ค้นหาตามชื่อหัวหน้าโครงการหรือผู้ร่วมวิจัย')]); ?>
+            <?= $form->field($searchModel, 'personName')->label(FALSE)->textInput(['placeholder' => yii::t('app', 'ค้นหาตามชื่อผู้วิจัยหลักหรือผู้ร่วมวิจัย')]); ?>
 
         </div>
     </div>

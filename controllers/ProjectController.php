@@ -251,7 +251,7 @@ class ProjectController extends RbacController {
                         'model' => $model,
                     ]),
                     'footer' => Html::button('ปิด', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                    Html::button('ส่ง Email แจ้งหัวหน้าโครงการวิจัย', ['class' => 'btn btn-primary', 'type' => "submit"])
+                    Html::button('ส่ง Email แจ้งผู้วิจัยหลัก', ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
             } else if ($model->load($request->post()) && $model->save()) {
                 return [

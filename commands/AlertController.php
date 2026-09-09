@@ -197,7 +197,7 @@ class AlertController extends Controller {
         }
 
         // แจ้งเตือนเอกสารการอบรมใกล้หมดอายุ (เช่น ล่วงหน้า 60/30 วัน)
-        // เฉพาะนักวิจัยที่มีโครงการ Active และเตือนเพียงครั้งเดียวต่อ (การอบรม, จำนวนวัน)
+        // เฉพาะผู้วิจัยที่มีโครงการ Active และเตือนเพียงครั้งเดียวต่อ (การอบรม, จำนวนวัน)
         $expirePeriodsRaw = \app\models\Setting::getValueOrDefault(\app\models\Setting::TRAINING_EXPIRE_ALERT_PERIODS, '60,30');
         $expirePeriods = array_filter(array_map('trim', explode(',', $expirePeriodsRaw)), function($v) {
             return $v !== '' && is_numeric($v);

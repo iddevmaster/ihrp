@@ -32,7 +32,7 @@ $items = [
     ],
     [
         'class' => '\kartik\grid\DataColumn',
-        'header' => Yii::t('app', "ไฟล์ประวัตินักวิจัย"),
+        'header' => Yii::t('app', "ไฟล์ประวัติผู้วิจัย"),
         'attribute' => 'person.cv_file',
         'format' => 'raw',
         'value' => function($model) {
@@ -97,7 +97,7 @@ $items1 = array_merge($items, [
                 return Html::a('<i class="glyphicon glyphicon-check" data-toggle="tooltip" ></i> ' . Yii::t('app', 'ตรวจสอบ'), ['submission-project-researcher/check-document', 'id' => $model->id, 'submissionId' => $submission->id], ['role' => 'modal-remote',]) . '<br>';
             },
             'edit-name' => function ($url, $model) use ($submission) {
-                    return Html::a('<i class="glyphicon glyphicon-check" data-toggle="tooltip" ></i> ' . Yii::t('app', 'แก้ไขชื่อนักวิจัย'), ['person/edit-name', 'id' => $model->person_id], ['role' => 'modal-remote',]) . '<br>';
+                    return Html::a('<i class="glyphicon glyphicon-check" data-toggle="tooltip" ></i> ' . Yii::t('app', 'แก้ไขชื่อผู้วิจัย'), ['person/edit-name', 'id' => $model->person_id], ['role' => 'modal-remote',]) . '<br>';
             },
             'change' => function($url, $model) {
                 return \yii\helpers\Html::a('<i class="glyphicon glyphicon-plus"></i> ' . Yii::t('app', 'เปลี่ยนหัวหนัาโครงการ'), ['project-researcher/change', 'submissionId' => $model->submission_id, 'id' => $model->id], ['role' => 'modal-remote', 'title' => 'เปลี่ยนหัวหนัาโครงการ',

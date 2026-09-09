@@ -23,7 +23,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
             <tr><th  style=" text-align: left; padding-left: 10px;">หมายเลขโครงการ Project Code</th><td style=" padding-left: 10px; "><span class="" title="" data-toggle="tooltip" data-placement="bottom" data-original-title=""><?= isset($submission->project->project_code) ? $submission->project->project_code : "N/A"; ?></span></td></tr>
             <tr><th  style=" text-align: left; padding-left: 10px;">ชื่อโครงการภาษาไทย Research Title (Thai)</th><td style=" padding-left: 10px;"><span class="" title="" data-toggle="tooltip" data-placement="bottom" data-original-title=""><?= isset($submission->project->name_thai) ? $submission->project->name_thai : "N/A"; ?></span></td></tr>
             <tr><th  style=" text-align: left; padding-left: 10px;">ชื่อโครงการภาษาอังกฤษ Research Title (English)</th><td style=" padding-left: 10px;"><span class="" title="" data-toggle="tooltip" data-placement="bottom" data-original-title=""><?= isset($submission->project->name_eng) ? $submission->project->name_eng : "N/A"; ?></span></td></tr>
-            <tr><th  style=" text-align: left; padding-left: 10px;">หัวหน้าโครงการ </th><td style=" padding-left: 10px;"><?= isset($submission->projectLeader->person_id) ? $submission->projectLeader->person->i18nFullName : "N/A"; ?></td></tr>
+            <tr><th  style=" text-align: left; padding-left: 10px;">ผู้วิจัยหลัก </th><td style=" padding-left: 10px;"><?= isset($submission->projectLeader->person_id) ? $submission->projectLeader->person->i18nFullName : "N/A"; ?></td></tr>
             </tbody></table>
 
     <div id="ajaxCrudDatatable">

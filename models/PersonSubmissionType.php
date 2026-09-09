@@ -53,7 +53,7 @@ class PersonSubmissionType extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'รหัสหน่วยงาน'),
-            'person_id' => Yii::t('app', 'นักวิจัย'),
+            'person_id' => Yii::t('app', 'ผู้วิจัย'),
             'submission_type_id' => Yii::t('app', 'ประเภทการขอรับพิจารณา'),
             'deleted' => Yii::t('app', '0=ใช้งาน,1=ไม่ใช้งาน'),
             'created_by' => Yii::t('app', 'สร้างโดย'),

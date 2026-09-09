@@ -41,7 +41,7 @@ $form = ActiveForm::begin([
     <span class="font-weight-900" style="font-size: 16px; font-weight: bold;"><?= Yii::t('app', 'ชื่อโครงการ'); ?></span> <?= $model->submission->project->name_thai ?>
 </div>
 <div style="font-size: 16px;">
-    <span class="font-weight-900" style="font-size: 16px; font-weight: bold;"><?= Yii::t('app', 'ชื่อหัวหน้าโครงการ'); ?></span> <?= $model->submission->projectLeader->person->i18nFullName ?>
+    <span class="font-weight-900" style="font-size: 16px; font-weight: bold;"><?= Yii::t('app', 'ชื่อผู้วิจัยหลัก'); ?></span> <?= $model->submission->projectLeader->person->i18nFullName ?>
     <span class="font-weight-900" style="font-size: 16px; font-weight: bold;"><?= Yii::t('app', 'สังกัด'); ?></span> <?= $model->submission->projectLeader->person->divisionName ?>
 </div>
 <div style="font-size: 16px;">

@@ -11,7 +11,7 @@ use yii\helpers\Url;
 <p>เรียน <?= $ld->person->fullNameWithEng ?></p>
 <p>เรื่อง แจ้งเลขที่โครงการวิจัยที่ MOU กับ CREC (<?= isset($submission->project->project_code) ? $submission->project->project_code : "" ?> <?= isset($submission->submission_number) ? ' : ' .$submission->submission_number : "" ?> )</p>
 <br>
-<p>ตามที่ หัวหน้าโครงการวิจัยหลัก ได้ส่งเอกสารโครงการวิจัยเพื่อขอรับการพิจารณาจริยธรรมการวิจัยในมนุษย์ ต่อคณะกรรมการกลางพิจารณาจริยธรรมการวิจัยในคน (CREC) เรื่อง <?= $submission->project->name_thai ?> (<?= $submission->project->name_eng ?>)  เลขที่ CREC No <?= isset($submission->project->crec_number) ? $submission->project->crec_number : "" ?><?= isset($submission->submission_number) ? ' (' .$submission->submission_number .')' : "" ?> โดยมีท่านเป็นหัวหน้าโครงการประจำ site สำนักพัฒนาการคุ้มครองการวิจัยในมนุษย์ (สคม.) สถาบันวิจัยระบบสาธารณสุข นั้น</p>
+<p>ตามที่ ผู้วิจัยหลัก ได้ส่งเอกสารโครงการวิจัยเพื่อขอรับการพิจารณาจริยธรรมการวิจัยในมนุษย์ ต่อคณะกรรมการกลางพิจารณาจริยธรรมการวิจัยในคน (CREC) เรื่อง <?= $submission->project->name_thai ?> (<?= $submission->project->name_eng ?>)  เลขที่ CREC No <?= isset($submission->project->crec_number) ? $submission->project->crec_number : "" ?><?= isset($submission->submission_number) ? ' (' .$submission->submission_number .')' : "" ?> โดยมีท่านเป็นผู้วิจัยหลักประจำ site สำนักพัฒนาการคุ้มครองการวิจัยในมนุษย์ (สคม.) สถาบันวิจัยระบบสาธารณสุข นั้น</p>
 <br>
 <p>บัดนี้ ทางศูนย์จริยธรรมการวิจัยในมนุษย์ ได้รับเอกสารโครงการวิจัยดังกล่าวแล้ว และขอแจ้งหมายเลขสำคัญประจำโครงการวิจัยของท่าน คือ <?= isset($submission->project->project_code) ? $submission->project->project_code : "" ?>  และเพื่อความสะดวกรวดเร็วในการค้นหา ข้อมูลโครงการวิจัยของท่านขอให้ท่านดำเนินการ ดังนี้</p>
 <br>

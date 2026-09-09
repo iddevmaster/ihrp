@@ -19,7 +19,7 @@ return [
     [
         'class' => '\kartik\grid\DataColumn',
         'format' => 'raw',
-        'label'=>'หัวหน้าโครงการ',
+        'label'=>'ผู้วิจัยหลัก',
          'width'=>'15%',
         'attribute' => 'projectLeader.person.fullName',
         'value' => function($model) {

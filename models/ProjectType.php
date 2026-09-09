@@ -12,7 +12,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $id
  * @property string $name ชื่อประเภท
  * @property int $is_alert แจ้งเตือนกรรมการหรือไม่
- * @property int $min_occur จำนวนครั้งที่เกิดต่อนักวิจัย ต่อปี แล้วต้องแจ้งเตือน
+ * @property int $min_occur จำนวนครั้งที่เกิดต่อผู้วิจัย ต่อปี แล้วต้องแจ้งเตือน
  * @property int $deleted 0=ใช้งาน,1=ไม่ใช้งาน
  * @property int $created_by สร้างโดย
  * @property string $created_at สร้างเมื่อ
@@ -73,7 +73,7 @@ class ProjectType extends \yii\db\ActiveRecord {
             'name' => Yii::t('app', 'ชื่อประเภท'),
             'is_alert' => Yii::t('app', 'แจ้งเตือนกรรมการ'),
             'isAlertLabel' => Yii::t('app', 'แจ้งเตือนกรรมการ'),
-            'min_occur' => Yii::t('app', 'จำนวนครั้งที่เกิดต่อนักวิจัย ต่อปี แล้วต้องแจ้งเตือน'),
+            'min_occur' => Yii::t('app', 'จำนวนครั้งที่เกิดต่อผู้วิจัย ต่อปี แล้วต้องแจ้งเตือน'),
             'deleted' => Yii::t('app', '0=ใช้งาน,1=ไม่ใช้งาน'),
             'created_by' => Yii::t('app', 'สร้างโดย'),
             'created_at' => Yii::t('app', 'สร้างเมื่อ'),

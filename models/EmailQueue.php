@@ -637,7 +637,7 @@ class EmailQueue extends \yii\db\ActiveRecord {
             $msg = Yii::$app->mailer->compose('staff-result-doc', [
                 'submission' => $submission,
             ]);
-            $res = $msg->setSubject(\Yii::t('app', 'แจ้งเจ้าหน้าที่จัดเตรียมและส่งหนังสือแจ้งผลให้นักวิจัย'))
+            $res = $msg->setSubject(\Yii::t('app', 'แจ้งเจ้าหน้าที่จัดเตรียมและส่งหนังสือแจ้งผลให้ผู้วิจัย'))
                     ->setFrom([\Yii::$app->params['adminEmail'] => $adminName])
                     ->setTo($submission->responsiblePerson->person->email)
                     ->send();

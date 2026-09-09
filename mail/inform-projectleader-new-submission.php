@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 <p>เรียน <?= $submission->projectLeader->person->fullNameWithEng ?></p>
 
-<h4>เจ้าหน้าที่ผู้ประสานงานโครงการได้ทำการส่งโครงการวิจัย เพื่อขอรับการพิจารณาจริยธรรมการวิจัยในมนุษย์ <?= isset($submission->submission_type_id) ? $submission->submissionType->name : "";?> โดยมีท่านเป็นหัวหน้าโครงการ รายละเอียดดังนี้</h4>
+<h4>เจ้าหน้าที่ผู้ประสานงานโครงการได้ทำการส่งโครงการวิจัย เพื่อขอรับการพิจารณาจริยธรรมการวิจัยในมนุษย์ <?= isset($submission->submission_type_id) ? $submission->submissionType->name : "";?> โดยมีท่านเป็นผู้วิจัยหลัก รายละเอียดดังนี้</h4>
 <table>
     <thead>
         <tr>

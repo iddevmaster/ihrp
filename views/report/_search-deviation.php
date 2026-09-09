@@ -39,8 +39,8 @@ if (!empty($searchModel->is_leader)) {
         </div>
         <div class="col-lg-3">
             <?=
-            $form->field($searchModel, 'is_leader')->label(Yii::t('app', 'หัวหน้าโครงการ'))->widget(Select2::classname(), [
-                'options' => ['placeholder' => yii::t('app', 'เลือกหัวหน้าโครงการ')],
+            $form->field($searchModel, 'is_leader')->label(Yii::t('app', 'ผู้วิจัยหลัก'))->widget(Select2::classname(), [
+                'options' => ['placeholder' => yii::t('app', 'เลือกผู้วิจัยหลัก')],
                 'pluginOptions' => [
                     //            'data' =>[['id' => $model->person_id, 'name' => isset($model->person) ? $model->person->fullName : ""]],
                     'data' => $data,

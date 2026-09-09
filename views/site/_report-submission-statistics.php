@@ -11,7 +11,7 @@ use kartik\grid\GridView;
                 <tr>
                     <th>#</th>
                     <th><?= Yii::t('app', 'เลขที่โครงการ') ?></th>
-                    <th><?= Yii::t('app', 'หัวหน้าโครงการ') ?></th>
+                    <th><?= Yii::t('app', 'ผู้วิจัยหลัก') ?></th>
                     <th><?= Yii::t('app', 'สังกัด') ?></th>
                     <th><?= Yii::t('app', 'แหล่งทุน') ?></th>
                     <th><?= Yii::t('app', 'วาระ') ?></th>

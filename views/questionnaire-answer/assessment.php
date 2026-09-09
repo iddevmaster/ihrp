@@ -128,7 +128,7 @@ $ref = \app\models\Submission::findOne($submission->ref_submission_id);
                     'active' => true
                 ],
                 [
-                    'label' => 'รายชื่อนักวิจัย',
+                    'label' => 'รายชื่อผู้วิจัย',
                     'content' => $researcher,
                 ],
                 [

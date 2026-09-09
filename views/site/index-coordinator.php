@@ -49,7 +49,7 @@ $submissionMonitorCount = \app\models\Submission::find()->isDeleted(false)->proj
                                 <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                 <div class="counter counter-md counter-inverse text-left">
                                     <div class="counter-number-group">
-                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยใหม่รอการยืนยันจากหัวหน้าโครงการ'); ?></span><Br>
+                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยใหม่รอการยืนยันจากผู้วิจัยหลัก'); ?></span><Br>
                                         <div class="counter-number-related text-capitalize font-size-16">จำนวน <button type="button" class="btn btn-icon bg-blue-200 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER); ?></button>
                                             <?= yii::t('app', 'โครงการ'); ?></div>
                                     </div>
@@ -67,7 +67,7 @@ $submissionMonitorCount = \app\models\Submission::find()->isDeleted(false)->proj
                                 <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                 <div class="counter counter-md counter-inverse text-left">
                                     <div class="counter-number-group">
-                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยที่รับรองแล้วรอการยืนยันจากหัวหน้าโครงการ'); ?></span><Br>
+                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยที่รับรองแล้วรอการยืนยันจากผู้วิจัยหลัก'); ?></span><Br>
                                         <div class="counter-number-related text-capitalize font-size-16">จำนวน <button type="button" class="btn btn-icon bg-primary-300 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER, NULL, NULL, NULL, NULL, NULL, 1); ?> </button>
                                             <?= yii::t('app', 'โครงการ'); ?></div>
                                     </div>
@@ -83,7 +83,7 @@ $submissionMonitorCount = \app\models\Submission::find()->isDeleted(false)->proj
                                 <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                 <div class="counter counter-md counter-inverse text-left">
                                     <div class="counter-number-group">
-                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยต่อเนื่องรอการยืนยันจากหัวหน้าโครงการ'); ?></span><br>
+                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยต่อเนื่องรอการยืนยันจากผู้วิจัยหลัก'); ?></span><br>
                                         <div class="counter-number-related text-capitalize font-size-16">จำนวน <button type="button" class="btn btn-icon bg-yellow-700 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_CONT, app\models\Submission::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER); ?> </button>
                                             <?= yii::t('app', 'โครงการ'); ?></div>
                                     </div>
@@ -101,7 +101,7 @@ $submissionMonitorCount = \app\models\Submission::find()->isDeleted(false)->proj
                                 <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                 <div class="counter counter-md counter-inverse text-left">
                                     <div class="counter-number-group">
-                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยใหม่ไม่ผ่านการตรวจสอบจากหัวหน้าโครงการ'); ?></span><Br>
+                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยใหม่ไม่ผ่านการตรวจสอบจากผู้วิจัยหลัก'); ?></span><Br>
                                         <div class="counter-number-related text-capitalize font-size-16">จำนวน <button type="button" class="btn btn-icon bg-blue-600 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_NOT_APPROVE_PROJECT_RESEARCHER); ?></button>
                                             <?= yii::t('app', 'โครงการ'); ?></div>
                                     </div>
@@ -119,7 +119,7 @@ $submissionMonitorCount = \app\models\Submission::find()->isDeleted(false)->proj
                                 <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                 <div class="counter counter-md counter-inverse text-left">
                                     <div class="counter-number-group">
-                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยที่รับรองแล้วไม่ผ่านการตรวจสอบจากหัวหน้าโครงการ'); ?></span><br>
+                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยที่รับรองแล้วไม่ผ่านการตรวจสอบจากผู้วิจัยหลัก'); ?></span><br>
                                         <div class="counter-number-related text-capitalize font-size-16">จำนวน <button type="button" class="btn btn-icon bg-primary-800 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_NOT_APPROVE_PROJECT_RESEARCHER, NULL, NULL, NULL, NULL, NULL, 1); ?> </button>
                                             <?= yii::t('app', 'โครงการ'); ?></div>
                                     </div>
@@ -135,7 +135,7 @@ $submissionMonitorCount = \app\models\Submission::find()->isDeleted(false)->proj
                                 <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                 <div class="counter counter-md counter-inverse text-left">
                                     <div class="counter-number-group">
-                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยต่อเนื่องที่ไม่ผ่านการตรวจสอบจากหัวหน้าโครงการ'); ?></span><br>
+                                        <span class="counter-number-related text-capitalize font-size-16"><?= yii::t('app', 'วิจัยต่อเนื่องที่ไม่ผ่านการตรวจสอบจากผู้วิจัยหลัก'); ?></span><br>
                                         <div class="counter-number-related text-capitalize font-size-16">จำนวน <button type="button" class="btn btn-icon bg-yellow-800 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_CONT, app\models\Submission::STATUS_NOT_APPROVE_PROJECT_RESEARCHER); ?> </button>
                                             <?= yii::t('app', 'โครงการ'); ?></div>
                                     </div>

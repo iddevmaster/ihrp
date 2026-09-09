@@ -95,7 +95,7 @@ $currentRole = \Yii::$app->session->get('currentRole');
                         'project.funding_source_description',
                         [
                             'attribute' => 'projectLeader.person.i18nFullName',
-                            'label' => Yii::t('app', 'หัวหน้าโครงการ'),
+                            'label' => Yii::t('app', 'ผู้วิจัยหลัก'),
                             'format' => 'raw',
                             'value' => isset($submission->projectLeader->person->i18nFullName) ? $submission->projectLeader->person->i18nFullName . $submission->projectLeader->person->fullOrgEn . "<br>Mobile : " . $submission->projectLeader->person->mobile_no : ""
                         ],

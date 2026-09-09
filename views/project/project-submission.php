@@ -116,9 +116,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <div class="column-right margin_bottom20" id="queue4"></div>
                                     </div>
                                 </div><div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-5 control-label">6. เอกสาร ประวัติความรู้ความชำนาญนักวิจัยและผู้ร่วมวิจัย</label>
+                                    <label for="inputEmail3" class="col-sm-5 control-label">6. เอกสาร ประวัติความรู้ความชำนาญผู้วิจัยและผู้ร่วมวิจัย</label>
                                     <div class="col-sm-5">
-                                        <input name="file_title" id="file_title5" type="hidden" value="ประวัติความรู้ความชำนาญนักวิจัยและผู้ร่วมวิจัย">
+                                        <input name="file_title" id="file_title5" type="hidden" value="ประวัติความรู้ความชำนาญผู้วิจัยและผู้ร่วมวิจัย">
                                         <div id="uploadifive-file_upload5" class="uploadifive-button" style="height: 30px; line-height: 30px; overflow: hidden; position: relative; text-align: center; width: 100px;">Select Files<input id="file_upload5" name="file_upload" type="file" class="file_upload" multiple="" style="display:none"><input type="file" style="font-size: 30px; opacity: 0; position: absolute; right: -3px; top: -3px; z-index: 999;" multiple="multiple" accept="image/png,image/jpg,image/jpeg,image/gif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/excel,application/vnd.ms-excel,application/x-excel,application/x-msexcel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.spreadsheet,application/vnd.ms-xpsdocument"></div><div id="uploadifive-file_upload5-queue" class="uploadifive-queue"></div>
                                         <div class="column-right margin_bottom20" id="queue5"></div>
                                     </div>

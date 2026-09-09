@@ -122,14 +122,14 @@ $url['url'] = $base64url;
                                     <li class="list-group-item">
                                         <span class="badge badge-success"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER); ?>  <?= yii::t('app', 'โครงการ') ?></span>
                                         <?=
-                                        Html::a(yii::t('app', 'โครงการวิจัยใหม่รอการยืนยันจากหัวหน้าโครงการ'), ['submission/index', 'status' => app\models\Submission::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER], [
+                                        Html::a(yii::t('app', 'โครงการวิจัยใหม่รอการยืนยันจากผู้วิจัยหลัก'), ['submission/index', 'status' => app\models\Submission::STATUS_WAITING_APPROVE_PROJECT_RESEARCHER], [
                                             'data-confirm' => false, 'data-method' => false, // for overide yii data api
                                             'data-toggle' => 'tooltip'])
                                         ?></li>
                                     <li class="list-group-item">
                                         <span class="badge badge-success"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_NOT_APPROVE_PROJECT_RESEARCHER); ?>  <?= yii::t('app', 'โครงการ') ?></span>
                                         <?=
-                                        Html::a(yii::t('app', 'โครงการวิจัยใหม่ไม่ผ่านการตรวจสอบจากหัวหน้าโครงการ'), ['submission/index', 'status' => app\models\Submission::STATUS_NOT_APPROVE_PROJECT_RESEARCHER], [
+                                        Html::a(yii::t('app', 'โครงการวิจัยใหม่ไม่ผ่านการตรวจสอบจากผู้วิจัยหลัก'), ['submission/index', 'status' => app\models\Submission::STATUS_NOT_APPROVE_PROJECT_RESEARCHER], [
                                             'data-confirm' => false, 'data-method' => false, // for overide yii data api
                                             'data-toggle' => 'tooltip'])
                                         ?></li>

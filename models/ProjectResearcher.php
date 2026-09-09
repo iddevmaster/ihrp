@@ -12,8 +12,8 @@ use yii\db\ActiveRecord;
  * This is the model class for table "project_researcher".
  *
  * @property int $id รหัสหน่วยงาน
- * @property int $is_leader หัวหน้าโครงการ
- * @property int $person_id นักวิจัย
+ * @property int $is_leader ผู้วิจัยหลัก
+ * @property int $person_id ผู้วิจัย
  * @property int $project_id โครงการวิจัย
  * @property int $submission_id การส่งขอพิจารณา
  * @property int $deleted 0=ใช้งาน,1=ไม่ใช้งาน
@@ -75,9 +75,9 @@ class ProjectResearcher extends \yii\db\ActiveRecord {
     public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'รหัสหน่วยงาน'),
-            'is_leader' => Yii::t('app', 'หัวหน้าโครงการ'),
-            'isLeaderLabel' => Yii::t('app', 'หัวหน้าโครงการ'),
-            'person_id' => Yii::t('app', 'นักวิจัย'),
+            'is_leader' => Yii::t('app', 'ผู้วิจัยหลัก'),
+            'isLeaderLabel' => Yii::t('app', 'ผู้วิจัยหลัก'),
+            'person_id' => Yii::t('app', 'ผู้วิจัย'),
             'project_id' => Yii::t('app', 'โครงการวิจัย'),
             'submission_id' => Yii::t('app', 'การส่งขอพิจารณา'),
             'deleted' => Yii::t('app', '0=ใช้งาน,1=ไม่ใช้งาน'),
@@ -96,8 +96,8 @@ class ProjectResearcher extends \yii\db\ActiveRecord {
             'documentResearcherStatusLabel' => yii::t('app', 'สถานะ'),
             'documentResearcherRemark' => yii::t('app', 'หมายเหตุ'),
             'ack_token' => Yii::t('app', 'รหัสการตอบรับ'),
-            'person.cv_file' => Yii::t('app', 'ไฟล์ประวัตินักวิจัย'),
-            'cv_file' => Yii::t('app', 'ไฟล์ประวัตินักวิจัย'),
+            'person.cv_file' => Yii::t('app', 'ไฟล์ประวัติผู้วิจัย'),
+            'cv_file' => Yii::t('app', 'ไฟล์ประวัติผู้วิจัย'),
         ];
     }
 
@@ -175,7 +175,7 @@ class ProjectResearcher extends \yii\db\ActiveRecord {
     }
 
     public function getIsLeaderLabel() {
-        return $this->is_leader ? yii::t('app', "หัวหน้าโครงการ") : yii::t('app', "ผู้ร่วมวิจัย");
+        return $this->is_leader ? yii::t('app', "ผู้วิจัยหลัก") : yii::t('app', "ผู้ร่วมวิจัย");
     }
 
     public function getMailSentLabel() {

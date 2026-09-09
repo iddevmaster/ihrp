@@ -18,7 +18,7 @@ $currentRole = \Yii::$app->session->get('currentRole');
     <tbody>
         <tr>
             <td class="text-center"><?= Yii::t('app', 'หมายเลขโครงการ') ?></td>
-            <td class="text-center"><?= Yii::t('app', 'ชื่อหัวหน้าโครงการวิจัย') ?></td>
+            <td class="text-center"><?= Yii::t('app', 'ชื่อผู้วิจัยหลัก') ?></td>
             <td class="text-center"><?= Yii::t('app', 'หน่วยงานที่สังกัด') ?></td>
         </tr>
         <tr>

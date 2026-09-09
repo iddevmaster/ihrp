@@ -137,7 +137,7 @@ $new = \app\models\Submission::find()->isDeleted(FALSE)->refSubmission($submissi
                     'active' => true
                 ],
                 [
-                    'label' => 'รายชื่อนักวิจัย',
+                    'label' => 'รายชื่อผู้วิจัย',
                     'content' => $researcher,
                 ],
                 [

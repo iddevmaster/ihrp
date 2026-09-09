@@ -8,7 +8,7 @@ use yii\helpers\Html;
 
 <div class="submission-update">
     <div class="alert alert-info dark col-md-6">
-        <?= Yii::t('app', 'ผู้ประสานงานโครงการวิจัย คือ ผู้ที่ดำเนินการส่งเอกสารแทนหัวหน้าโครงการวิจัย') ?>
+        <?= Yii::t('app', 'ผู้ประสานงานโครงการวิจัย คือ ผู้ที่ดำเนินการส่งเอกสารแทนผู้วิจัยหลัก') ?>
     </div>
     <div class="alert alert-warning dark col-md-6">
         <?= Yii::t('app', 'Monitor คิอ ผู้ที่สามารถตรวจสอบการดำเนินการโครงการ เช่น CRA ตัวแทนบริษัท ตัวแทนผู้ให้ทุน') ?>

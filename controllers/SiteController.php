@@ -952,12 +952,12 @@ class SiteController extends RbacController {
                     ['label' => yii::t('app', 'กำหนดเลขา'), 'url' => ['person-role/select-person', 'id' => Role::SECRETARY]],
                     ['label' => yii::t('app', 'กำหนดเจ้าหน้าที่'), 'url' => ['person-role/select-person', 'id' => Role::STAFF]],
                     ['label' => yii::t('app', 'กำหนดผู้ประสานงานโครงการ'), 'url' => ['person-role/select-person', 'id' => Role::COORDINATOR, 'co' => 1]],
-                    ['label' => yii::t('app', 'กำหนดนักวิจัย'), 'url' => ['person-role/select-person', 'id' => Role::RESEARCHER, 'co' => 1]],
+                    ['label' => yii::t('app', 'กำหนดผู้วิจัย'), 'url' => ['person-role/select-person', 'id' => Role::RESEARCHER, 'co' => 1]],
                 ],
             ], 'submission' => [
                 'label' => yii::t('app', 'ค่าตั้งต้นเกี่ยวกับประเภทโครงการวิจัย'),
                 'items' => [
-                    ['label' => yii::t('app', 'กำหนดเอกสารตามประเภทโครงการสำหรับนักวิจัย'), 'url' => ['document-submission-type/index', 'roleId' => Role::RESEARCHER]],
+                    ['label' => yii::t('app', 'กำหนดเอกสารตามประเภทโครงการสำหรับผู้วิจัย'), 'url' => ['document-submission-type/index', 'roleId' => Role::RESEARCHER]],
                     ['label' => yii::t('app', 'กำหนดเอกสารตามประเภทโครงการสำหรับกรรมการ'), 'url' => ['document-submission-type/index', 'roleId' => Role::COMMITTEE]],
                     ['label' => yii::t('app', 'กำหนดอาสาสมัครของประเภทโครงการ'), 'url' => ['submission-type-volunteer-number/index']],
 //                    ['label' => yii::t('app', 'แบบฟอร์มประเมินสำหรับกรรมการ'), 'url' => ['questionnaire-title/index-list-submission-type']],

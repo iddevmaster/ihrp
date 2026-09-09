@@ -33,7 +33,7 @@ $currentRole = Yii::$app->session->get('currentRole');
             <div class="panel-body">
                 <h4><?= Yii::t('app', 'โครงการ') ?>: <?= $submission->project->project_code ?></h4>
                 <div><?= $submission->project->name_thai ?></div>
-                <h4><?= Yii::t('app', 'หัวหน้าโครงการ/สังกัด') ?></h4>
+                <h4><?= Yii::t('app', 'ผู้วิจัยหลัก/สังกัด') ?></h4>
                 <div>
                     <?= $submission->projectLeader->person->fullName ?>
                     <?= Yii::t('app', 'คณะ') . (isset($submission->projectLeader->person->department_id) ? $submission->projectLeader->person->department->name : Yii::t('app', "ไม่กำหนด")) ?>

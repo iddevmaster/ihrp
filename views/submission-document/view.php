@@ -45,9 +45,9 @@ use yii\helpers\Html;
 
             </div>
         </div><div class="form-group">
-            <label for="inputEmail3" class="col-sm-6 control-label"> 6. เอกสาร ประวัติความรู้ความชำนาญนักวิจัยและผู้ร่วมวิจัย</label>
+            <label for="inputEmail3" class="col-sm-6 control-label"> 6. เอกสาร ประวัติความรู้ความชำนาญผู้วิจัยและผู้ร่วมวิจัย</label>
             <div class="col-sm-7">
-                <input name="file_title" id="file_title5" type="hidden" value="ประวัติความรู้ความชำนาญนักวิจัยและผู้ร่วมวิจัย">
+                <input name="file_title" id="file_title5" type="hidden" value="ประวัติความรู้ความชำนาญผู้วิจัยและผู้ร่วมวิจัย">
                 <div><?= Html::a('<i class="glyphicon glyphicon-ok"></i> ' . Yii::t('app', 'ผ่าน'), ['site/submission-continue'], [ 'class' => 'btn btn-success btn-pure']) ?> <?= Html::a('<i class="glyphicon glyphicon-remove"></i> ' . Yii::t('app', 'ไม่ผ่าน'), ['site/submission-continue'], [ 'class' => 'btn btn-warning btn-pure']) ?>  หมายเหตุ : <input type="input" ></div>
 
             </div>

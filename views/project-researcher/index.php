@@ -15,7 +15,7 @@ use kartik\grid\GridView;
 ?>
 <div class="project-researcher-index">
     <div class="ajaxCrudDatatable">
-        <p class="red-700 font-size-20"><i class="icon md-alert-octagon" aria-hidden="true"></i> <?= Yii::t('app', 'หากผู้ร่วมวิจัยมีหน้าที่เป็นอาจารย์ที่ปรึกษาร่วมด้วยโปรดระบุข้อมูลผู้วิจัยร่วมท่านนั้นในขั้นตอน "อาจารย์ที่ปรึกษา" ด้วย') ?></p>
+        <p class="red-700 font-size-20"><i class="icon md-alert-octagon" aria-hidden="true"></i> <?= Yii::t('app', 'หากผู้ร่วมวิจัยมีหน้าที่เป็นอาจารย์ที่ปรึกษาร่วมด้วยโปรดระบุข้อมูลผู้ร่วมวิจัยท่านนั้นในขั้นตอน "อาจารย์ที่ปรึกษา" ด้วย') ?></p>
         <?=
         GridView::widget([
             'id' => 'crud-datatable-project-researcher',

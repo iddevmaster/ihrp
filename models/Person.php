@@ -38,7 +38,7 @@ use yii\helpers\ArrayHelper;
  * @property int $gender เพศ
  * @property string $mobile_no เบอร์มือถือ
  * @property int $is_external เป็นบุคคลภายนอกหรือไม่ 
- * @property int $is_researcher_crec นักวิจัยในโครงการของ CREC 
+ * @property int $is_researcher_crec ผู้วิจัยในโครงการของ CREC 
  * @property string $reg_code รหัสสำหรับลงทะเบียน
  * @property string $expertise ความชำนาญ
  * @property string $signature ลายเซ็นต์
@@ -190,7 +190,7 @@ class Person extends \yii\db\ActiveRecord {
             'updated_at' => Yii::t('app', 'ปรับปรุงข้อมูลเมื่อ'),
             'fullName' => Yii::t('app', 'ชื่อ - สกุล'),
             'i18nFullName' => Yii::t('app', 'ชื่อ - สกุล'),
-            'fullNameWithEng' => Yii::t('app', 'นักวิจัย'),
+            'fullNameWithEng' => Yii::t('app', 'ผู้วิจัย'),
             'department_id' => Yii::t('app', 'แผนก/คณะ'),
             'position_id' => Yii::t('app', 'ตำแหน่ง'),
             'organization_id' => Yii::t('app', 'องค์กร/หน่วยงาน'),
@@ -209,7 +209,7 @@ class Person extends \yii\db\ActiveRecord {
             'expertise' => Yii::t('app', 'ความชำนาญ'),
             'cv_file' => Yii::t('app', 'ไฟล์ประวัติผู้วิจัย'),
             'verifyCode' => Yii::t('app', 'โปรดพิมพ์อักษรที่ท่านเห็นข้างล่างนี้ลงในช่องแล้วกด ถัดไป'),
-            'is_researcher_crec' => Yii::t('app', 'นักวิจัยในโครงการของ CREC'),
+            'is_researcher_crec' => Yii::t('app', 'ผู้วิจัยในโครงการของ CREC'),
         ];
     }
 
@@ -696,7 +696,7 @@ class Person extends \yii\db\ActiveRecord {
         if (empty($reasons)) {
             return null;
         }
-        $tooltip = Yii::t('app', 'นักวิจัยขาดคุณสมบัติ') . ': ' . implode(', ', $reasons);
+        $tooltip = Yii::t('app', 'ผู้วิจัยขาดคุณสมบัติ') . ': ' . implode(', ', $reasons);
         return \yii\helpers\Html::tag('i', '', [
                     'class' => 'icon wb-warning red-600',
                     'style' => 'margin-left:4px;',

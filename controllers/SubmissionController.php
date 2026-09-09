@@ -1939,7 +1939,7 @@ class SubmissionController extends RbacController {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => Yii::t('app', "หัวหน้าโครงการยืนยันการส่งโครงการ"),
+                    'title' => Yii::t('app', "ผู้วิจัยหลักยืนยันการส่งโครงการ"),
                     'content' => $this->renderAjax('pm-accept', [
                         'model' => $model,
                     ]),
@@ -1954,10 +1954,10 @@ class SubmissionController extends RbacController {
                 }
                 return [
                     'forceReload' => $reload,
-                    'title' => Yii::t('app', "หัวหน้าโครงการยืนยันการส่งโครงการ"),
+                    'title' => Yii::t('app', "ผู้วิจัยหลักยืนยันการส่งโครงการ"),
                     'content' => Alert::widget([
                         'type' => Alert::TYPE_SUCCESS,
-                        'body' => \Yii::t('app', 'หัวหน้าโครงการยืนยันการส่งเรียบร้อยแล้ว'),
+                        'body' => \Yii::t('app', 'ผู้วิจัยหลักยืนยันการส่งเรียบร้อยแล้ว'),
                         'delay' => false,
                         'options' => [
                             'class' => 'dark',
@@ -1967,7 +1967,7 @@ class SubmissionController extends RbacController {
                 ];
             } else {
                 return [
-                    'title' => Yii::t('app', "หัวหน้าโครงการยืนยันการส่งโครงการ"),
+                    'title' => Yii::t('app', "ผู้วิจัยหลักยืนยันการส่งโครงการ"),
                     'content' => $this->renderAjax('pm-accept', [
                         'model' => $model,
                     ]),
@@ -2028,7 +2028,7 @@ class SubmissionController extends RbacController {
                 ];
             } else {
                 return [
-                    'title' => Yii::t('app', "หัวหน้าโครงการยืนยันการส่งโครงการ"),
+                    'title' => Yii::t('app', "ผู้วิจัยหลักยืนยันการส่งโครงการ"),
                     'content' => $this->renderAjax('submission-note', [
                         'model' => $model,
                     ]),
@@ -2746,7 +2746,7 @@ js;
                             }
                         }
 
-                        // แจ้งนักวิจัยตอนเลขาฯอนุมัติ (actionSecretaryApproveResultDocuments) ไม่ใช่ตอนนี้
+                        // แจ้งผู้วิจัยตอนเลขาฯอนุมัติ (actionSecretaryApproveResultDocuments) ไม่ใช่ตอนนี้
 
                         $ardProvider = new ArrayDataProvider([
                             'allModels' => $submission->getResultDocuments()
@@ -4052,7 +4052,7 @@ js;
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     $researcherProvider = $researcherSearch->search($request->queryParams);
                     if (!isset($submission->projectLeader)) {
-                        return ['projectresearchersearch-id' => ['กรุณาระบุหัวหน้าโครงการวิจัย']];
+                        return ['projectresearchersearch-id' => ['กรุณาระบุผู้วิจัยหลัก']];
                     }
                     if ($researcherProvider->count == 0) {
                         return ['projectresearchersearch-id' => ['กรุณาระบุผู้วิจัย']];
@@ -4683,7 +4683,7 @@ js;
                 if ($request->isAjax) {
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     if (!isset($submission->projectLeader)) {
-                        return ['projectresearchersearch-id' => ['กรุณาระบุหัวหน้าโครงการวิจัย']];
+                        return ['projectresearchersearch-id' => ['กรุณาระบุผู้วิจัยหลัก']];
                     }
                     $researcherProvider = $researcherSearch->search($request->queryParams);
                     if ($researcherProvider->count == 0) {
@@ -5098,7 +5098,7 @@ js;
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     $researcherProvider = $researcherSearch->search($request->queryParams);
                     if (!isset($submission->projectLeader)) {
-                        return ['projectresearchersearch-id' => ['กรุณาระบุหัวหน้าโครงการวิจัย']];
+                        return ['projectresearchersearch-id' => ['กรุณาระบุผู้วิจัยหลัก']];
                     }
                     if ($researcherProvider->count == 0) {
                         return ['projectresearchersearch-id' => ['กรุณาระบุผู้วิจัย']];

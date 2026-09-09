@@ -60,7 +60,7 @@ $currentRole = \Yii::$app->session->get('currentRole');
                 <td colspan="2"><span class="font-weight-900"><?= Yii::t('app', 'ชื่อโครงการ (ภาษาอังกฤษ)') ?></span> <?= $ma->submission->project->name_eng ?></td>
             </tr>
             <tr>
-                <td><span class="font-weight-900"><?= Yii::t('app', 'หัวหน้าโครงการวิจัย'); ?></span> <?= $ma->submission->project->projectLeader->person->fullName ?></td>
+                <td><span class="font-weight-900"><?= Yii::t('app', 'ผู้วิจัยหลัก'); ?></span> <?= $ma->submission->project->projectLeader->person->fullName ?></td>
                 <td><span class="font-weight-900"><?= Yii::t('app', 'สังกัด'); ?></span> <?= $ma->submission->project->projectLeader->person->fullOrg ?></td>
             </tr>
             <?php
