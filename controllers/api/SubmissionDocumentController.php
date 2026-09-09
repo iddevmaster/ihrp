@@ -118,7 +118,7 @@ class SubmissionDocumentController extends Controller {
         $model = SubmissionDocument::findOne($id);
         $filePath = $model->filePath;
         $info = pathinfo($model->filePath);
-        $output = $filePath;
+        $output = $model->certificateStampFilePath ?: $filePath;
 
         // VarDumper::dump($info);
         // exit;
@@ -174,17 +174,18 @@ class SubmissionDocumentController extends Controller {
         $info = pathinfo($model->filePath);
         $t = \time();
         $fileName = "{$t}.{$info['extension']}";
+        $filePath = $model->certificateStampFilePath ?: $model->filePath;
 
         //        echo $model->filePath;
-        if (file_exists($model->filePath)) {
+        if (file_exists($filePath)) {
             header('Content-Description: Preview');
             header('Content-Type: application/pdf');
             header('Content-Disposition: inline; filename="' . $fileName . '"');
             header('Expires: 0');
             //            header('Cache-Control: must-revalidate');
             header('Pragma: public');
-            header('Content-Length: ' . filesize($model->filePath));
-            readfile($model->filePath);
+            header('Content-Length: ' . filesize($filePath));
+            readfile($filePath);
         }
         exit;
     }

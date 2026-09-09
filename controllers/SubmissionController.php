@@ -3016,6 +3016,7 @@ js;
 
                             $docx->replaceVariableByText($variables);
                             $docx->replaceVariableByText($variables, ['target' => 'footer']);
+                            $docx->replaceVariableByText($variables, ['target' => 'header']);
                             $docx->replaceVariableByHTML('chairman-signature-letter-thai', 'block', $imagesLetterThai, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('chairman-signature-letter', 'block', $imagesLetter, ['isFile' => false, 'embedFonts' => true]);
                             $docx->replaceVariableByHTML('chairman-signature-thai', 'block', $imagesThai, ['isFile' => false, 'embedFonts' => true]);

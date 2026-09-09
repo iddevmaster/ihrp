@@ -13,6 +13,7 @@ $items = [
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'submissionType.i18nName',
+        'label' => Yii::t('app', 'ประเภทการขอรับพิจารณา'),
     ],
     [
         'class' => '\kartik\grid\DataColumn',

@@ -1320,6 +1320,33 @@ class Submission extends \yii\db\ActiveRecord {
         return null;
     }
 
+    /** Thai-formatted (Buddhist year) rendering of endorseDate, e.g. "7 กันยายน 2569". */
+    public function getEndorseDateThai() {
+        $date = $this->endorseDate;
+        if (!isset($date)) {
+            return "";
+        }
+        return \Yii::$app->formatter->asDate($date, 'php:d ')
+                . Yii::$app->util->thaiMonths[\Yii::$app->formatter->asDate($date, 'php:n')]
+                . ' ' . (\Yii::$app->formatter->asDate($date, 'php:Y') + 543);
+    }
+
+    /** Same as endorseDateThai but with an abbreviated Thai month, e.g. "7 ก.ย. 2569". */
+    public function getEndorseDateThaiShort() {
+        $date = $this->endorseDate;
+        if (!isset($date)) {
+            return "";
+        }
+        $thaiMonthsShort = [
+            1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.',
+            5 => 'พ.ค.', 6 => 'มิ.ย.', 7 => 'ก.ค.', 8 => 'ส.ค.',
+            9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.',
+        ];
+        return \Yii::$app->formatter->asDate($date, 'php:d ')
+                . $thaiMonthsShort[\Yii::$app->formatter->asDate($date, 'php:n')]
+                . ' ' . (\Yii::$app->formatter->asDate($date, 'php:Y') + 543);
+    }
+
     public function getLatestResolution() {
         $nextReSubmission = $this->nextReSubmission;
         if (!isset($nextReSubmission)) {

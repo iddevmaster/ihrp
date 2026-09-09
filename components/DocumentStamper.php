@@ -118,6 +118,107 @@ HTML;
     }
 
     /**
+     * Overlay a certification-seal image onto every (or only the last) page
+     * of an existing PDF.
+     *
+     * @param string $srcPath absolute source PDF path
+     * @param string $destPath absolute destination PDF path
+     * @param string $imagePath absolute path to the seal image (png/jpg)
+     * @param array $opts optional overrides:
+     *   'width' (mm, default 30), 'height' (mm, default: derived from the
+     *   image's aspect ratio), 'margin' (mm, default 10),
+     *   'position' (top-left|top-right|bottom-left|bottom-right|center, default bottom-right),
+     *   'pages' (all|last, default all),
+     *   'dateText' (string, optional text overlaid on top of the seal image
+     *   -- e.g. the endorsement date), 'dateOffsetYRatio' (0-1, where within
+     *   the seal's height the date line sits, default 0.62),
+     *   'dateFontSize' (pt, default 10), 'dateColor' (CSS color, default '#c0392b'),
+     *   'offsetX' (mm, shifts the whole seal + date left when positive, default 0)
+     * @return bool
+     */
+    public static function stampImagePdf($srcPath, $destPath, $imagePath, $opts = []) {
+        if (!file_exists($imagePath)) {
+            return false;
+        }
+        $opts += [
+            'width' => 30,
+            'height' => null,
+            'margin' => 10,
+            'position' => 'bottom-right',
+            'pages' => 'all',
+            'dateText' => null,
+            'dateOffsetYRatio' => 0.35,
+            'dateFontSize' => 10,
+            'dateColor' => '#c0392b',
+            'offsetX' => 0,
+        ];
+        $imgSize = @getimagesize($imagePath);
+        if (!$imgSize) {
+            return false;
+        }
+        $w = $opts['width'];
+        $h = $opts['height'] ?: $w * ($imgSize[1] / $imgSize[0]);
+
+        $fontOpts = self::fontOptions();
+        $mpdf = new Mpdf([
+            'mode' => $fontOpts['mode'],
+            'fontDir' => $fontOpts['fontDir'],
+            'fontdata' => $fontOpts['fontdata'],
+            'default_font' => $fontOpts['default_font'],
+            'tempDir' => Yii::getAlias('@app/runtime/mpdf'),
+        ]);
+        $pageCount = $mpdf->setSourceFile($srcPath);
+        for ($i = 1; $i <= $pageCount; $i++) {
+            $tpl = $mpdf->importPage($i);
+            $size = $mpdf->getTemplateSize($tpl);
+            $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+            $fw = min($size['width'], $size['height']);
+            $fh = max($size['width'], $size['height']);
+            $mpdf->AddPageByArray([
+                'orientation' => $orientation,
+                'newformat' => [$fw, $fh],
+            ]);
+            $mpdf->useTemplate($tpl);
+            if ($opts['pages'] === 'last' && $i !== $pageCount) {
+                continue;
+            }
+            [$x, $y] = self::stampPosition($opts['position'], $mpdf->w, $mpdf->h, $w, $h, $opts['margin']);
+            $x -= $opts['offsetX'];
+            // Use WriteFixedPosHTML (not Image()) for the seal: Image() advances
+            // mPDF's flowing content cursor and can silently trigger an extra
+            // page break, pushing the stamp onto the next page.
+            $imgHtml = '<img src="' . htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8') . '" style="width:' . $w . 'mm; height:' . $h . 'mm;">';
+            $mpdf->WriteFixedPosHTML($imgHtml, $x, $y, $w, $h, 'visible');
+            if (!empty($opts['dateText'])) {
+                $dateText = htmlspecialchars($opts['dateText'], ENT_QUOTES, 'UTF-8');
+                $dateHtml = "<div style=\"font-family: thsarabun; font-size:{$opts['dateFontSize']}pt; color:{$opts['dateColor']}; text-align:center; font-weight:bold;\">{$dateText}</div>";
+                $dateBoxH = $h * (1 - $opts['dateOffsetYRatio']);
+                $dateY = $y + $h * $opts['dateOffsetYRatio'];
+                $mpdf->WriteFixedPosHTML($dateHtml, $x, $dateY, $w, $dateBoxH, 'visible');
+            }
+        }
+        $mpdf->Output($destPath, \Mpdf\Output\Destination::FILE);
+        return file_exists($destPath);
+    }
+
+    /** Resolves the top-left (x, y) mm coordinates for a named stamp position. */
+    private static function stampPosition($position, $pageW, $pageH, $w, $h, $margin) {
+        switch ($position) {
+            case 'top-left':
+                return [$margin, $margin];
+            case 'top-right':
+                return [$pageW - $w - $margin, $margin];
+            case 'bottom-left':
+                return [$margin, $pageH - $h - $margin];
+            case 'center':
+                return [($pageW - $w) / 2, ($pageH - $h) / 2];
+            case 'bottom-right':
+            default:
+                return [$pageW - $w - $margin, $pageH - $h - $margin];
+        }
+    }
+
+    /**
      * Generate a standalone attestation cover-sheet PDF (for non-PDF docs).
      *
      * @param string $destPath absolute destination PDF path

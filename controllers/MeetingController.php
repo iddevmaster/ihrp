@@ -1411,7 +1411,7 @@ class MeetingController extends RbacController {
 
         $docx->replaceVariableByText($variables);
         $docx->replaceVariableByText($variables, ['target' => 'footer']);
-        // $docx->replaceVariableByText($variables, ['target' => 'footer']);
+        $docx->replaceVariableByText($variables, ['target' => 'header']);
         $docx->replaceVariableByHTML('attendees', 'block', $attendees, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('agenda2', 'block', $agenda2, ['isFile' => false, 'embedFonts' => true]);
         $docx->replaceVariableByHTML('agenda3', 'block', $agenda3, ['isFile' => false, 'embedFonts' => true]);

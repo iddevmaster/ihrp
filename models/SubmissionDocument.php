@@ -262,6 +262,68 @@ class SubmissionDocument extends \yii\db\ActiveRecord {
         return Yii::getAlias("@app/web/{$this->path}/{$this->file_name}");
     }
 
+    /**
+     * Whether this document qualifies for the certification-seal overlay:
+     * it must be marked as a certification document (is_certificate = CER_YES),
+     * its submission's resolution must be RESOLUTION_Y, and the submission
+     * must be at status STATUS_STAFF_UPLOAD_RESULTDOCUMENT (1300).
+     */
+    public function getShouldStampCertificate() {
+        return $this->is_certificate == self::CER_YES
+                && isset($this->submission)
+                && $this->submission->resolution == Submission::RESOLUTION_Y
+                && $this->submission->status == Submission::STATUS_STAFF_UPLOAD_RESULTDOCUMENT;
+    }
+
+    /**
+     * Returns the path to a certification-seal-stamped copy of this PDF, or
+     * null if the document doesn't qualify (see shouldStampCertificate) or
+     * isn't a PDF. The stamped copy is cached in runtime/ and keyed by the
+     * source file's mtime so it's regenerated only when the source changes.
+     */
+    public function getCertificateStampFilePath() {
+        if (!$this->shouldStampCertificate) {
+            return null;
+        }
+        $info = pathinfo($this->file_name);
+        if (strtolower($info['extension']) !== 'pdf') {
+            return null;
+        }
+        $srcPath = $this->filePath;
+        if (!file_exists($srcPath)) {
+            return null;
+        }
+        $stampImage = Yii::getAlias(Yii::$app->params['certificateStampImage']);
+        if (!file_exists($stampImage)) {
+            return null;
+        }
+        $dateText = $this->submission->endorseDateThaiShort;
+        $stampWidthPx = 180;
+        $stampHeightPx = 106;
+        $dateFontSize = 14;
+        $dateColor = '#003399';
+        $offsetXPx = 40;
+        $cacheDir = Yii::getAlias('@app/runtime/certificate-stamps');
+        FileHelper::createDirectory($cacheDir);
+        $destPath = "{$cacheDir}/{$this->id}_" . filemtime($srcPath) . "_{$stampWidthPx}x{$stampHeightPx}_{$offsetXPx}_" . md5($dateText . $dateFontSize . $dateColor) . '.pdf';
+        if (!file_exists($destPath)) {
+            $pxToMm = 25.4 / 96;
+            $opts = [
+                'width' => $stampWidthPx * $pxToMm, // bottom-right corner seal
+                'height' => $stampHeightPx * $pxToMm,
+                'position' => 'bottom-right',
+                'dateText' => $dateText,
+                'dateFontSize' => $dateFontSize,
+                'dateColor' => $dateColor,
+                'offsetX' => $offsetXPx * $pxToMm,
+            ];
+            if (!\app\components\DocumentStamper::stampImagePdf($srcPath, $destPath, $stampImage, $opts)) {
+                return null;
+            }
+        }
+        return $destPath;
+    }
+
     public function getPdfFileName() {
         $info = pathinfo($this->file_name);
         return $info['filename'] . ".pdf";

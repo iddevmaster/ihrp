@@ -546,6 +546,7 @@ class ResultDocumentController extends RbacController {
 
         $docx->replaceVariableByText($variables);
         $docx->replaceVariableByText($variables, ['target' => 'footer']);
+        $docx->replaceVariableByText($variables, ['target' => 'header']);
         $docx->replaceVariableByHTML('chairman-signature-letter-thai', 'block', $imagesLetterThai, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByHTML('chairman-signature-letter', 'block', $imagesLetter, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByHTML('chairman-signature-thai', 'block', $imagesThai, ['isFile' => false, 'embedFonts' => false]);
@@ -833,6 +834,7 @@ class ResultDocumentController extends RbacController {
 
         $docx->replaceVariableByText($variables);
         $docx->replaceVariableByText($variables, ['target' => 'footer']);
+        $docx->replaceVariableByText($variables, ['target' => 'header']);
         $docx->replaceVariableByHTML('document', 'block', $document, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByHTML('documentEng', 'block', $documentEng, ['isFile' => false, 'embedFonts' => false]);
         $docx->replaceVariableByHTML('researcher', 'block', $researcher, ['isFile' => false, 'embedFonts' => false]);
