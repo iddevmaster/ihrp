@@ -23,6 +23,7 @@ LoginAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
     <?= Html::csrfMetaTags() ?>
+    <link rel="icon" type="image/png" href="<?= Yii::getAlias('@web') ?>/favicon.png">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>

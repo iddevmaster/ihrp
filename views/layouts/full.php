@@ -23,6 +23,7 @@ LoginAsset::register($this);
     <meta name="google-site-verification" content="nNnCWzTob4-dr7sMiP8rXtbplowG2lUnngBCY-on5oc" />
     <meta name="robots" content="noindex">
     <?= Html::csrfMetaTags() ?>
+    <link rel="icon" type="image/png" href="<?= Yii::getAlias('@web') ?>/favicon.png">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
