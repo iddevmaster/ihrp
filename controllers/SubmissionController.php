@@ -3618,8 +3618,22 @@ js;
 
     private function applyApprovalWatermark($pdfPath) {
         $temporaryPath = $pdfPath . '.watermark.tmp';
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
         $mpdf = new \Mpdf\Mpdf([
             'tempDir' => Yii::getAlias('@app/runtime/mpdf'),
+            'fontDir' => array_merge($fontDirs, [
+                Yii::getAlias('@app/web/fonts'),
+            ]),
+            'fontdata' => $fontData + [
+                'sarabun' => [
+                    'R' => 'THSarabunNew.ttf',
+                ]
+            ],
+            'default_font' => 'sarabun',
         ]);
         $pageCount = $mpdf->setSourceFile($pdfPath);
         $mpdf->SetWatermarkText('อนุมัติแล้ว', 0.12);
