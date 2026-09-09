@@ -2068,10 +2068,10 @@ class Submission extends \yii\db\ActiveRecord {
 
     public static function getResolutionLablesNew() {
         return[
-            self::RESOLUTION_Y => yii::t('app', 'รับรอง'),
-            self::RESOLUTION_C => yii::t('app', 'รับรอง/รับทราบหลังจากแก้ไขตามมติที่ประชุม'),
-            self::RESOLUTION_R => yii::t('app', 'ขอให้ผู้วิจัยชี้แจงเพิ่มเติมเพื่อนำกลับมาพิจารณาใหม่'),
-            self::RESOLUTION_N => yii::t('app', 'ไม่รับรอง/รับทราบ'),
+            self::RESOLUTION_Y => yii::t('app', 'รับรอง (approve)'),
+            self::RESOLUTION_C => yii::t('app', 'ขอให้ผู้วิจัยปรับปรุงแก้ไขเพื่ออนุมัติ (minor modification)'),
+            self::RESOLUTION_R => yii::t('app', 'ปรับปรุงแก้ไขและนำเข้าพิจารณาใหม่ (major modification)'),
+            self::RESOLUTION_N => yii::t('app', 'ไม่รับรอง (disapprove)'),
             self::RESOLUTION_W => yii::t('app', 'ถอนออกจากการพิจารณาและหรือถอนออกจากการรับรอง/รับทราบ'),
             self::RESOLUTION_T => yii::t('app', 'ยุติการรับรอง/รับทราบ'),
             self::RESOLUTION_P => yii::t('app', 'เปลี่ยน Panel'),
@@ -2080,10 +2080,10 @@ class Submission extends \yii\db\ActiveRecord {
 
     public static function getResolutionLables() {
         return[
-            self::RESOLUTION_Y => yii::t('app', 'รับรอง/รับทราบ'),
-            self::RESOLUTION_C => yii::t('app', 'รับรอง/รับทราบหลังจากแก้ไขตามมติที่ประชุม'),
-            self::RESOLUTION_R => yii::t('app', 'ขอให้ผู้วิจัยชี้แจงเพิ่มเติมเพื่อนำกลับมาพิจารณาใหม่'),
-            self::RESOLUTION_N => yii::t('app', 'ไม่รับรอง/รับทราบ'),
+            self::RESOLUTION_Y => yii::t('app', 'รับรอง (approve)'),
+            self::RESOLUTION_C => yii::t('app', 'ขอให้ผู้วิจัยปรับปรุงแก้ไขเพื่ออนุมัติ (minor modification)'),
+            self::RESOLUTION_R => yii::t('app', 'ปรับปรุงแก้ไขและนำเข้าพิจารณาใหม่ (major modification)'),
+            self::RESOLUTION_N => yii::t('app', 'ไม่รับรอง (disapprove)'),
             self::RESOLUTION_W => yii::t('app', 'ถอนออกจากการพิจารณาและหรือถอนออกจากการรับรอง/รับทราบ'),
             self::RESOLUTION_T => yii::t('app', 'ยุติการรับรอง/รับทราบ'),
             self::RESOLUTION_P => yii::t('app', 'เปลี่ยน Panel'),
@@ -2286,9 +2286,6 @@ class Submission extends \yii\db\ActiveRecord {
             self::RESOLUTION_C,
             self::RESOLUTION_R,
             self::RESOLUTION_N,
-            self::RESOLUTION_W,
-            self::RESOLUTION_T,
-            self::RESOLUTION_P,
         ];
     }
 

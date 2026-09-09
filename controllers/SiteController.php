@@ -141,7 +141,7 @@ class SiteController extends RbacController {
         }
 
         if ($currentRole['role_id'] == Role::COORDINATOR) {
-            $searchModel->panelId = NULL;
+            $searchModel->panel_id = NULL;
             $user = \Yii::$app->user->identity->id;
             $searchModel->project_coordinator_id = $user;
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -155,9 +155,10 @@ class SiteController extends RbacController {
                         'panelId' => $panelId]);
         }
         if ($currentRole['role_id'] == Role::RESEARCHER) {
-            $searchModel->panelId = NULL;
+            $searchModel->panel_id = NULL;
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
             $dataProvider->pagination = ['pageSize' => 10];
+            $dataProvider->sort = ['defaultOrder' => ['updated_at' => SORT_DESC]];
             return $this->render('@app/views/site/index-researcher.php', ['searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
                         'panelId' => $panelId]);

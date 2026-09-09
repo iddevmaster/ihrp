@@ -23,7 +23,7 @@ $this->title = Yii::$app->name;
                                     <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                     <div class="counter counter-md counter-inverse text-left">
                                         <div class="counter-number-group">
-                                            <span class="counter-number-related text-capitalize font-size-20"><?= yii::t('app', 'วิจัยใหม่ยังไม่เลือก Panel'); ?></span>
+                                            <span class="counter-number-related text-capitalize font-size-20"><?= yii::t('app', 'วิจัยใหม่ที่รอตรวจสอบเอกสาร'); ?></span>
                                             <button type="button" class="btn btn-icon bg-blue-200 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_SUBMITTED); ?> </button>
                                             โครงการ
                                         </div>
@@ -71,7 +71,7 @@ $this->title = Yii::$app->name;
                         <?php
                         $currentRole = Yii::$app->session->get('currentRole');
                         $items = [];
-                        foreach ($currentRole['panels'] as $panelId => $panelName) {
+                        foreach (array_slice($currentRole['panels'], 0, 1, true) as $panelId => $panelName) {
                             $items[] = [
                                 'label' => $panelName,
                                 'content' => $this->render('submission-summary', [

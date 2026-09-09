@@ -188,6 +188,14 @@ class Project extends \yii\db\ActiveRecord {
         ];
     }
 
+    public function beforeSave($insert) {
+        if ($insert && empty($this->panel_id)) {
+            // ihrp uses a single panel only - panel is never chosen by staff/researchers.
+            $this->panel_id = 1;
+        }
+        return parent::beforeSave($insert);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

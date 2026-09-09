@@ -13,41 +13,50 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     echo $this->renderFile('@app/views/widgets/_growl.php');
 
-    ?>
-    <div class="panel">
-        <div class="panel-body">
-            <?php
-            //echo Html::errorSummary([$model]);
+    if (Yii::$app->request->isAjax) {
+        // Admin modal path: keep the original two-tab layout.
+        ?>
+        <div class="panel">
+            <div class="panel-body">
+                <?php
+                $training = $this->renderFile('@app/views/person-training/index.php', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
 
-            $training = $this->renderFile('@app/views/person-training/index.php', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-
-            echo Tabs::widget([
-                'itemOptions' => [
-                    'class' => 'padding-top-15'
-                ],
-                'items' => [
-                        [
-                        'label' => Yii::t('app', 'ข้อมูลส่วนตัว'),
-                        'content' => $this->render('_form', [
-                            'model' => $model,
-                            'regForm' => $regForm,
-                        ]),
-                        'active' => true
+                echo Tabs::widget([
+                    'itemOptions' => [
+                        'class' => 'padding-top-15'
                     ],
+                    'items' => [
+                            [
+                            'label' => Yii::t('app', 'ข้อมูลส่วนตัว'),
+                            'content' => $this->render('_form', [
+                                'model' => $model,
+                                'regForm' => $regForm,
+                            ]),
+                            'active' => true
+                        ],
 
-                        [
-                        'label' => Yii::t('app', 'ข้อมูลการอบรม'),
-                        'content' => $training,
-                    ],
-                ]
-            ]);
-            ?>
+                            [
+                            'label' => Yii::t('app', 'ข้อมูลการอบรม'),
+                            'content' => $training,
+                        ],
+                    ]
+                ]);
+                ?>
+            </div>
         </div>
-    </div>
-
-
+        <?php
+    } else {
+        // Profile page: card-based single-page layout.
+        echo $this->render('_profile', [
+            'model' => $model,
+            'regForm' => $regForm,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    ?>
 </div>
 

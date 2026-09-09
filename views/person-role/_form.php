@@ -35,7 +35,9 @@ use app\models\CommitteeQualification;
     <div class="row">
         <div class="col-md-4">
             <?php
-            $data = ArrayHelper::map(app\models\Panel::find()->isDeleted(FALSE)->orderBy('CONVERT(panel.name USING TIS620) ASC')->all(), 'id', 'name');
+            // ihrp uses a single panel only - always show and force-check panel 1 (IHRP EC).
+            $data = ArrayHelper::map(app\models\Panel::find()->isDeleted(FALSE)->andWhere(['id' => 1])->all(), 'id', 'name');
+            $model->panelIds = [1];
             echo $form->field($model, 'panelIds')->label(FALSE)->checkboxList($data, [
                 'unselect' => NULL,
                 'separator' => '<br>',
@@ -44,7 +46,7 @@ use app\models\CommitteeQualification;
         </div>
         <div class="col-md-8">
             <?php
-            $data = ArrayHelper::map(app\models\Panel::find()->isDeleted(FALSE)->orderBy('CONVERT(panel.name USING TIS620) ASC')->all(), 'id', 'name');
+            $data = ArrayHelper::map(app\models\Panel::find()->isDeleted(FALSE)->andWhere(['id' => 1])->all(), 'id', 'name');
             foreach ($data as $i => $d) {
                 $data[$i] = Yii::t('app', 'ประจำ');
             }

@@ -52,7 +52,7 @@ $currentRole = Yii::$app->session->get('currentRole');
             'responsive' => true,
             'panel' => [
                 'type' => 'info',
-                'heading' => isset($st) ? yii::t('app', ':: สถานะของการแสดงข้อมูล ') . $st : yii::t('app', 'ข้อมูลงานวิจัย Panel : '). $panelId,
+                'heading' => isset($st) ? yii::t('app', ':: สถานะของการแสดงข้อมูล ') . $st : '',
                 'before' => '<div class="pull-left">{summary}</div>',
 //                'after' => FALSE,
 //                'footer' => FALSE,

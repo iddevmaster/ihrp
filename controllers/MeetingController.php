@@ -998,7 +998,12 @@ class MeetingController extends RbacController {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $personId = \Yii::$app->user->identity->person->id;
 
-        $meetings = Meeting::find()->isDeleted(FALSE)->person($personId)->betweenDate($start, $end)->all();
+        $currentRole = \Yii::$app->session->get('currentRole');
+        if ($currentRole['role_id'] == \app\models\Role::PRESIDENT) {
+            $meetings = Meeting::find()->isDeleted(FALSE)->betweenDate($start, $end)->all();
+        } else {
+            $meetings = Meeting::find()->isDeleted(FALSE)->person($personId)->betweenDate($start, $end)->all();
+        }
 
         $events = [];
         foreach ($meetings as $meeting) {

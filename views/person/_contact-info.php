@@ -38,19 +38,23 @@ $elAcceptPolicy = Html::getInputId($model, 'accept_policy');
 $lang = \Yii::$app->language;
 ?>
 
-<?php
+
+<div class="alert alert-alt alert-danger alert-dismissible" role="alert">
+    <h4>1. <?= Yii::t('app', 'ข้อมูลระบุตัวตน') ?></h4>
+
+    <?php
 //\yii\helpers\VarDumper::dump($lang, 10, TRUE);
-if ($lang == 'en'):
-    ?>
-    <div class="row">
-        <div class="col-md-2">
-            <?=
-            $form->field($model, 'title_id')->widget(Select2::classname(), [
-                'data' => ArrayHelper::map(Title::find()->isDeleted(FALSE)->orderBy('CONVERT(title.name_eng USING TIS620)')->all(), 'id', 'name_eng'),
-                'options' => ['placeholder' => ''],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
+    if ($lang == 'en'):
+        ?>
+        <div class="row">
+            <div class="col-md-2">
+                <?=
+                $form->field($model, 'title_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Title::find()->isDeleted(FALSE)->orderBy('CONVERT(title.name_eng USING TIS620)')->all(), 'id', 'name_eng'),
+                    'options' => ['placeholder' => ''],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
 //            'pluginEvents' => [
 //                "change" => "function() { 
 //                    var data = $(this).select2('data');
@@ -72,35 +76,35 @@ if ($lang == 'en'):
 //                    
 //                }",
 //            ],
-            ]);
-            ?>
-        </div>
+                ]);
+                ?>
+            </div>
 
-        <div class="col-md-5">
-            <?= $form->field($model, 'first_name_eng')->textInput(['maxlength' => true]) ?>
+            <div class="col-md-5">
+                <?= $form->field($model, 'first_name_eng')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-5">
+                <?= $form->field($model, 'last_name_eng')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-6">
+                <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-6">
+                <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
+            </div>
         </div>
-        <div class="col-md-5">
-            <?= $form->field($model, 'last_name_eng')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
-<?php else: ?>
-    <div class="row">
-        <div class="col-md-2">
-            <?=
-            $form->field($model, 'title_id')->widget(Select2::classname(), [
-                'data' => ArrayHelper::map(Title::find()->isDeleted(FALSE)->orderBy('CONVERT(title.name USING TIS620)')->all(), 'id', 'name'),
-                'options' => ['placeholder' => Yii::t('app', 'เลือกคำนำหน้าชื่อ')],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-                'pluginEvents' => [
-                    "change" => "function() { 
+    <?php else: ?>
+        <div class="row">
+            <div class="col-md-2">
+                <?=
+                $form->field($model, 'title_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Title::find()->isDeleted(FALSE)->orderBy('CONVERT(title.name USING TIS620)')->all(), 'id', 'name'),
+                    'options' => ['placeholder' => Yii::t('app', 'เลือกคำนำหน้าชื่อ')],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                    'pluginEvents' => [
+                        "change" => "function() { 
                     var data = $(this).select2('data');
                     if (data.length > 0 && data[0].id) {
                         $.ajax({
@@ -119,205 +123,245 @@ if ($lang == 'en'):
                     }
                     
                 }",
-                ],
-            ]);
-            ?>
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-md-5">
+                <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-5">
+                <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
+            </div>
         </div>
-        <div class="col-md-5">
-            <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-md-2">
+                <?= $form->field($model, 'titleEng')->textInput(['readonly' => true]) ?>
+            </div>
+            <div class="col-md-5">
+                <?= $form->field($model, 'first_name_eng')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-5">
+                <?= $form->field($model, 'last_name_eng')->textInput(['maxlength' => true]) ?>
+            </div>
         </div>
-        <div class="col-md-5">
-            <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
+    <?php endif; ?>
+    <h4><?= Yii::t('app', 'ข้อมูลติดต่อ') ?></h4>
     <div class="row">
-        <div class="col-md-2">
-            <?= $form->field($model, 'titleEng')->textInput(['readonly' => true]) ?>
-        </div>
-        <div class="col-md-5">
-            <?= $form->field($model, 'first_name_eng')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-5">
-            <?= $form->field($model, 'last_name_eng')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
-<?php endif; ?>
-<div class="row">
 
-    <div class="col-md-4">
-        <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-    </div>
-    <div class="col-md-4">
-        <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
-    </div>
-    <div class="col-md-4">
-        <?= $form->field($model, 'mobile_no')->textInput(['maxlength' => true]) ?>
+        <div class="col-md-4">
+            <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'mobile_no')->textInput(['maxlength' => true]) ?>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-6">
-        <?php
-        // Usage with ActiveForm and model
-        $data = ArrayHelper::map(Organization::find()->isDeleted(FALSE)->orderBy('CONVERT(organization.name USING TIS620) ASC')->all(), 'id', 'i18nName');
+
+<div class="alert alert-alt alert-danger alert-dismissible" role="alert">
+    <h4>2. <?= Yii::t('app', 'สังกัดต้นทาง') ?></h4>
+
+    <div class="row">
+        <div class="col-md-12">
+            <?php
+            // Usage with ActiveForm and model
+            $data = ArrayHelper::map(Organization::find()->isDeleted(FALSE)->orderBy('CONVERT(organization.name USING TIS620) ASC')->all(), 'id', 'i18nName');
 //    \yii\helpers\VarDumper::dump($data, 10, TRUE);
-        echo $form->field($model, 'organization_id')->label('องค์กร/หน่วยงาน (หากไม่พบ กรุณาติดต่อศูนย์จริยธรรมฯ)')->widget(Select2::classname(), [
-            'data' => $data,
-            'options' => ['placeholder' => Yii::t('app', 'เลือกหน่วยงาน')],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]);
-        ?>      </div>    
-    <div class="col-md-6">
-        <?php
-        $data = [];
-        if (!empty($model->organization_id)) {
-            $data = ArrayHelper::map(Department::find()->isDeleted(FALSE)->organization($model->organization_id)->orderBy('CONVERT(department.name USING TIS620)')->all(), 'id', 'name');
-            // \yii\helpers\VarDumper::dump($data, 10, TRUE);
-        }
-        echo $form->field($model, 'department_id')->widget(DepDrop::classname(), [
-            'type' => DepDrop::TYPE_SELECT2,
-            'data' => $data,
-            'select2Options' => [
-                'pluginOptions' => ['allowClear' => true]
-            ],
-            'pluginOptions' => [
-                'depends' => [Html::getInputId($model, 'organization_id')],
-                'url' => Url::to(['/department/list']),
-                'placeholder' => '',
-            ],
-            'pluginEvents' => [
-                "depdrop:afterChange" => "function(event, id, value) {
+            echo $form->field($model, 'organization_id')->label(Yii::t('app', 'องค์กร/หน่วยงาน (หากไม่พบ กรุณาติดต่อศูนย์จริยธรรมฯ)'))->widget(Select2::classname(), [
+                'data' => $data,
+                'options' => ['placeholder' => Yii::t('app', 'เลือกหน่วยงาน')],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
+            ?>      
+        </div>    
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+            <?php
+            $data = [];
+            if (!empty($model->organization_id)) {
+                $data = ArrayHelper::map(Department::find()->isDeleted(FALSE)->organization($model->organization_id)->orderBy('CONVERT(department.name USING TIS620)')->all(), 'id', 'name');
+                // \yii\helpers\VarDumper::dump($data, 10, TRUE);
+            }
+            echo $form->field($model, 'department_id')->widget(DepDrop::classname(), [
+                'type' => DepDrop::TYPE_SELECT2,
+                'data' => $data,
+                'select2Options' => [
+                    'pluginOptions' => ['allowClear' => true]
+                ],
+                'pluginOptions' => [
+                    'depends' => [Html::getInputId($model, 'organization_id')],
+                    'url' => Url::to(['/department/list']),
+                    'placeholder' => '',
+                ],
+                'pluginEvents' => [
+                    "depdrop:afterChange" => "function(event, id, value) {
                     if (_person) {
                         $('#{$elDep}').val(_person.department_id).trigger('depdrop:change');
                     }
                 }",
-            ]
-        ]);
-        ?>     
-    </div>    
-</div>
-<div class="row">
+                ]
+            ]);
+            ?>     
+        </div>    
+    </div>
 
-    <div class="col-md-6">
-        <?php
-        // Usage with ActiveForm and model
-        $data = [];
-        if (!empty($model->department_id)) {
-            $data = ArrayHelper::map(Division::find()->isDeleted(FALSE)->department($model->department_id)->orderBy('CONVERT(division.name USING TIS620)')->all(), 'id', 'name');
-            // \yii\helpers\VarDumper::dump($data, 10, TRUE);
-        }
-        echo $form->field($model, 'division_id')->widget(DepDrop::classname(), [
-            'type' => DepDrop::TYPE_SELECT2,
-            'data' => $data,
-            'select2Options' => [
-                'pluginOptions' => ['allowClear' => true]
-            ],
-            'pluginOptions' => [
-                'depends' => [Html::getInputId($model, 'department_id')],
-                'url' => Url::to(['/division/list']),
-                'placeholder' => '',
-            ],
-            'pluginEvents' => [
-                "depdrop:afterChange" => "function(event, id, value) {
+    <div class="row">
+
+        <div class="col-md-12">
+            <?php
+            // Usage with ActiveForm and model
+            $data = [];
+            if (!empty($model->department_id)) {
+                $data = ArrayHelper::map(Division::find()->isDeleted(FALSE)->department($model->department_id)->orderBy('CONVERT(division.name USING TIS620)')->all(), 'id', 'name');
+                // \yii\helpers\VarDumper::dump($data, 10, TRUE);
+            }
+            echo $form->field($model, 'division_id')->widget(DepDrop::classname(), [
+                'type' => DepDrop::TYPE_SELECT2,
+                'data' => $data,
+                'select2Options' => [
+                    'pluginOptions' => ['allowClear' => true]
+                ],
+                'pluginOptions' => [
+                    'depends' => [Html::getInputId($model, 'department_id')],
+                    'url' => Url::to(['/division/list']),
+                    'placeholder' => '',
+                ],
+                'pluginEvents' => [
+                    "depdrop:afterChange" => "function(event, id, value) {
                     if (_person) {
                         $('#{$elDiv}').val(_person.division_id).trigger('change');
                     }
                 }",
-            ]
-        ]);
-        ?>     
+                ]
+            ]);
+            ?>     
+        </div>
     </div>
-    <div class="col-md-6">
-        <?php
-        // Usage with ActiveForm and model
-        $data = ArrayHelper::map(JobCategory::find()->isDeleted(FALSE)->orderBy('job_category.id ASC')->all(), 'id', 'name');
-//    \yii\helpers\VarDumper::dump($data, 10, TRUE);
-        echo $form->field($model, 'job_category_id')->widget(Select2::classname(), [
-            'data' => $data,
-            'options' => ['placeholder' => ''],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]);
-        ?>      
-    </div>    
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <?= $form->field($model, 'is_paediatrician')->checkbox(); ?>
-    </div>
-    <div class="col-md-4">
-        <?= $form->field($model, 'is_external')->checkbox(); ?>
-    </div>
+    <div class="row">
 
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <?= Yii::t('app', '<div class="red-600">สิทธิในการเข้าถึงระบบ สำหรับนักศึกษา ป.ตรี ที่จะยื่นโครงการ ให้กดเลือกทั้ง 2 สถานะ และยื่นโครงการโดยเป็นผู้ประสานงาน เลือก อ.ที่ปรึกษาเป็นหัวหน้าโครงการ (นักศึกษา ป.ตรี ยังไม่สามารถเป็นหัวหน้าเองได้)</div>') ?>
-        <?= $form->field($model, 'role_ids')->label(false)->checkboxList(\app\models\Role::getRegisterRoles()); ?>
+        <div class="col-md-12">
+            <?php
+            // Usage with ActiveForm and model
+            $data = ArrayHelper::map(JobCategory::find()->isDeleted(FALSE)->orderBy('job_category.id ASC')->all(), 'id', 'name');
+//    \yii\helpers\VarDumper::dump($data, 10, TRUE);
+            echo $form->field($model, 'job_category_id')->widget(Select2::classname(), [
+                'data' => $data,
+                'options' => ['placeholder' => ''],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
+            ?>      
+        </div>   
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'is_paediatrician')->checkbox(); ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'is_external')->checkbox(); ?>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="red-600"><?= Yii::t('app', 'สิทธิในการเข้าถึงระบบ สำหรับนักศึกษา ป.ตรี ที่จะยื่นโครงการ ให้กดเลือกทั้ง 2 สถานะ และยื่นโครงการโดยเป็นผู้ประสานงาน เลือก อ.ที่ปรึกษาเป็นหัวหน้าโครงการ (นักศึกษา ป.ตรี ยังไม่สามารถเป็นหัวหน้าเองได้)') ?></div>
+            <?= $form->field($model, 'role_ids')->label(false)->checkboxList(\app\models\Role::getRegisterRoles()); ?>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <?= Yii::t('app', '<div class="red-600">หมายเหตุ : ต้องลงนามและระบุวันที่ในเอกสาร หากไม่ระบุจะถือว่าเอกสารไม่สมบูรณ์!!</div>') ?>
-        <?php
-        echo FileInput::widget([
-            'id' => 'cv_file',
-            'name' => 'cv_file',
-            'options' => [
-                'multiple' => FALSE,
-            ],
-            'pluginOptions' => [
-                'theme' => 'gly',
-                'required' => TRUE,
-                'showPreview' => FALSE,
-                'showUpload' => FALSE,
-                'showRemove' => FALSE,
-                'uploadUrl' => urldecode(Url::to(['person/upload-cv'])),
-                'uploadExtraData' => [
-                    'album_id' => 20,
-                    'cat_id' => 'Nature'
+
+<div class="alert alert-alt alert-danger alert-dismissible" role="alert">
+    <h4>3. <?= Yii::t('app', 'เอกสารประกอบ') ?></h4>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="red-600"><?= Yii::t('app', 'หมายเหตุ : ต้องลงนามและระบุวันที่ในเอกสาร หากไม่ระบุจะถือว่าเอกสารไม่สมบูรณ์!!') ?></div>
+            <?php
+            $hasCvFile = !empty($model->cv_file);
+            if ($hasCvFile) {
+                echo Html::tag('div', Yii::t('app', 'มีไฟล์แนบไว้แล้ว ไม่ต้องอัปโหลดใหม่ เว้นแต่ต้องการแก้ไขไฟล์'), ['class' => 'text-success']);
+            }
+            echo FileInput::widget([
+                'id' => 'cv_file',
+                'name' => 'cv_file',
+                'options' => [
+                    'multiple' => FALSE,
+                    'accept' => '.pdf',
                 ],
-                'msgPlaceholder' => Yii::t('app', 'เลือกไฟล์ประวัติผู้วิจัยเพื่ออับโหลด')
-            ],
-            'pluginEvents' => [
-                "change" => "function() {
+                'pluginOptions' => [
+                    'theme' => 'gly',
+                    'required' => TRUE,
+                    'showPreview' => $hasCvFile,
+                    'showUpload' => FALSE,
+                    'showRemove' => $hasCvFile,
+                    'overwriteInitial' => TRUE,
+                    'initialPreview' => $hasCvFile ? [Html::encode($model->cv_file)] : [],
+                    'initialPreviewConfig' => $hasCvFile ? [[
+                        'caption' => $model->cv_file,
+                        'showRemove' => TRUE,
+                        'showZoom' => FALSE,
+                        'showDownload' => FALSE,
+                    ]] : [],
+                    'initialPreviewAsData' => TRUE,
+                    'uploadUrl' => urldecode(Url::to(['person/upload-cv'])),
+                    'allowedFileExtensions' => ['pdf'],
+                    'uploadExtraData' => [
+                        'album_id' => 20,
+                        'cat_id' => 'Nature'
+                    ],
+                    'msgPlaceholder' => Yii::t('app', 'เลือกไฟล์ประวัติผู้วิจัยเพื่ออับโหลด')
+                ],
+                'pluginEvents' => [
+                    "change" => "function() {
 //                    $('#{$elCvFile}').val('');
                     setTimeout(() => {
                         $('#cv_file').fileinput('upload');
                     }, 200);
                 }",
-                'fileuploaded' => "function(event, data, previewId, index) {
+                    'fileuploaded' => "function(event, data, previewId, index) {
                     console.log(data);
                     if (data.response.filename) {
                         $('#{$elCvFile}').val(data.response.filename);
                     }
                 }
-                "
-            ]
-        ]);
-        echo $form->field($model, 'cv_file')->label(FALSE)->hiddenInput();
-
-        echo $form->field($model, 'cv_updated_at')->widget(DateControl::classname(), [
-            'type' => DateControl::FORMAT_DATE,
-            'widgetOptions' => [
-                'pluginOptions' => ['endDate' => '0d'],
-            ],
-        ])->label(Yii::t('app', 'วันที่ปรับปรุงประวัติ (CV) ล่าสุด'));
-
-        echo $form->field($model, 'cv_apply_stamp')->label(false)->checkboxList([
-            1 => Yii::t('app', 'ต้องการให้ลงนามอิเล็กทรอนิกส์ (ประทับชื่อและวันที่ลงบนเอกสาร)'),
-        ]);
-
-        echo $form->field($model, 'verifyCode', [
-            'enableClientValidation' => TRUE,
-            'enableAjaxValidation' => FALSE,
-        ])->widget(Captcha::className(), [
-            'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-        ]);
-        ?>
+                ",
+                    'filecleared' => "function(event) {
+                    $('#{$elCvFile}').val('');
+                }"
+                ]
+            ]);
+            ?>
+            <?php
+            echo $form->field($model, 'cv_file')->label(FALSE)->hiddenInput();
+            ?>
+        </div>
+        <div class="col-md-6">
+            <?php
+            echo $form->field($model, 'cv_updated_at')->widget(DateControl::classname(), [
+                'type' => DateControl::FORMAT_DATE,
+                'widgetOptions' => [
+                    'pluginOptions' => ['endDate' => '0d'],
+                ],
+            ])->label(Yii::t('app', 'วันที่ปรับปรุงประวัติ (CV) ล่าสุด'));
+            ?>
+        </div>
     </div>
+    <?php
+    echo $form->field($model, 'cv_apply_stamp')->label(false)->checkboxList([
+        1 => Yii::t('app', 'ต้องการให้ลงนามอิเล็กทรอนิกส์ (ประทับชื่อและวันที่ลงบนเอกสาร)'),
+    ]);
+    ?>
+</div>
+
+<div class="alert alert-alt alert-danger alert-dismissible" role="alert">
+    <h4>4. <?= Yii::t('app', 'การรับรองและยินยอม') ?></h4>
     <div class="row">
         <div class="col-md-12">
             <?= $form->field($model, 'accept_cv_certify')->label(false)->checkboxList([1 => Yii::t('app', 'ข้าพเจ้าขอรับรองว่าเอกสารที่อัปโหลด (CV/เอกสารการอบรม) เป็นความจริงและถูกต้องทุกประการ')]); ?>
@@ -331,8 +375,20 @@ if ($lang == 'en'):
             <p class="margin-left-40"><?= Yii::t('app', 'เงื่อนไขการให้บริการและนโยบายความเป็นส่วนตัว '); ?>  <?= Html::a(Yii::t('app', '[นโยบาย]'), ['person/policy'], ['role' => 'modal-remote', 'data-toggle' => 'tooltip']); ?>.</p>
         </div>
     </div>
+
 </div>
 
+<div class="alert alert-alt alert-danger alert-dismissible" role="alert">
+    <h4>5. <?= Yii::t('app', 'การยืนยันตัวตนก่อนส่ง') ?></h4>
+    <?php
+    echo $form->field($model, 'verifyCode', [
+        'enableClientValidation' => TRUE,
+        'enableAjaxValidation' => FALSE,
+    ])->widget(Captcha::className(), [
+        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+    ]);
+    ?>
+</div>
 <div class="form-group">
 
     <div class="pull-right">

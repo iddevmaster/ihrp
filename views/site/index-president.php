@@ -17,7 +17,7 @@ $this->title = Yii::$app->name;
                 <div class="row">
                     <div class="col-sm-6">
                         <a href="<?= Url::to(['meeting/staff-check', 'status' => app\models\Meeting::CS_PRE_CHECKED]) ?>" data-pjax="0" style="text-decoration: none">
-                            <div class="widget">
+                            <div class="widget" style="border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, .12);">
                                 <div class="widget-content padding-35 bg-teal-600">
                                     <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                     <div class="counter counter-md counter-inverse text-left">
@@ -33,14 +33,14 @@ $this->title = Yii::$app->name;
                     </div>
                     <div class="col-sm-6">
                         <a href="<?= Url::to(['submission/president-approve-result-documents']) ?>" data-pjax="0" style="text-decoration: none">
-                            <div class="widget">
+                            <div class="widget" style="border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, .12);">
                                 <div class="widget-content padding-35 bg-purple-600">
                                     <div class="widget-watermark darker font-size-60 margin-15"><i class="icon glyphicon glyphicon-certificate" aria-hidden="true"></i></div>
                                     <div class="counter counter-md counter-inverse text-left">
                                         <div class="counter-number-group">
-                                            <span class="counter-number-related text-capitalize"><?= yii::t('app', 'หนังสือแจ้งผลที่ต้องตรวจสอบ'); ?></span>
+                                            <span class="counter-number-related text-capitalize" style="font-size: 26px;"><?= yii::t('app', 'หนังสือรับรอง/หนังสือแจ้งผลที่ต้องตรวจสอบ'); ?></span>
                                             <button type="button" class="btn btn-icon bg-purple-200 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN) + \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_CONT, app\models\Submission::STATUS_PRESIDENT_APPROVE_RESULTDOCUMEN); ?> </button>
-                                                <?= yii::t('app', 'โครงการ'); ?>
+                                                <span style="font-size: 26px;"><?= yii::t('app', 'โครงการ'); ?></span>
                                         </div>
                                     </div>
                                 </div>
@@ -49,12 +49,12 @@ $this->title = Yii::$app->name;
                     </div>
                     <div class="col-sm-6">
                         <a href="<?= Url::to(['submission/president-select-committee']) ?>" data-pjax="0" style="text-decoration: none">
-                            <div class="widget">
+                            <div class="widget" style="border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, .12);">
                                 <div class="widget-content padding-35 bg-blue-600">
                                     <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                     <div class="counter counter-md counter-inverse text-left">
                                         <div class="counter-number-group">
-                                                <span class="counter-number-related text-capitalize"><?= yii::t('app', 'เลือกประเภทการพิจารณาโครงการ'); ?></span>
+                                                <span class="counter-number-related text-capitalize"><?= yii::t('app', 'รอเลือกประเภทการพิจารณา'); ?></span>
                                             <button type="button" class="btn btn-icon bg-blue-200 btn-round btn-floating waves-effect waves-round waves-light"><?= (int) $committeeSelectionCount; ?></button>
                                             <?= yii::t('app', 'โครงการ'); ?>
                                             
@@ -66,7 +66,7 @@ $this->title = Yii::$app->name;
                     </div>
                     <div class="col-sm-6">
                         <a href="<?= Url::to(['submission/president-assign-committee']) ?>" data-pjax="0" style="text-decoration: none">
-                            <div class="widget">
+                            <div class="widget" style="border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, .12);">
                                 <div class="widget-content padding-35 bg-orange-600">
                                     <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                     <div class="counter counter-md counter-inverse text-left">
@@ -96,7 +96,7 @@ $this->title = Yii::$app->name;
 //                            ]),
 //                        ];
 //                    }
-                    foreach ($currentRole['newPanels'] as $p) {
+                    foreach (array_slice($currentRole['newPanels'], 0, 1) as $p) {
                         $items[] = [
                             'label' => $p[Yii::$app->util->getI18nAttribute('name')],
                             'content' => $this->render('submission-summary', [
@@ -123,7 +123,7 @@ $this->title = Yii::$app->name;
                             <?php
                             $currentRole = Yii::$app->session->get('currentRole');
                             $items1 = [];
-                            foreach ($currentRole['newPanels'] as $p) {
+                            foreach (array_slice($currentRole['newPanels'], 0, 1) as $p) {
                                 $items1[] = [
                                     'label' => $p[Yii::$app->util->getI18nAttribute('name')],
                                     'content' => $this->render('/submission/index-show', [

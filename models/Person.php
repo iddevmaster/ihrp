@@ -121,7 +121,9 @@ class Person extends \yii\db\ActiveRecord {
             [['accept_cv_certify', 'cv_apply_stamp', 'cv_signed_at', 'cv_signed_by', 'cv_original_file'], 'safe'],
             [['cv_updated_at'], 'date', 'format' => 'php:Y-m-d', 'max' => date('Y-m-d'), 'tooBig' => Yii::t('app', 'วันที่ปรับปรุงประวัติ (CV) ต้องไม่เป็นวันในอนาคต')],
             [['idcard_no'], 'unique', 'filter' => ['deleted' => 0]],
-            [['email'], 'unique', 'filter' => ['deleted' => 0]],
+            [['email'], 'unique', 'filter' => ['deleted' => 0], 'when' => function ($model) {
+                return $model->isNewRecord || $model->isAttributeChanged('email');
+            }],
             [['first_name', 'last_name', 'first_name_eng', 'last_name_eng', 'title_id', 'email', 'mobile_no', 'organization_id'], 'required'],
             [['title_id', 'role_id', 'user_id', 'deleted', 'created_by', 'updated_by', 'department_id', 'position_id', 'committee_qualification_id', 'organization_id', 'job_category_id', 'is_paediatrician', 'division_id', 'gender', 'is_external', 'is_researcher_crec'], 'integer'],
             [['created_at', 'updated_at', 'titleEng', 'accept_policy'], 'safe'],

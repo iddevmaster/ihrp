@@ -117,7 +117,7 @@ $currentRole = Yii::$app->session->get('currentRole');
 //                            ]),
 //                        ];
 //                    }
-                    foreach ($currentRole['newPanels'] as $p) {
+                    foreach (array_slice($currentRole['newPanels'], 0, 1) as $p) {
                         $items[] = [
                             'label' => $p[Yii::$app->util->getI18nAttribute('name')],
                             'content' => $this->render('submission-summary', [
@@ -147,7 +147,7 @@ $currentRole = Yii::$app->session->get('currentRole');
 
                         <?php
                         $items1 = [];
-                        foreach ($currentRole['newPanels'] as $p) {
+                        foreach (array_slice($currentRole['newPanels'], 0, 1) as $p) {
                             $items1[] = [
                                 'label' => $p[Yii::$app->util->getI18nAttribute('name')],
                                 'content' => $this->render('/submission/index-show', [

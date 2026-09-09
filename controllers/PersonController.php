@@ -1153,12 +1153,32 @@ class PersonController extends RbacController {
         $previousStep = $request->post('previousStep');
         $nextStep = $request->post('nextStep');
         $regForm = new RegistrationForm(['scenario' => 'register']);
-        if (isset($personId)) {
-            $profile = Person::findOne($personId);
-            if ($step == self::REGISTER_STEP1 || $previousStep == self::REGISTER_STEP1) {
+
+        // The registration draft is tracked via session, not the personId query
+        // param - the param is only echoed back into the URL for readability and
+        // is never trusted for lookups here. Otherwise anyone could view or take
+        // over another person's (in-progress or completed) registration just by
+        // guessing/typing a different personId in the URL.
+        $sessionPersonId = Yii::$app->session->get('register_person_id');
+        if (isset($sessionPersonId)) {
+            $profile = Person::findOne($sessionPersonId);
+            if (isset($profile) && !empty($profile->user_id)) {
+                $registeredUser = User::findOne($profile->user_id);
+                if (isset($registeredUser) && $registeredUser->status == User::STATUS_ACTIVE) {
+                    // This registration was already completed - don't let the
+                    // wizard be replayed against a live account. Send them to
+                    // login instead.
+                    Yii::$app->session->remove('register_person_id');
+                    Yii::$app->session->remove('register_role_ids');
+                    Yii::$app->session->remove('register_accept_cv_certify');
+                    return $this->redirect(['site/login']);
+                }
+            }
+            if (isset($profile) && ($step == self::REGISTER_STEP1 || $previousStep == self::REGISTER_STEP1)) {
                 $profile->setScenario(Person::SCENARIO_REGISTER);
             }
-        } else if (isset($request->post('Person')['email'])) {
+        }
+        if (!isset($profile) && isset($request->post('Person')['email'])) {
             $profile = Person::find()->isDeleted(FALSE)->andWhere([
                         'email' => $request->post('Person')['email']
                     ])->one();
@@ -1175,12 +1195,30 @@ class PersonController extends RbacController {
         if (!isset($profile)) {
             if ($step == self::REGISTER_STEP1 || $previousStep == self::REGISTER_STEP1) {
                 $profile = new Person(['scenario' => Person::SCENARIO_REGISTER]);
+            } else {
+                // No session-bound draft and not starting fresh at step 1 -
+                // there is nothing legitimate to resume, so restart the wizard.
+                return $this->redirect(['person/register']);
             }
             $profile->role_id = \app\models\Role::RESEARCHER;
             $profile->role_ids = [\app\models\Role::RESEARCHER];
         }
 
         $steps = self::registerSteps();
+
+        // role_ids and accept_cv_certify are transient (non-DB) attributes on
+        // Person - save() never persists them, so a freshly reloaded $profile
+        // always comes back empty after the step1->step2 redirect. When this
+        // request carries no "Person" form data at all (a plain GET reload -
+        // e.g. right after that redirect, or navigating straight to a step
+        // via URL) there is no real submission to reflect, so restore the
+        // last known values from session. If "Person" data IS present, trust
+        // it as-is - including an unchecked checkbox being absent - so a
+        // deliberate uncheck on step 1 isn't silently reverted.
+        if ($request->post('Person') === null) {
+            $profile->role_ids = Yii::$app->session->get('register_role_ids', $profile->role_ids);
+            $profile->accept_cv_certify = Yii::$app->session->get('register_accept_cv_certify', $profile->accept_cv_certify);
+        }
 
         $profile->load($request->post());
         if (!empty($profile->role_ids)) {
@@ -1195,6 +1233,20 @@ class PersonController extends RbacController {
         $oldPerson = Person::find()->isDeleted(FALSE)->email($profile->email)->one();
 //         \yii\helpers\VarDumper::dump($oldPerson->attributes);
 //         \yii\helpers\VarDumper::dump($oldPerson->user->attributes);
+        if (isset($oldPerson) && $oldPerson->id != $profile->id
+                && isset($oldPerson->user) && $oldPerson->user->status == User::STATUS_ACTIVE) {
+            // This email now matches a DIFFERENT person than the one being
+            // registered/edited, and that person already has a live account.
+            // Never let a draft attach to (and overwrite the credentials of)
+            // someone else's active account just by matching their email -
+            // regardless of whether this is a brand new draft or an edit to
+            // an existing one.
+            if ($request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ['person-email' => [Yii::t('app', 'มีผู้ลงทะเบียนด้วย Email นี้แล้ว')]];
+            }
+            throw new \yii\web\HttpException(500, Yii::t('app', 'มีผู้ลงทะเบียนด้วย Email นี้แล้ว'));
+        }
         if (isset($oldPerson->user_id)) {
             $regForm->user_id = $oldPerson->user_id;
             $regForm->username = $oldPerson->user->username;
@@ -1220,6 +1272,9 @@ class PersonController extends RbacController {
                     $profile->is_researcher_crec = 0;
                 }
                 $profile->save(FALSE);
+                Yii::$app->session->set('register_person_id', $profile->id);
+                Yii::$app->session->set('register_role_ids', $profile->role_ids);
+                Yii::$app->session->set('register_accept_cv_certify', $profile->accept_cv_certify);
                 return $this->redirect(['person/register', 'personId' => $profile->id, 'step' => $step]);
             }
         } else if ($step == self::REGISTER_STEP2) {
@@ -1343,14 +1398,24 @@ class PersonController extends RbacController {
 //                            ->setTo($profile->email)
 //                            ->send();
 
+                    Yii::$app->session->remove('register_person_id');
+                    Yii::$app->session->remove('register_role_ids');
+                    Yii::$app->session->remove('register_accept_cv_certify');
                     return $this->redirect(['register-complete']);
                 }
             }
         }
-        $trainigSearch = new \app\models\PersonTrainingSearch();
-        $trainigSearch->person_id = $profile->id;
-        $trainigSearch->deleted = 0;
-        $trainingProvider = $trainigSearch->search([]);
+        if (empty($profile->id)) {
+            // No persisted person yet (first load of step 1) - PersonTrainingSearch
+            // would skip the person_id filter on a null value and return every
+            // person's training records, so use an empty provider instead.
+            $trainingProvider = new \yii\data\ArrayDataProvider(['allModels' => []]);
+        } else {
+            $trainigSearch = new \app\models\PersonTrainingSearch();
+            $trainigSearch->person_id = $profile->id;
+            $trainigSearch->deleted = 0;
+            $trainingProvider = $trainigSearch->search([]);
+        }
         return $this->render('register', [
                     'regForm' => $regForm,
                     'profile' => $profile,

@@ -25,11 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel panel-default">
     <div class="panel-body">
         <?php
-//        if ($currentRole['role_id'] == \app\models\Role::COMMITTEE || $currentRole['role_id'] == \app\models\Role::PRESIDENT || $currentRole['role_id'] == \app\models\Role::COPRESIDENT) {
-//            echo $this->render('_calendar-committee');
-//        }else{
-        echo $this->render('_calendar');
-//        }
+        if ($currentRole['role_id'] == \app\models\Role::COMMITTEE || $currentRole['role_id'] == \app\models\Role::PRESIDENT || $currentRole['role_id'] == \app\models\Role::COPRESIDENT) {
+            echo $this->render('_calendar-committee');
+        } else {
+            echo $this->render('_calendar');
+        }
         ?>
     </div>
 </div>

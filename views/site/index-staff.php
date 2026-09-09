@@ -37,7 +37,7 @@ $url['url'] = $base64url;
                                             <div class="widget-watermark darker font-size-60 margin-15"><i class="icon md-assignment" aria-hidden="true"></i></div>
                                             <div class="counter counter-md counter-inverse text-left">
                                                 <div class="counter-number-group">
-                                                    <span class="counter-number-related text-capitalize font-size-20"><?= yii::t('app', 'วิจัยใหม่ยังไม่เลือก Panel'); ?></span><Br>
+                                                    <span class="counter-number-related text-capitalize font-size-20"><?= yii::t('app', 'วิจัยใหม่ที่รอตรวจสอบเอกสาร'); ?></span><Br>
                                                     <div class="counter-number-related text-capitalize font-size-20">จำนวน <button type="button" class="btn btn-icon bg-blue-200 btn-round btn-floating waves-effect waves-round waves-light"><?= \Yii::$app->user->identity->getSubmissionNewCount(\app\models\SubmissionTypeGroup::GROUP_NEW, app\models\Submission::STATUS_SUBMITTED, 2); ?> </button>
                                                         <?= yii::t('app', 'โครงการ'); ?></div>
                                                 </div>
@@ -155,7 +155,7 @@ $url['url'] = $base64url;
 //                            ]),
 //                        ];
 //                    }
-                    foreach ($currentRole['newPanels'] as $p) {
+                    foreach (array_slice($currentRole['newPanels'], 0, 1) as $p) {
                         $items[] = [
                             'label' => $p[Yii::$app->util->getI18nAttribute('name')],
                             'content' => $this->render('submission-summary', [
@@ -194,7 +194,7 @@ $url['url'] = $base64url;
 //                                        ]),
 //                                    ];
 //                                }
-                                foreach ($currentRole['newPanels'] as $p) {
+                                foreach (array_slice($currentRole['newPanels'], 0, 1) as $p) {
                                     $items1[] = [
                                         'label' => $p[Yii::$app->util->getI18nAttribute('name')],
                                         'content' => $this->render('/submission/index-show', [

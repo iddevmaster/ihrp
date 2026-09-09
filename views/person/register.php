@@ -17,18 +17,18 @@ use yii\helpers\Url;
         <div class="panel-heading">
             <div class="text-right">
                 <?php
-//                $languageItems = Yii::$app->util->getLanguageItems();
-//                $languageItem = new \cetver\LanguageSelector\items\DropDownLanguageItem($languageItems);
-//                $languageItem = $languageItem->toArray();
-//                $languageDropdownItems = \yii\helpers\ArrayHelper::remove($languageItem, 'items');
-//                echo \yii\bootstrap\ButtonDropdown::widget([
-//                    'label' => $languageItem['label'],
-//                    'encodeLabel' => false,
-//                    'options' => ['class' => 'btn-inverse'],
-//                    'dropdown' => [
-//                        'items' => $languageDropdownItems
-//                    ]
-//                ]);
+                $languageItems = Yii::$app->util->getLanguageItems();
+                $languageItem = new \cetver\LanguageSelector\items\DropDownLanguageItem($languageItems);
+                $languageItem = $languageItem->toArray();
+                $languageDropdownItems = \yii\helpers\ArrayHelper::remove($languageItem, 'items');
+                echo \yii\bootstrap\ButtonDropdown::widget([
+                    'label' => $languageItem['label'],
+                    'encodeLabel' => false,
+                    'options' => ['class' => 'btn-inverse'],
+                    'dropdown' => [
+                        'items' => $languageDropdownItems
+                    ]
+                ]);
                 ?>
             </div>
             <div class="text-center"><?= Html::img('@web/images/logo.png', ['height' => 80]); ?></div>

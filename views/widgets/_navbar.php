@@ -60,6 +60,11 @@ $currentRole = Yii::$app->session->get('currentRole');
                 'dropDownCaret' => '',
                 'encodeLabels' => FALSE,
                 'items' => [
+                    [
+                        'label' => Html::tag('i', '', ['class' => 'icon md-home']) . ' ' . Yii::t('app', 'หน้าหลัก'),
+                        'url' => Url::to(['site/index']),
+                        'encode' => FALSE,
+                    ],
                     $languageItem->toArray(),
                     [
                         'label' => '<i class="icon md-notifications"></i><span class="badge badge-danger up alert-count">' . count($alerts) . '</span>',

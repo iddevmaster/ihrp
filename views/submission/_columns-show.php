@@ -18,17 +18,29 @@ $items = [
         'format' => 'raw',
         'attribute' => 'project.project_code',
         'value' => function($model) {
+            $assessType = NULL;
+            if ($model->assess_type != 0) {
+                if ($model->assess_type == 1) {
+                    $labelColor = 'cyan';
+                } else if ($model->assess_type == 2) {
+                    $labelColor = 'red';
+                } else if ($model->assess_type == 3) {
+                    $labelColor = 'pink';
+                }
+                $assessType = "<br><span class='badge badge-info bg-{$labelColor}-500'><i class='icon wb-star' aria-hidden='true'></i> " . submission::getAssessTypeLabel()[$model->assess_type] . '</span>';
+            }
+
             if (isset($model->project->project_code)) {
                 $codes = $model->project->projectCodeHistoriesHtml;
                 $crecNumber = !empty($model->project->crec_number) ? '<br><font class="green-700">' . Yii::t('app', 'CREC No.') . $model->project->crec_number . '</font>' : "";
                 $submissionNumber = !empty($model->submission_number) ? '<br><font class="teal-700">(' . $model->submission_number . ')</font>' : "";
 
-                return $model->project->project_code . (empty($codes) ? '' : "({$codes})") . $crecNumber . $submissionNumber;
+                return $model->project->project_code . (empty($codes) ? '' : "({$codes})") . $assessType . $crecNumber . $submissionNumber;
             } else {
                 $crecNumber = !empty($model->project->crec_number) ? '<br><font class="green-700">' . Yii::t('app', 'CREC No.') . $model->project->crec_number . '</font>' : "";
                 $submissionNumber = !empty($model->submission_number) ? '<br><font class="teal-700">(' . $model->submission_number . ')</font>' : "";
 
-                return Yii::t('app', 'N/A') . $crecNumber . $submissionNumber;
+                return Yii::t('app', 'N/A') . $assessType . $crecNumber . $submissionNumber;
             }
         }
     ],
@@ -116,16 +128,28 @@ $items = [
 //if ($searchModel->status < 1000) {
 $items[] = [
     'class' => '\kartik\grid\DataColumn',
+    'format' => 'raw',
     'attribute' => 'status',
     'value' => function($model) {
         if ($model->status) {
-            if ($model->status == Submission::STATUS_COMMITTEE_ACCEPTED) {
+            if ($model->status >= Submission::STATUS_COMMITTEE_SELECTED) {
+                $countAll = $model->getSubmissionCommittees()->isDeleted(false)->count();
                 $count = $model->getSubmissionCommittees()->isDeleted(false)->status(app\models\SubmissionCommittee::STATUS_ACCEPTED)->count();
-                $message = " ({$count} " . Yii::t('app', 'คน') . ")";
-                if ($count == 0) {
-                    $message = Yii::t('app', ' (กรรมการส่งครบแล้ว)');
+                $countPending = $model->getSubmissionCommittees()->isDeleted(false)->status(app\models\SubmissionCommittee::STATUS_PENDING)->count();
+                $messagePending = "<br><span class='badge badge-info bg-orange-500'><i class='icon fa-group' aria-hidden='true'></i> รอตอบรับ {$countPending} คน </span>";
+                $message = '';
+                if ($model->status >= Submission::STATUS_COMMITTEE_ACCEPTED) {
+                    if ($count == 0) {
+                        $message = "<br><span class='badge badge-info bg-green-500'><i class='icon fa-check-square-o' aria-hidden='true'></i> ส่งประเมินครบแล้ว </span>";
+                    } else {
+                        $message = "<br><span class='badge badge-info bg-purple-500'><i class='icon fa-group' aria-hidden='true'></i> รอส่งประเมิน {$count} คน </span>";
+                    }
                 }
-                return Submission::getStatusLabels()[$model->status] . $message;
+                if ($countPending == 0) {
+                    $messagePending = "<br><span class='badge badge-info bg-green-500'><i class='icon fa-check-square-o' aria-hidden='true'></i> ตอบรับครบแล้ว </span>";
+                }
+
+                return Submission::getStatusLabels()[$model->status] . $messagePending . $message;
             } else {
                 return Submission::getStatusLabels()[$model->status];
             }
@@ -212,7 +236,7 @@ $items[] = [
     'attribute' => 'resolution',
     'value' => function($model) {
 //            return Submission::getResolutionLables()[$model->resolution];
-        $res = isset($model->assess_type) ? "<span class='badge badge-info bg-cyan-500'><i class='icon wb-star' aria-hidden='true'></i> " . submission::getAssessTypeLabel()[$model->assess_type] . '</span><br>' : "";
+        $res = ($model->assess_type != 0) ? "<span class='badge badge-info bg-cyan-500'><i class='icon wb-star' aria-hidden='true'></i> " . submission::getAssessTypeLabel()[$model->assess_type] . '</span><br>' : "";
         if (isset($model->meetingAgenda)) {
             $res .= "[{$model->meetingAgenda->meeting->yearNo}:{$model->meetingAgenda->sort_label}]<br>";
         }

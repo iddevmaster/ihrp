@@ -1337,12 +1337,9 @@ class SubmissionController extends RbacController {
                                         'footer' => Html::button(Yii::t('app', 'ปิด'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
                                     ];
                                 }
+                                // ihrp uses a single panel only - panel is never chosen here anymore, default legacy rows to 1.
                                 if (empty($project->panel_id)) {
-                                    return [
-                                        'title' => Yii::t('app', 'ข้อผิดพลาด'),
-                                        'content' => '<div class="alert alert-danger dark">' . Yii::t('app', 'กรุณาระบุ Panel') . '</div>',
-                                        'footer' => Html::button(Yii::t('app', 'ปิด'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
-                                    ];
+                                    $project->panel_id = 1;
                                 }
                                 $project->project_code = $project->project_code;
                                 $project->panel_id = $project->panel_id;

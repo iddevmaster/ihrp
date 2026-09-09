@@ -13,17 +13,29 @@ $items = [
         'format' => 'raw',
         'attribute' => 'project.project_code',
         'value' => function($model) {
+            $assessType = NULL;
+            if ($model->assess_type != 0) {
+                if ($model->assess_type == 1) {
+                    $labelColor = 'cyan';
+                } else if ($model->assess_type == 2) {
+                    $labelColor = 'red';
+                } else if ($model->assess_type == 3) {
+                    $labelColor = 'pink';
+                }
+                $assessType = "<br><span class='badge badge-info bg-{$labelColor}-500'><i class='icon wb-star' aria-hidden='true'></i> " . Submission::getAssessTypeLabel()[$model->assess_type] . '</span>';
+            }
+
             if (isset($model->project->project_code)) {
                 $codes = $model->project->projectCodeHistoriesHtml;
                 $crecNumber = !empty($model->project->crec_number) ? '<br><font class="green-700">' . Yii::t('app', 'CREC No.') . $model->project->crec_number . '</font>' : "";
                 $submissionNumber = !empty($model->submission_number) ? '<br><font class="teal-700">(' . $model->submission_number . ')</font>' : "";
 
-                return $model->project->project_code . (empty($codes) ? '' : "({$codes})") . $crecNumber . $submissionNumber;
+                return $model->project->project_code . (empty($codes) ? '' : "({$codes})") . $assessType . $crecNumber . $submissionNumber;
             } else {
                 $crecNumber = !empty($model->project->crec_number) ? '<br><font class="green-700">' . Yii::t('app', 'CREC No.') . $model->project->crec_number . '</font>' : "";
                 $submissionNumber = !empty($model->submission_number) ? '<br><font class="teal-700">(' . $model->submission_number . ')</font>' : "";
 
-                return Yii::t('app', 'N/A') . $crecNumber . $submissionNumber;
+                return Yii::t('app', 'N/A') . $assessType . $crecNumber . $submissionNumber;
             }
         }
     ],
@@ -31,6 +43,9 @@ $items = [
         'class' => '\kartik\grid\DataColumn',
         'format' => 'raw',
         'attribute' => 'project.name_thai',
+        'value' => function($model) {
+            return $model->project->i18nName;
+        }
     ],
     [
         'class' => '\kartik\grid\DataColumn',
@@ -77,7 +92,7 @@ $items = [
             if ($model->responsible_person != NULL) {
                 return $model->responsiblePerson->person->fullName;
             } else {
-                return 'ยังไม่กำหนดเจ้าหน้าที่';
+                return Yii::t('app', 'ยังไม่กำหนดเจ้าหน้าที่');
             }
         }
     ],
@@ -93,7 +108,7 @@ $items = [
             if ($model->resolution != NULL) {
                 $res .= Submission::getResolutionLables()[$model->resolution];
             } else {
-                $res .= 'ยังไม่มีมติที่ประชุม';
+                $res .= Yii::t('app', 'ยังไม่มีมติที่ประชุม');
             }
             return $res;
         }
@@ -169,7 +184,7 @@ $items = array_merge($items, [
             'data-confirm-message' => 'Are you sure want to delete this item'],
         'buttons' => [
             'view' => function($url, $model) {
-                return \yii\helpers\Html::a('<i class="glyphicon glyphicon-edit"></i> แสดงรายละเอียด', ['submission/project-submission', 'submissionId' => $model->id], ['data-pjax' => 0, 'data-toggle' => 'tooltip']);
+                return \yii\helpers\Html::a('<i class="glyphicon glyphicon-edit"></i> ' . Yii::t('app', 'แสดงรายละเอียด'), ['submission/project-submission', 'submissionId' => $model->id], ['data-pjax' => 0, 'data-toggle' => 'tooltip']);
             }
         ],
         'visibleButtons' => [

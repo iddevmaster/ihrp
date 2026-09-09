@@ -140,22 +140,22 @@ $countConsult = app\models\ProjectConsultant::find()->joinWith('submission')->pe
                     <div class="example-wrap">
                         <div class="col-md-3">
                             <a href="<?= Url::to(['submission/index-not-isleader']) ?>" data-pjax="0" style="text-decoration: none" target="_blank">
-                                <button type="button" class="btn btn-outline btn-warning text-left " style="width: 100%"> <i class="icon md-account-add font-size-24" aria-hidden="true"></i> ดูงานวิจัยที่เป็นผู้ร่วมวิจัย  <?= $countRe ?> <?= yii::t('app', 'โครงการ'); ?></button>
+                                <button type="button" class="btn btn-warning text-left " style="width: 100%"> <i class="icon md-account-add font-size-24" aria-hidden="true"></i> <?= yii::t('app', 'ดูงานวิจัยที่เป็นผู้ร่วมวิจัย'); ?>  <?= $countRe ?> <?= yii::t('app', 'โครงการ'); ?></button>
                             </a>
                         </div>
                         <div class="col-md-3">
                             <a href="<?= Url::to(['submission/index-isconsultant']) ?>" data-pjax="0" style="text-decoration: none" target="_blank">
-                                <button type="button" class="btn btn-outline btn-danger text-left"  style="width: 100%"> <i class="icon md-account-o font-size-24" aria-hidden="true"></i> ดูงานวิจัยที่เป็นที่ปรึกษา <?= $countConsult ?> <?= yii::t('app', 'โครงการ'); ?></button>
+                                <button type="button" class="btn btn-primary text-left"  style="width: 100%"> <i class="icon md-account-o font-size-24" aria-hidden="true"></i> <?= yii::t('app', 'ดูงานวิจัยที่เป็นที่ปรึกษา'); ?> <?= $countConsult ?> <?= yii::t('app', 'โครงการ'); ?></button>
                             </a>
                         </div>
                         <div class="col-md-3">
                             <a href="<?= Url::to(['submission/index', 'status' => app\models\Submission::STATUS_PENDING_SUBMISSION, 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_NEW, 'isLegacy' => 2, 'accept' => 1]) ?>" data-pjax="0" style="text-decoration: none">
-                                <button type="button" class="btn btn-outline btn-success text-left"  style="width: 100%"> <i class="icon md-accounts-add font-size-24" aria-hidden="true"></i> <?= yii::t('app', 'งานวิจัยที่รอการตอบรับเป็นผู้ร่วมวิจัย'); ?>  <?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1); ?>  <?= yii::t('app', 'โครงการ'); ?></button>
+                                <button type="button" class="btn btn-success text-left"  style="width: 100%"> <i class="icon md-accounts-add font-size-24" aria-hidden="true"></i> <?= yii::t('app', 'งานวิจัยที่รอการตอบรับเป็นผู้ร่วมวิจัย'); ?>  <?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1); ?>  <?= yii::t('app', 'โครงการ'); ?></button>
                             </a>
                         </div>
                         <div class="col-md-3">
                             <a href="<?= Url::to(['submission/index', 'status' => app\models\Submission::STATUS_PENDING_SUBMISSION, 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_NEW, 'isLegacy' => 2, 'accept' => 2]) ?>" data-pjax="0" style="text-decoration: none">
-                                <button type="button" class="btn btn-outline btn-info text-left"  style="width: 100%"> <i class="icon md-accounts-alt font-size-24" aria-hidden="true"></i> <?= yii::t('app', 'งานวิจัยที่รอการตอบรับเป็นที่ปรึกษา'); ?>  <?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2); ?> <?= yii::t('app', 'โครงการ'); ?></button>
+                                <button type="button" class="btn btn-info text-left"  style="width: 100%"> <i class="icon md-accounts-alt font-size-24" aria-hidden="true"></i> <?= yii::t('app', 'งานวิจัยที่รอการตอบรับเป็นที่ปรึกษา'); ?>  <?= \Yii::$app->user->identity->getSubmissionCount(\app\models\SubmissionTypeGroup::GROUP_NEW, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2); ?> <?= yii::t('app', 'โครงการ'); ?></button>
                             </a>
                         </div>
 

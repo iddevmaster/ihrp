@@ -109,7 +109,7 @@ $this->title = Yii::$app->name;
                         <?php
                         $currentRole = Yii::$app->session->get('currentRole');
                         $items1 = [];
-                        foreach ($currentRole['newPanels'] as $p) {
+                        foreach (array_slice($currentRole['newPanels'], 0, 1) as $p) {
                             $items1[] = [
                                 'label' => $p[Yii::$app->util->getI18nAttribute('name')],
                                 'content' => $this->render('/submission/index-show', [

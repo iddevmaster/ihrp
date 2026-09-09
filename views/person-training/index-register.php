@@ -23,7 +23,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
-                  ต้องลงนามและระบุวันที่ในเอกสาร หากไม่ระบุจะถือว่าเอกสารไม่สมบูรณ์!!
+                  <?= Yii::t('app', 'ต้องลงนามและระบุวันที่ในเอกสาร หากไม่ระบุจะถือว่าเอกสารไม่สมบูรณ์!!') ?>
                 </div>
         <?=
         GridView::widget([

@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\models\Panel;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use kartik\datecontrol\DateControl;
@@ -51,20 +50,9 @@ $currentRole = \Yii::$app->session->get('currentRole');
     <?php if ($mode == app\models\Submission::MODE_GENERATECODE) { ?>
 
         <?php
-        // Usage with ActiveForm and model
-        $data = ArrayHelper::map(Panel::find()->isDeleted(FALSE)->orderBy('CONVERT(panel.name USING TIS620) ASC')->all(), 'id', 'name');
-//    \yii\helpers\VarDumper::dump($data, 10, TRUE);
-        echo $form->field($model, 'panelId')->widget(Select2::classname(), [
-            'data' => $data,
-            'options' => ['placeholder' => ''],
-            'pluginOptions' => [
-                'allowClear' => true,
-                'disabled' => true
-            ],
-        ]);
-
+        // ihrp uses a single panel only - panel_id is fixed to 1 in Project::beforeSave(), no selection needed.
         echo $form->field($model, 'isFda')->radioList(Yii::$app->util->getYesNoLabels());
-        ?> 
+        ?>
     <?php } ?>
     <?php if ($mode == app\models\Submission::MODE_MEETINGPLAN) { ?>
         <?php if (isset($model->meeting_plan_date) && isset($model->send_plan_date)) { ?>
@@ -315,19 +303,8 @@ $currentRole = \Yii::$app->session->get('currentRole');
             </div>
             <div class="row">
                 <div class="col-md-6"><?= $form->field($project, 'project_code')->textInput(); ?></div>
-                <div class="col-md-6"><?php
-                    // Usage with ActiveForm and model
-                    $data = ArrayHelper::map(Panel::find()->isDeleted(FALSE)->orderBy('CONVERT(panel.name USING TIS620) ASC')->all(), 'id', 'name');
-//    \yii\helpers\VarDumper::dump($data, 10, TRUE);
-                    echo $form->field($project, 'panel_id')->widget(Select2::classname(), [
-                        'data' => $data,
-                        'options' => ['placeholder' => 'เลือก Panel'],
-                        'pluginOptions' => [
-                            'allowClear' => true
-                        ],
-                    ]);
-                    ?></div>
             </div>
+            <?php // ihrp uses a single panel only - panel_id is fixed to 1 in Project::beforeSave(), no selection needed. ?>
         <?php } ?>
     <?php } ?>
     <?php if ($mode == app\models\Submission::MODE_ASSESSEDCOMMITTEE) { ?>
