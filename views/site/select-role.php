@@ -21,8 +21,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel whiteframe-12dp">
     <div class="panel-body text-left">
         <div class="brand">
-            <div class="text-center"><?= Html::img('@web/images/logo.png', ['width' => 90]); ?></div>
-            <div class="brand-text font-size-18 text-center text-primary">Submission Online</div>
+            <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+                <?= Html::img('@web/images/logo02.png', ['style' => 'height: 100px; width: auto;']); ?>
+                <?= Html::img('@web/images/logo03.png', ['style' => 'height: 100px; width: auto;']); ?>
+            </div>
+            <div class="brand-text font-size-18 text-center text-primary"><?= yii::t('app', 'Research Ethics Review:'); ?><br><?= yii::t('app', 'e-Submission System'); ?></div>
             <!--<div class="font-size-20 font-weight-900">CORE</div>-->
         </div>
         <h4 class="text-center"><?= Yii::t('app', 'กรุณาเลือกหน้าที่') ?></h4>
