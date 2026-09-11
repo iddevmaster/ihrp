@@ -6,7 +6,7 @@ use yii\bootstrap\Tabs;
 use yii\helpers\Url;
 
 //app\assets\ToolbarJsAsset::register($this);
-$this->title = Yii::$app->name;
+$this->title = '';
 
 $url1 = ['submission/index', 'status' => app\models\Submission::STATUS_SUBMITTED, 'typeGroup' => \app\models\SubmissionTypeGroup::GROUP_NEW, 'isLegacy' => 2, 'hasProjectCode' => 1];
 $base64url1 = base64_encode(\yii\helpers\Url::to($url1));

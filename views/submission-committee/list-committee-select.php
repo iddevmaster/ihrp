@@ -9,14 +9,21 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RegisterGroupPersonSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $submissionId int|null */
+/* @var $submission app\models\Submission|null */
 
 //$this->title = Yii::t('app', 'กำหนดผู้เข้าร่วมประชุมตามรอบ');
 
 //CrudAsset::register($this);
 
+$currentRole = Yii::$app->session->get('currentRole');
+$canConfirm = isset($submissionId) && isset($submission)
+        && $currentRole['role_id'] == \app\models\Role::PRESIDENT
+        && $submission->status < \app\models\Submission::STATUS_AGENDA_ADDED;
+
 ?>
 <div class="submission-committee-index">
-    
+
     <div class="ajaxCrudDatatable panel panel-default">
         <?=GridView::widget([
             'id'=>'crud-datatable-submission-committee',
@@ -26,6 +33,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
             'floatHeaderOptions' => ['top' => 66],
             'toolbar' => [
                 ['content' =>
+                    ($canConfirm ? Html::a('<i class="glyphicon glyphicon-ok"></i> ' . Yii::t('app', 'ยืนยันการเลือกกรรมการ'), ['submission-committee/confirm-committees', 'submissionId' => $submissionId], ['role' => 'modal-remote', 'class' => 'btn btn-primary', 'title' => 'ยืนยันการเลือกกรรมการ', 'data-toggle' => 'tooltip']) : '') .
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', Url::current(), ['data-pjax' => 1, 'class' => 'btn btn-default grey-600', 'title' => 'โหลดใหม่'])
 //                    '{toggleData}' .
 //                    '{export}'

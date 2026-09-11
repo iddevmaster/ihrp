@@ -239,6 +239,21 @@ class Util extends \yii\base\Component {
         }
     }
 
+    /**
+     * Standard Thai footer note appended to every outgoing system email.
+     * Single source of truth so all mail/*.php templates and Submission::getContactLetter() stay in sync.
+     */
+    public function emailFooter() {
+        return 'หมายเหตุ : เป็นความอัตโนมัติส่งจากระบบ กรุณาอย่าตอบกลับอีเมลนี้ หากต้องการติดต่อเจ้าหน้าที่ โทร 0 2591 3876, 0 2591 3703, 0 2591 3517';
+    }
+
+    /**
+     * English counterpart of emailFooter().
+     */
+    public function emailFooterEng() {
+        return 'Note: This is an automated email notification. Please do not reply to this email. For further assistance or inquiries, please contact our staff at 0 2591 3876, 0 2591 3703, 0 2591 3517';
+    }
+
     public function buildErrorForApi($errors) {
         $res = [];
         foreach ($errors as $field => $er) {

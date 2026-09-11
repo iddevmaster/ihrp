@@ -58,11 +58,11 @@ use yii\helpers\Url;
     </tbody>
 </table>
         <?= Html::a('เข้าไปดูรายละเอียดเอกสารโครงการวิจัยกรุณาคลิกที่นี่', Url::to(['meeting/submission-files', 'submissionId' => $submission->id], TRUE)) ?> <br>
-<span><font style="font-weight:bold; color: #0000ff;">ทั้งนี้เมื่อท่านตอบรับแล้ว ท่านจะสามารถติดตามการดำเนินการโครงการได้ในระบบออนไลน์ของศูนย์ฯ ต่อไป</font> </span>
+<span><font style="font-weight:bold; color: #0000ff;">ทั้งนี้เมื่อท่านตอบรับแล้ว ท่านจะสามารถติดตามการดำเนินการโครงการได้ในระบบออนไลน์ของสำนักงานฯ ต่อไป</font> </span>
 <font style="font-weight:bold; color: #000000;font-size: 28px;"><h4>กรุณาคลิกด้านล่างเพื่อเลือกตอบการเป็นผู้ร่วมวิจัย</h4></font>
 <?= Html::a('<font style="font-weight:bold; color: #4dcc00;">ตกลง</font> ', Url::to(['project-researcher/acknowledge', 'token' => $researcher->ack_token, 'sid' => $submission->id, 'type' => 'accept'], TRUE)) ?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <?= Html::a(' <font style="font-weight:bold; color: #cc0000;">ปฎิเสธ</font> ', Url::to(['project-researcher/acknowledge', 'token' => $researcher->ack_token, 'sid' => $submission->id, 'type' => 'reject'], TRUE)) ?>
 <br><p>
-<font style="color: red">หมายเหตุ : เป็นความอัตโนมัติส่งจากระบบหากต้องการติดต่อเจ้าหน้าที่</font>    
+<font style="color: red"><?= $submission->contactLetter; ?></font>
 </p>
 <br>
 <hr color="red" align="center" width="70%" size="5">
@@ -112,8 +112,8 @@ use yii\helpers\Url;
     </tbody>
 </table>
 <?= Html::a('Click here to view details of the research study.', Url::to(['meeting/submission-files', 'submissionId' => $submission->id], TRUE)) ?> 
-<font style="font-weight:bold; color: #000000;font-size: 28px;"><h4>Do you agree to be a co-investigator of this study?</h4></font>
+<font style="font-weight:bold; color: #000000;font-size: 28px;"><h4>Please click the button below to indicate whether you agree to participate as a co-investigator.</h4></font>
 <?= Html::a('<font style="font-weight:bold; color: #4dcc00;">Yes</font?> ', Url::to(['project-researcher/acknowledge', 'token' => $researcher->ack_token, 'sid' => $submission->id, 'type' => 'accept'], TRUE)) ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= Html::a('<font style="font-weight:bold; color: #cc0000;"> No </font>', Url::to(['project-researcher/acknowledge', 'token' => $researcher->ack_token, 'sid' => $submission->id, 'type' => 'reject'], TRUE)) ?> 
 <p>
-<font style="color: red">*Note: This is an automatically generated message. please contact us</font>    
+<font style="color: red"><?= $submission->contactLetterEng; ?></font>
 </p>

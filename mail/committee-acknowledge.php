@@ -42,14 +42,14 @@ if (isset($submission->refSubmission)) {
                 if (isset($committeeRevise) && $committeeRevise->resolution == 'C') {
 
             ?>
-        <p style="text-indent: 50px;">ตามที่อาจารย์ได้ให้ความอนุเคราะห์ประเมินโครงการ  เรื่อง “ <?= $submission->project->name_thai; ?> (<?= $submission->project->name_eng; ?>) ” (<?= $submission->project->project_code ?>)  และได้ให้ข้อเสนอแนะให้ผู้วิจัยแก้ไขและเพิ่มเติมบางประเด็นนั้น  บัดนี้ผู้วิจัยได้ชี้แจงต่อข้อคำถามและแก้ไขโครงการกลับมาแล้ว   ศูนย์จริยธรรมฯ จึงใคร่ขอความกรุณาอาจารย์พิจารณาการโครงการวิจัยดังกล่าวอีกครั้ง และส่งผลการประเมินโครงการ ภายในวันที่  <?= $senddate; ?> </p>
+        <p style="text-indent: 50px;">ตามที่อาจารย์ได้ให้ความอนุเคราะห์ประเมินโครงการ  เรื่อง “ <?= $submission->project->name_thai; ?> (<?= $submission->project->name_eng; ?>) ” (<?= $submission->project->project_code ?>)  และได้ให้ข้อเสนอแนะให้ผู้วิจัยแก้ไขและเพิ่มเติมบางประเด็นนั้น  บัดนี้ผู้วิจัยได้ชี้แจงต่อข้อคำถามและแก้ไขโครงการกลับมาแล้ว สำนักงานฯ จึงใคร่ขอความกรุณาอาจารย์พิจารณาการโครงการวิจัยดังกล่าวอีกครั้ง และส่งผลการประเมินโครงการ ภายในวันที่  <?= $senddate; ?> </p>
         <?php } else { ?>
-        <p style="text-indent: 50px;"> ตามที่โครงการ  เรื่อง “ <?= $submission->project->name_thai; ?> (<?= $submission->project->name_eng; ?>) ” (<?= $submission->project->project_code ?>)  ได้นำเข้าพิจารณาในการประชุมครั้งที่ <?= $submission->refSubmission->meetingAgenda->meeting->yearNo; ?> ที่ประชุมมี มติ รับรองหลังจากผู้วิจัยแก้ไขตามมติที่ประชุม (มติ C) นั้น  บัดนี้ผู้วิจัยได้ชี้แจงต่อข้อคำถามและแก้ไขโครงการกลับมาแล้ว เนื่องจากอาจารย์ได้รับมอบหมายเป็นตัวแทนคณะกรรมการในการพิจารณาฯ ศูนย์จริยธรรมฯ จึงใคร่ขอความกรุณาพิจารณาการโครงการวิจัยดังกล่าว และส่งผลการประเมินโครงการ ภายในวันที่  <?= $senddate; ?>   </p>
+        <p style="text-indent: 50px;"> ตามที่โครงการ  เรื่อง “ <?= $submission->project->name_thai; ?> (<?= $submission->project->name_eng; ?>) ” (<?= $submission->project->project_code ?>)  ได้นำเข้าพิจารณาในการประชุมครั้งที่ <?= $submission->refSubmission->meetingAgenda->meeting->yearNo; ?> ที่ประชุมมี มติ ขอให้ผู้วิจัยปรับปรุงแก้ไขเพื่ออนุมัติ (มติ C) นั้น  บัดนี้ผู้วิจัยได้ชี้แจงต่อข้อคำถามและแก้ไขโครงการกลับมาแล้ว เนื่องจากอาจารย์ได้รับมอบหมายเป็นตัวแทนคณะกรรมการในการพิจารณาฯ สำนักงานฯ จึงใคร่ขอความกรุณาพิจารณาการโครงการวิจัยดังกล่าว และส่งผลการประเมินโครงการ ภายในวันที่  <?= $senddate; ?>   </p>
             <?php
         }
     } else {
         ?>
-        <p style="text-indent: 50px;"> ตามที่อาจารย์ได้ให้ความอนุเคราะห์ประเมินโครงการ เรื่อง “ <?= $submission->project->name_thai; ?> (<?= $submission->project->name_eng; ?>) ” (<?= $submission->project->project_code ?>) และได้ให้ข้อเสนอแนะต่างๆ ไปแล้วนั้น  โครงการดังกล่าวได้นำเข้าพิจารณาในการประชุมครั้งที่ <?= $submission->refSubmission->meetingAgenda->meeting->yearNo; ?> ที่ประชุมมี มติให้ผู้วิจัยชี้แจงต่อข้อคำถามเพื่อนำมาพิจารณาในการประชุมอีกครั้ง (มติ R )  บัดนี้ผู้วิจัยได้ชี้แจงต่อข้อคำถามและแก้ไขโครงการกลับมาแล้ว   ศูนย์จริยธรรมฯ จึงใคร่ขอความกรุณาอาจารย์พิจารณาการโครงการวิจัยดังกล่าวอีกครั้ง และส่งผลการประเมินโครงการ ภายในวันที่  <?= $senddate; ?>  ทั้งนี้ เพื่อศูนย์จริยธรรมฯ จะได้นำเข้าที่ประชุมเพื่อพิจารณาอีกครั้ง ในวันที่ <?= $meetingdate; ?> </p>
+        <p style="text-indent: 50px;"> ตามที่อาจารย์ได้ให้ความอนุเคราะห์ประเมินโครงการ เรื่อง “ <?= $submission->project->name_thai; ?> (<?= $submission->project->name_eng; ?>) ” (<?= $submission->project->project_code ?>) และได้ให้ข้อเสนอแนะต่างๆ ไปแล้วนั้น  โครงการดังกล่าวได้นำเข้าพิจารณาในการประชุมครั้งที่ <?= $submission->refSubmission->meetingAgenda->meeting->yearNo; ?> ที่ประชุมมี มติให้ ปรับปรุงแก้ไขและนำเข้าพิจารณาใหม่ (มติ R)  บัดนี้ผู้วิจัยได้ชี้แจงต่อข้อคำถามและแก้ไขโครงการกลับมาแล้ว สำนักงานฯ จึงใคร่ขอความกรุณาอาจารย์พิจารณาการโครงการวิจัยดังกล่าวอีกครั้ง และส่งผลการประเมินโครงการ ภายในวันที่  <?= $senddate; ?>  ทั้งนี้ เพื่อสำนักงานฯ จะได้นำเข้าที่ประชุมเพื่อพิจารณาอีกครั้ง ในวันที่ <?= $meetingdate; ?> </p>
   
     <?php
     }
@@ -58,7 +58,7 @@ if (isset($submission->refSubmission)) {
     <table>
         <tbody>
             <tr>
-                <td colspan="4" style="text-indent: 50px;"> <?= Yii::t('app', 'ศูนย์จริยรรมการวิจัยในมนุษย์ ขอความอนุเคราะห์อาจารย์ประเมินโครงการวิจัยเพื่อขอรับการพิจารณาจริยธรรมการวิจัยในมนุษย์') ?>  <?= $submission->submissionType->name ?> <?= Yii::t('app', 'เลขที่') ?> <?= $submission->project->project_code; ?> เรื่อง “ <?= $submission->project->name_thai; ?> (<?= $submission->project->name_eng; ?>) ” โดยมี <?= isset($submission->projectLeader) ? $submission->projectLeader->person->fullNameWithEng : "" ?> เป็นผู้วิจัยหลัก</td>
+                <td colspan="4" style="text-indent: 50px;"> <?= Yii::t('app', ' ขอความอนุเคราะห์อาจารย์ประเมินโครงการวิจัยเพื่อขอรับการพิจารณาจริยธรรมการวิจัยในมนุษย์') ?>  <?= $submission->submissionType->name ?> <?= Yii::t('app', 'เลขที่') ?> <?= $submission->project->project_code; ?> เรื่อง “ <?= $submission->project->name_thai; ?> (<?= $submission->project->name_eng; ?>) ” โดยมี <?= isset($submission->projectLeader) ? $submission->projectLeader->person->fullNameWithEng : "" ?> เป็นผู้วิจัยหลัก</td>
             </tr>
             <tr>
                 <td colspan="4" style="text-indent: 50px;">และขอความกรุณาอาจารย์ส่งผลการประเมินโครงการ ภายในวันที่ <?= $senddate; ?> ทั้งนี้ เพื่อนำเข้าที่ประชุมพิจารณาในวันที่ <?= $meetingdate; ?> ทั้งนี้ขออนุญาตโทรติดต่อเพื่อยืนยันการประชุมอีกครั้ง </td>
@@ -74,7 +74,7 @@ if (isset($submission->refSubmission)) {
                 <td colspan="4" style="text-indent: 100px;" ><?= Yii::t('app', '2. ไม่สามารถเข้าร่วมการพิจารณาในวันประชุมได้') ?></td>
             </tr>
             <tr>
-                <td colspan="4" style="text-indent: 50px;"><?= Yii::t('app', 'รบกวนตอบกลับทาง ศูนย์ฯ ทันทีเพื่อให้ทางเลขานุการสามารถมอบหมายกรรมการท่านใหม่ต่อไปค่ะ') ?></td>
+                <td colspan="4" style="text-indent: 50px;"><?= Yii::t('app', 'รบกวนตอบกลับทาง สำนักงานฯ ทันทีเพื่อให้ทางประธานคณะกรรมการสามารถมอบหมาย Reviewer ท่านใหม่ต่อไปค่ะ') ?></td>
             </tr>
         </tbody>
     </table>

@@ -57,7 +57,7 @@ use Phpdocx\Create\CreateDocx;
  */
 class SubmissionController extends RbacController {
 
-    protected $allowedActions = ['project-submission-show', 'project-submission', 'submission-report', 'delete', 'index-not-isleader', 'index-isconsultant', 'coordinator', 'new-certified', 'general', 'upload-result', 'index-nostaff', 'certificate', 'submission-note', 'meeting-plan', 'set-secretary', 'president-select-committee', 'president-assign-committee'];
+    protected $allowedActions = ['project-submission', 'submission-report', 'delete', 'index-not-isleader', 'index-isconsultant', 'coordinator', 'new-certified', 'general', 'upload-result', 'index-nostaff', 'certificate', 'submission-note', 'meeting-plan', 'set-secretary', 'president-select-committee', 'president-assign-committee'];
 
     /**
      * @inheritdoc
@@ -520,113 +520,6 @@ class SubmissionController extends RbacController {
                     'project' => $project,
                     'ma' => $ma,
                     'answers' => $answers,
-        ]);
-    }
-
-    public function actionProjectSubmissionShow($submissionId, $sCommitteeId = NULL) {
-        if (!Yii::$app->user->identity->person->isSubmissionVisible($submissionId)) {
-            throw new \yii\web\UnauthorizedHttpException(Yii::t('app', 'ไม่มีสิทธิ์เข้าถึงข้อมูลโครงการ'));
-        }
-
-        $model = $this->findModel($submissionId);
-        $project = Project::find()->isDeleted(FALSE)->where(['id' => $model->project_id])->one();
-        $submission = $this->findModel($submissionId);
-        if ($model->status == Submission::STATUS_CODE_GENERATED) {
-            $mode = Submission::MODE_MEETINGPLAN;
-        } elseif ($model->status == Submission::STATUS_MEETING_APPOINTMENT) {
-            $mode = Submission::MODE_SETSECRETARY;
-        }
-        $request = Yii::$app->request;
-
-
-        $pResearchersearchModel = new ProjectResearcherSearch();
-        $pResearchersearchModel->deleted = 0;
-        $pResearchersearchModel->project_id = $submission->project_id;
-        $pResearchersearchModel->submission_id = $submissionId;
-        $pResearcherdataProvider = $pResearchersearchModel->search(Yii::$app->request->queryParams);
-
-        $pConsultantsearchModel = new \app\models\ProjectConsultantSearch();
-        $pConsultantsearchModel->deleted = 0;
-        $pConsultantsearchModel->project_id = $submission->project_id;
-        $pConsultantsearchModel->submission_id = $submissionId;
-        $pConsultantdataProvider = $pConsultantsearchModel->search(Yii::$app->request->queryParams);
-
-
-        $docsearchModel = new SubmissionDocumentSearch();
-        $docsearchModel->deleted = 0;
-        $docsearchModel->submission_id = $submission->id;
-        $docdataProvider = $docsearchModel->search(Yii::$app->request->queryParams);
-
-        $comsearchModel = new \app\models\SubmissionCommitteeSearch();
-        $comsearchModel->deleted = 0;
-        $comsearchModel->submission_id = $submission->id;
-        $comdataProvider = $comsearchModel->search(Yii::$app->request->queryParams);
-
-        $PsearchModel = new \app\models\PersonRoleSearch();
-        $PsearchModel->deleted = 0;
-// $PsearchModel->panel_id = $submission->project->panel_id;
-        $PsearchModel->role_id = Role::COMMITTEE;
-        $PsearchModel->notInSubmissionId = $submission->id;
-//  $DsearchModel->notInPersonRoleId = $id;
-        $PdataProvider = $PsearchModel->search(Yii::$app->request->queryParams);
-
-        $hissearchModel = new SubmissionStatusHistorySearch();
-        $hissearchModel->submission_id = $submission->id;
-        $hisdataProvider = $hissearchModel->search(Yii::$app->request->queryParams);
-
-        $coisearchModel = new \app\models\SubmissionCoiPersonSearch();
-        $coisearchModel->submission_id = $submission->id;
-        $coisearchModel->deleted = 0;
-        $coidataProvider = $coisearchModel->search(Yii::$app->request->queryParams);
-
-        $committeesearchModel = new \app\models\SubmissionCommitteeSearch();
-        $committeesearchModel->submission_id = $submission->id;
-        $committeesearchModel->deleted = 0;
-        $committeesearchModel->status = \app\models\SubmissionCommittee::STATUS_RETURN;
-        if ($currentRole['role_id'] == Role::COMMITTEE) {
-            $committeesearchModel->person_id = \Yii::$app->user->identity->person->id;
-        }
-        $committeedataProvider = $committeesearchModel->search(Yii::$app->request->queryParams);
-
-        if ($model->load($request->post())) {
-            if ($mode == Submission::MODE_MEETINGPLAN) {
-//                    echo "MEEt PLAN";
-                if ($model->submissionType->is_fullboard) {
-                    $model->status = Submission::STATUS_MEETING_APPOINTMENT;
-                } else {
-                    $model->status = Submission::STATUS_SECRETARY_SELECTED;
-                }
-                $model->save(FALSE);
-            }
-            if ($request->isAjax) {
-                \Yii::$app->response->format = Response::FORMAT_JSON;
-                return [
-                    'forceReload' => '#submission-status-pjax',
-                    'forceClose' => true,
-                    'footer' => Html::button(Yii::t('app', 'ปิด'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
-                ];
-            }
-        }
-
-        return $this->render('project-submission-show', [
-                    'submission' => $submission,
-                    'pResearchersearchModel' => $pResearchersearchModel,
-                    'pResearcherdataProvider' => $pResearcherdataProvider,
-                    'pConsultantsearchModel' => $pConsultantsearchModel,
-                    'pConsultantdataProvider' => $pConsultantdataProvider,
-                    'docsearchModel' => $docsearchModel,
-                    'docdataProvider' => $docdataProvider,
-                    'comsearchModel' => $comsearchModel,
-                    'comdataProvider' => $comdataProvider,
-                    'PsearchModel' => $PsearchModel,
-                    'PdataProvider' => $PdataProvider,
-                    'hissearchModel' => $hissearchModel,
-                    'hisdataProvider' => $hisdataProvider,
-                    'committeesearchModel' => $committeesearchModel,
-                    'committeedataProvider' => $committeedataProvider,
-                    'coisearchModel' => $coisearchModel,
-                    'coidataProvider' => $coidataProvider,
-                    'project' => $project
         ]);
     }
 
@@ -1114,6 +1007,7 @@ class SubmissionController extends RbacController {
                     if ($model->validate()) {
                         $model->status = Submission::STATUS_SECRETARY_SELECTED;
                         $model->save(FALSE);
+                        \app\models\Alert::addPresidentAssignCommittee($model);
 //                        EmailQueue::addQueue(EmailQueue::TYPE_INFORM_PROJECT_CODE, $model->id);
                         $redirect = \yii\helpers\Url::to(['project-submission', 'submissionId' => $model->id]);
                         return [
@@ -1153,6 +1047,9 @@ class SubmissionController extends RbacController {
                     $committee->save(FALSE);
 
                     \app\models\Alert::addCommitteeAcknowledge($committee);
+                    if ($committee->status == \app\models\SubmissionCommittee::STATUS_REJECTED) {
+                        \app\models\Alert::addCommitteeRejected($committee);
+                    }
                     EmailQueue::addQueue(EmailQueue::TYPE_COMMITTEE_ACKNOWLEDGED, $committee->id);
 
                     if ($currentRole['role_id'] == \app\models\Role::COMMITTEE) {
@@ -1910,8 +1807,22 @@ class SubmissionController extends RbacController {
                 if ($model->status == Submission::STATUS_MEETING_APPOINTMENT) {
                     $model->status = Submission::STATUS_SECRETARY_SELECT_TYPE;
                 }
+                // Loose (non-identical) comparison: the DB value comes back as an int
+                // while the posted form value is a string, so a strict compare would
+                // treat re-saving the same president as a "change" every time.
+                $presidentChanged = $model->isAttributeChanged('president_person', false);
+                $statusChangedToSelectType = $model->status == Submission::STATUS_SECRETARY_SELECT_TYPE && $model->isAttributeChanged('status', false);
                 $model->save(FALSE);
-                EmailQueue::addQueue(EmailQueue::TYPE_SECRETARY_SELECTED, $model->id);
+                // The president (not the secretary) is the one who actually selects
+                // the review type in this project, so only notify when a president
+                // is set and was actually just changed (avoid re-notifying on every
+                // resave of the same president).
+                if (!empty($model->president_person) && $presidentChanged) {
+                    EmailQueue::addQueue(EmailQueue::TYPE_PRESIDENT_SELECTED, $model->id);
+                }
+                if ($statusChangedToSelectType) {
+                    \app\models\Alert::addPresidentSelectType($model);
+                }
             }
             Yii::$app->response->format = Response::FORMAT_JSON;
 //            Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('app', "บันทึกเรียบร้อยแล้ว"));
@@ -3334,6 +3245,7 @@ js;
             Yii::$app->response->format = Response::FORMAT_JSON;
             EmailQueue::addQueueNoExec(EmailQueue::TYPE_INFO_PRESIDENT_RESULTDOC, $model->id);
             EmailQueue::execSendMailCmd();
+            \app\models\Alert::addPresidentApproveResultDocument($model);
             return [
                 'content' => '<div class="alert alert-success dark">' . Yii::t('app', "บันทึกเรียบร้อยแล้ว") . '</div><script>window.location = "' . $redirect . '";</script>',
                 'forceReload' => '#submission-status-pjax',

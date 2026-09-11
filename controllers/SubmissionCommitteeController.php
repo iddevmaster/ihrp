@@ -335,7 +335,8 @@ class SubmissionCommitteeController extends RbacController {
                 $model->save(FALSE);
                 $submission->status = Submission::STATUS_COMMITTEE_SELECTED;
                 $submission->save(FALSE);
-                EmailQueue::addQueue(EmailQueue::TYPE_COMMITTEE_ACK, $model->id);
+                // Email is no longer queued here; the president must confirm the
+                // full selection via actionConfirmCommittees before mail is sent.
 //                $submission->status = Submission::STATUS_SECRETARY_APPROVE_COMMITTEE;
 //                $submission->save(FALSE);
 //                EmailQueue::addQueue(EmailQueue::TYPE_APPROVE_COMMITTEE, $submission->id);
@@ -390,6 +391,68 @@ class SubmissionCommitteeController extends RbacController {
 //                'footer' => Html::button(Yii::t('app', "ปิด"), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
 //            ];
 //        }
+    }
+
+    /**
+     * Shows the committee members selected but not yet confirmed for a submission,
+     * and, on confirm, queues the acknowledge email (TYPE_COMMITTEE_ACK) for each of them.
+     * @param integer $submissionId
+     * @return mixed
+     */
+    public function actionConfirmCommittees($submissionId) {
+        $request = Yii::$app->request;
+        $submission = Submission::find()->isDeleted(FALSE)->andWhere(['id' => $submissionId])->one();
+        $committees = $this->findUnconfirmedCommittees($submissionId);
+
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            if ($request->isGet) {
+                $footer = Html::button(Yii::t('app', 'ปิด'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]);
+                if (count($committees) > 0) {
+                    $footer .= Html::button(Yii::t('app', 'ยืนยันและส่งอีเมล'), ['class' => 'btn btn-primary', 'type' => "submit"]);
+                }
+                return [
+                    'title' => Yii::t('app', 'ยืนยันการเลือกกรรมการ'),
+                    'content' => $this->renderAjax('confirm-committees', [
+                        'submission' => $submission,
+                        'committees' => $committees,
+                    ]),
+                    'footer' => $footer,
+                ];
+            } else {
+                foreach ($committees as $committee) {
+                    EmailQueue::addQueue(EmailQueue::TYPE_COMMITTEE_ACK, $committee->id);
+                }
+                return [
+                    'forceReload' => '#crud-datatable-submission-committee-pjax',
+                    'forceClose' => true,
+                ];
+            }
+        }
+    }
+
+    /**
+     * Committee members selected for a submission that have not yet been confirmed
+     * (i.e. no acknowledge email has been queued for them yet).
+     * @param integer $submissionId
+     * @return SubmissionCommittee[]
+     */
+    protected function findUnconfirmedCommittees($submissionId) {
+        $committees = SubmissionCommittee::find()->isDeleted(FALSE)
+                ->andWhere(['submission_id' => $submissionId, 'status' => SubmissionCommittee::STATUS_PENDING])
+                ->all();
+        if (empty($committees)) {
+            return [];
+        }
+        $ids = \yii\helpers\ArrayHelper::getColumn($committees, 'id');
+        $notifiedIds = EmailQueue::find()->isDeleted(FALSE)
+                ->type(EmailQueue::TYPE_COMMITTEE_ACK)
+                ->andWhere(['model_id' => $ids])
+                ->select('model_id')->column();
+        return array_values(array_filter($committees, function($c) use ($notifiedIds) {
+            return !in_array($c->id, $notifiedIds);
+        }));
     }
 
     /**

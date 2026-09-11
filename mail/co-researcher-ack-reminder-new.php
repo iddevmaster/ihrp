@@ -16,9 +16,9 @@ use yii\helpers\Url;
 <p>หากตรวจสอบแล้วท่านไม่ประสงค์จะยื่นต่อ ขอให้ลบการยื่นนั้นออกจากระบบ มิเช่นนั้นจะมีอีเมลแจ้งเตือนท่านทุก 14 วัน</p>
 
 <p>
-    <font style="color: red">หมายเหตุ : เป็น​ความอัตโนมัติ​ ส่งจากระบบหากต้องการติดต่อเจ้าหน้าที่</font>    
+    <font style="color: red"><?= $pr->submission->contactLetter; ?></font>
 </p>
 <hr color="red" align="center" width="70%" size="5">
 <p>
-    <font style="color: red">Note: This document is automatically generated. If you want to contact us</font>    
+    <font style="color: red"><?= $pr->submission->contactLetterEng; ?></font>
 </p>

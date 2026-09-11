@@ -35,6 +35,9 @@ $currentRoles = Yii::$app->session->get('currentRole');
                     }
                     ?>
                 </div>
+                <div class="alert alert-danger alert-dismissible">
+                    <?= Yii::t('app', 'เมื่อท่านเลือกกรรมการครบแล้ว กรุณาคลิกปุ่ม ยืนยันการเลือกกรรมการ เพื่อระบบจะดำเนินการส่งอีเมลแจ้งกรรมการต่อไป') ?>
+                </div>
             </div>
         </div>
         <div class="panel-body">
@@ -44,6 +47,8 @@ $currentRoles = Yii::$app->session->get('currentRole');
                     echo $this->renderFile('@app/views/submission-committee/list-committee-select.php', [
                         'searchModel' => $comsearchModel,
                         'dataProvider' => $comdataProvider,
+                        'submissionId' => $id->id,
+                        'submission' => $submission,
                     ]);
                     ?>
                 </div>

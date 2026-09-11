@@ -224,7 +224,7 @@ $currentRole = Yii::$app->session->get('currentRole');
                 ]);
                 ?>
             <!--<img class="navbar-brand-logo" src="../assets/images/logo.png" title="Remark">-->
-                <span class="navbar-brand-text"><?= yii::t('app', 'EC:Online Submission System '); ?></span>
+                <span class="navbar-brand-text"><?= yii::t('app', 'e-Submission System '); ?></span>
             </div>
         </div>
     </div>

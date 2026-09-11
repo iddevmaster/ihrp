@@ -880,31 +880,11 @@ class Submission extends \yii\db\ActiveRecord {
     }
 
     Public function getContactLetter() {
-        $content = "";
-        if (!isset($this->project->project_code) || $this->submissionType->submission_type_group_id == 2) {
-            $content = 'หมายเหตุ : เป็นความอัตโนมัติส่งจากระบบหากต้องการติดต่อเจ้าหน้าที่';
-        } elseif (isset($this->project->project_code) && $this->submissionType->submission_type_group_id == 1) {
-            if (isset($this->responsible_person)) {
-                $content = "หมายเหตุ : เป็นความอัตโนมัติส่งจากระบบหากต้องการติดต่อเจ้าหน้าที่สามารถติดต่อได้ที่ {$this->responsiblePerson->person->fullName} โทร  0897141913 หรือ 0897141177 ";
-            } else {
-                $content = "หมายเหตุ : เป็นความอัตโนมัติส่งจากระบบหากต้องการติดต่อเจ้าหน้าที่สามารถติดต่อได้ที่ {$this->refSubmission->responsiblePerson->person->fullName} โทร  0897141913 หรือ 0897141177 ";
-            }
-        }
-        return $content;
+        return Yii::$app->util->emailFooter();
     }
 
     Public function getContactLetterEng() {
-        $content = "";
-        if (!isset($this->project->project_code) || $this->submissionType->submission_type_group_id == 2) {
-            $content = '*Note: This is an automatically generated message. To contact us';
-        } elseif (isset($this->project->project_code) && $this->submissionType->submission_type_group_id == 1) {
-            if (isset($this->responsible_person)) {
-                $content = "*Note: This is an automatically generated message. To contact us, please call  {$this->responsiblePerson->person->fullName}  at  0897141913 , 0897141177 ";
-            } else {
-                $content = "*Note: This is an automatically generated message. To contact us, please call  {$this->refSubmission->responsiblePerson->person->fullName}  at  0897141913 , 0897141177 ";
-            }
-        }
-        return $content;
+        return Yii::$app->util->emailFooterEng();
     }
 
     public function getResolutionLabels() {
@@ -1896,7 +1876,7 @@ class Submission extends \yii\db\ActiveRecord {
 //            self::STATUS_SUBMITTED_CON => Yii::t('app', 'รอตรวจสอบเอกสาร'),
             self::STATUS_DOC_APPROVED => Yii::t('app', 'รอออกเลขโครงการ'),
             self::STATUS_CODE_GENERATED => Yii::t('app', 'รอกำหนดประมาณวันที่ประชุมและวันส่งประเมิน'),
-            self::STATUS_MEETING_APPOINTMENT => Yii::t('app', 'รอเลือกเลขา'),
+            self::STATUS_MEETING_APPOINTMENT => Yii::t('app', 'รอเลือกเลขาฯและประธาน'),
             self::STATUS_SECRETARY_SELECT_TYPE => Yii::t('app', 'รอประธาน เลือกประเภทการพิจารณา'),
             self::STATUS_SECRETARY_SELECTED => Yii::t('app', 'รอเลือกกรรมการ'),
             self::STATUS_COMMITTEE_SELECTED => Yii::t('app', 'รอกรรมการตอบรับพิจารณาโครงการ'),
@@ -2120,7 +2100,7 @@ class Submission extends \yii\db\ActiveRecord {
     public static function getResolutionConsiderationLables() {
         return[
             self::RESOLUTION_Y => yii::t('app', 'รับรอง/รับทราบ'),
-            self::RESOLUTION_C => yii::t('app', 'รับรอง/รับทราบหลังจากแก้ไขตามที่กรรมการแนะนำ'),
+            self::RESOLUTION_C => yii::t('app', 'ขอให้ผู้วิจัยปรับปรุงแก้ไขเพื่ออนุมัติ'),
         ];
     }
 

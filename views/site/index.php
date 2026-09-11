@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Tabs;
 
 app\assets\ToolbarJsAsset::register($this);
-$this->title = Yii::$app->name;
+$this->title = '';
 //$this->title = 'Bus terminal Web Application System';
 ?>
 <body class="dashboard">

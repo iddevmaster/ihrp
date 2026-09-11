@@ -34,12 +34,12 @@ if (isset($ma)) {
 <p>To <?= $submission->projectLeader->person->fullNameEng ?></p>
 <p>Subject <?= \Yii::t('app', 'Ethics in Human Research Evaluation Results after the board meeting no : {0}', [isset($ma) ? $ma->meeting->yearNo : ""]) ?></p>
 <p>
-    Research entitled “<?= $submission->project->name_thai ?>” (<?= $submission->project->name_eng ?>) Protocol no.: HE <?= $submission->project->project_code ?>  
+    Research entitled “<?= $submission->project->name_thai ?>” (<?= $submission->project->name_eng ?>) Protocol no.: <?= $submission->project->project_code ?>  
     <?php if (isset($ma)): ?>
     Board meeting no <?= $ma->meeting->yearNo ?> Date <?= $meetingDate ?> / <?= $ma->fullTitle ?> 
     <?php endif; ?>
     Results <?= $submission->resolutionLabel ?>
-This is an initial notification. The KKUEC office will send the endorsed result notification to you online.
+This is an initial notification. 
 </p>
 <p>
 <font style="color: red"><?= $submission->contactLetterEng; ?></font>    

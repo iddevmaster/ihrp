@@ -17,5 +17,5 @@ use yii\helpers\Url;
      จึงเรียนมาเพื่อโปรดทราบ
 </p>
 <p>
-<font style="color: red"></font>    
+<font style="color: red"><?= Yii::$app->util->emailFooter(); ?></font>
 </p>

@@ -8,12 +8,12 @@ use yii\helpers\Url;
 ?>
 <style>
     table td{
-        color:#c55a11;
+        color:#1d499c;
     }
 </style>
 <div style="text-align: center"><img src="<?= Url::to(Yii::$app->urlManager->baseUrl . '/images/logo-mail.png', true) ?>"></div>
-<div style="background-color: #c55a11;width: auto;text-align: center; height: 50px; padding: 20px;font-size: 30px;"><font style="font-weight: bold; color:#ffffff;">สำหรับการเป็น “ที่ปรึกษา”</font></div>
-<font style="font-weight:bold; color: #c55a11;">
+<div style="background-color: #1d499c;width: auto;text-align: center; height: 50px; padding: 20px;font-size: 30px;"><font style="font-weight: bold; color:#ffffff;">สำหรับการเป็น “ที่ปรึกษา”</font></div>
+<font style="font-weight:bold; color: #1d499c;">
 <p>เรียน <?= $consultant->person->fullName ?></p>
 <h4>มีผู้ยื่นโครงการโดยระบุท่านเป็นที่ปรึกษาโครงการ  โดยมีรายละเอียดโครงการดังนี้</h4>
 </font>
@@ -58,7 +58,7 @@ use yii\helpers\Url;
     </tbody>
 </table>
         <?= Html::a('เข้าไปดูรายละเอียดเอกสารโครงการวิจัยกรุณาคลิกที่นี่', Url::to(['meeting/submission-files', 'submissionId' => $submission->id], TRUE)) ?> <br>
-<span><font style="font-weight:bold; color: #c55a11;">ทั้งนี้เมื่อท่านตอบรับแล้ว ท่านจะสามารถติดตามการดำเนินการโครงการได้ในระบบออนไลน์ของศูนย์ฯ ต่อไป</font> </span>
+<span><font style="font-weight:bold; color: #1d499c;">ทั้งนี้เมื่อท่านตอบรับแล้ว ท่านจะสามารถติดตามการดำเนินการโครงการได้ในระบบออนไลน์ของศูนย์ฯ ต่อไป</font> </span>
 <font style="font-weight:bold; color: #000000;font-size: 28px;"><h4>กรุณาคลิกด้านล่างเพื่อเลือกตอบการเป็นที่ปรึกษาโครงการ</h4></font>
 <?= Html::a('<font style="font-weight:bold; color: #4dcc00;">ตกลง</font> ', Url::to(['project-consultant/acknowledge', 'token' => $consultant->ack_token, 'sid' => $submission->id, 'type' => 'accept'], TRUE)) ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= Html::a('<font style="font-weight:bold; color: #cc0000;"> ปฎิเสธ</font>', Url::to(['project-consultant/acknowledge', 'token' => $consultant->ack_token, 'sid' => $submission->id, 'type' => 'reject'], TRUE)) ?> <p>
     <font style="color: red"><?= $submission->contactLetter; ?></font>    
@@ -67,8 +67,8 @@ use yii\helpers\Url;
 <hr color="red" align="center" width="70%" size="5">
 <br>
 <p>To <?= $consultant->person->fullNameEng ?></p>
-<font style="font-weight:bold; color: #c55a11;">
-<h4>You have been named as a consultant in a research study. Details of the study are listed below</h4>
+<font style="font-weight:bold; color: #1d499c;">
+<h4>You have been listed as a project consultant for a submitted research study. The study details are provided below.</h4>
 </font>
 <table>
     <thead>
@@ -110,8 +110,8 @@ use yii\helpers\Url;
         </tr>
     </tbody>
 </table>
-<?= Html::a('Click here to view details of the research study.', Url::to(['meeting/submission-files', 'submissionId' => $submission->id], TRUE)) ?> 
-<font style="font-weight:bold; color: #000000;font-size: 28px;"><h4>Do you agree to be a project consonsultant of this study?</h4></font>
+<?= Html::a('Click here to view the research study details.', Url::to(['meeting/submission-files', 'submissionId' => $submission->id], TRUE)) ?> 
+<font style="font-weight:bold; color: #000000;font-size: 28px;"><h4>Do you agree to serve as a consultant for this research study?</h4></font>
 <?= Html::a('<font style="font-weight:bold; color: #4dcc00;">Yes</font> ', Url::to(['project-consultant/acknowledge', 'token' => $consultant->ack_token, 'sid' => $submission->id, 'type' => 'accept'], TRUE)) ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= Html::a('<font style="font-weight:bold; color: #cc0000;"> No</font>', Url::to(['project-consultant/acknowledge', 'token' => $consultant->ack_token, 'sid' => $submission->id, 'type' => 'reject'], TRUE)) ?> <p>
 <p>
     <font style="color: red"><?= $submission->contactLetterEng; ?></font>    

@@ -6,7 +6,7 @@ use yii\bootstrap\Tabs;
 use yii\helpers\Url;
 
 app\assets\ToolbarJsAsset::register($this);
-$this->title = Yii::$app->name;
+$this->title = '';
 //$this->title = 'Bus terminal Web Application System';
 
 $submissionMonitor = \app\models\Submission::find()->isDeleted(false)->projectViewer(\Yii::$app->user->id)->one();

@@ -69,6 +69,7 @@ class EmailQueue extends \yii\db\ActiveRecord {
     const TYPE_INFO_PRESIDENT_RESULTDOC = 39;
     const TYPE_INFO_STAFF_EDIT_RESULTDOC = 40;
     const TYPE_TRAINING_EXPIRE_REMINDER = 41;
+    const TYPE_PRESIDENT_SELECTED = 42;
 
     /**
      * @inheritdoc
@@ -435,14 +436,16 @@ class EmailQueue extends \yii\db\ActiveRecord {
 //                    ->send();
 //            \yii\helpers\VarDumper::dump($res);
         } else if ($this->type === self::TYPE_INFORM_REG_CODE) {
-            $p = Person::findOne($this->model_id);
-            $msg = Yii::$app->mailer->compose('inform-reg-code', [
-                'person' => $p,
-            ]);
-            $res = $msg->setSubject(\Yii::t('app', 'แจ้งได้รับสิทธิ (user) เป็นกรรมการจริยธรรมฯ'))
-                    ->setFrom([\Yii::$app->params['adminEmail'] => $adminName])
-                    ->setTo($p->email)
-                    ->send();
+            // Sending disabled per request; mark as processed without sending.
+            $res = true;
+//            $p = Person::findOne($this->model_id);
+//            $msg = Yii::$app->mailer->compose('inform-reg-code', [
+//                'person' => $p,
+//            ]);
+//            $res = $msg->setSubject(\Yii::t('app', 'แจ้งได้รับสิทธิ (user) เป็นกรรมการจริยธรรมฯ'))
+//                    ->setFrom([\Yii::$app->params['adminEmail'] => $adminName])
+//                    ->setTo($p->email)
+//                    ->send();
 //            \yii\helpers\VarDumper::dump($res);
         } else if ($this->type === self::TYPE_COMMITTEE_REASSESS) {
             $sc = SubmissionCommittee::findOne($this->model_id);
@@ -526,6 +529,20 @@ class EmailQueue extends \yii\db\ActiveRecord {
             $email = $submission->responsiblePerson->person->email;
             if (isset($submission->secretaryPerson)) {
                 $email = $submission->secretaryPerson->person->email;
+            }
+            $res = $msg->setSubject(\Yii::t('app', 'แจ้งขอให้เลือกประเภทการพิจารณา'))
+                    ->setFrom([\Yii::$app->params['adminEmail'] => $adminName])
+                    ->setTo($email)
+                    ->send();
+        } else if ($this->type === self::TYPE_PRESIDENT_SELECTED) {
+            $submission = Submission::findOne($this->model_id);
+            $msg = Yii::$app->mailer->compose('president-selected', [
+                'submission' => $submission,
+            ]);
+            if (isset($submission->president_person)) {
+                $email = $submission->presidentPerson->person->email;
+            } else {
+                $email = $submission->project->panel->chairman->email;
             }
             $res = $msg->setSubject(\Yii::t('app', 'แจ้งขอให้เลือกประเภทการพิจารณา'))
                     ->setFrom([\Yii::$app->params['adminEmail'] => $adminName])

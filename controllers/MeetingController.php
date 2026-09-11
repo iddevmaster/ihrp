@@ -654,6 +654,7 @@ class MeetingController extends RbacController {
                 $model->sec1_checked_at = date('Y-m-d H:i:s');
                 if (isset($model->checked_president)) {
                     EmailQueue::addQueue(EmailQueue::TYPE_INFO_PRE_CHECK_MEETING, $model->id);
+                    \app\models\Alert::addMeetingPreChecked($model);
                 }
                 foreach ($ms as $m) {
                     if (isset($m->submission_id) && $m->submission->status != Submission::STATUS_STAFF_UPLOAD_RESULTDOCUMENT) {
@@ -684,6 +685,7 @@ class MeetingController extends RbacController {
             $model->sec2_checked_at = date('Y-m-d H:i:s');
             if (isset($model->checked_president)) {
                 EmailQueue::addQueue(EmailQueue::TYPE_INFO_PRE_CHECK_MEETING, $model->id);
+                \app\models\Alert::addMeetingPreChecked($model);
             }
 //            EmailQueue::addQueue(EmailQueue::TYPE_INFO_PRE_CHECK_MEETING, $model->id);
             foreach ($ms as $m) {

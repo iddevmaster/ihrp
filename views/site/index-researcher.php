@@ -6,7 +6,7 @@ use yii\bootstrap\Tabs;
 use yii\helpers\Url;
 
 app\assets\ToolbarJsAsset::register($this);
-$this->title = Yii::$app->name;
+$this->title = '';
 //$this->title = 'Bus terminal Web Application System';
 $user = \Yii::$app->user->identity->person->id;
 $countRe = app\models\ProjectResearcher::find()->joinWith('submission')->person(\Yii::$app->user->identity->person->id)->isDeleted(false)->isDeletedSubmission(false)->isLeader(false)->count();

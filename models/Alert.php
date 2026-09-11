@@ -298,4 +298,97 @@ class Alert extends \yii\db\ActiveRecord {
         }
     }
 
+    public static function addMeetingPreChecked($meeting) {
+        if (!isset($meeting->checked_president)) {
+            return;
+        }
+
+        $alert = new Alert();
+        $message = 'การประชุมครั้งที่ {0}/{1} รอประธานตรวจสอบ';
+        $alert->message = \Yii::t('app', $message, [
+                    $meeting->meeting_no,
+                    $meeting->year
+        ]);
+        $alert->user_id = $meeting->checked_president;
+        $alert->created_at = date('Y-m-d H:i:s');
+
+        if (!$alert->save(FALSE)) {
+            Yii::warning(\implode(", ", $alert->firstErrors));
+        }
+    }
+
+    public static function addPresidentApproveResultDocument($submission) {
+        if (!isset($submission->president_person)) {
+            return;
+        }
+
+        $alert = new Alert();
+        $message = 'โครงการ {0} รอประธานตรวจสอบหนังสือแจ้งผล';
+        $alert->message = \Yii::t('app', $message, [
+                    empty($submission->project->project_code) ? $submission->project->name_thai : $submission->project->project_code
+        ]);
+        $alert->submission_id = $submission->id;
+        $alert->user_id = $submission->president_person;
+        $alert->created_at = date('Y-m-d H:i:s');
+
+        if (!$alert->save(FALSE)) {
+            Yii::warning(\implode(", ", $alert->firstErrors));
+        }
+    }
+
+    public static function addPresidentSelectType($submission) {
+        $message = 'โครงการ {0} รอประธานเลือกประเภทการพิจารณา';
+        $pname = empty($submission->project->project_code) ? $submission->project->name_thai : $submission->project->project_code;
+        $presidents = Person::find()->joinWith('personRoles')->isDeleted(FALSE)->role(Role::PRESIDENT)->all();
+        foreach ($presidents as $p) {
+            if (!isset($p->user_id)) {
+                continue;
+            }
+            $alert = new Alert();
+            $alert->message = \Yii::t('app', $message, [$pname]);
+            $alert->user_id = $p->user_id;
+            $alert->submission_id = $submission->id;
+            $alert->created_at = date('Y-m-d H:i:s');
+            $alert->save(FALSE);
+        }
+    }
+
+    public static function addPresidentAssignCommittee($submission) {
+        $message = 'โครงการ {0} รอประธานเลือกผู้ทบทวน (กรรมการ)';
+        $pname = empty($submission->project->project_code) ? $submission->project->name_thai : $submission->project->project_code;
+        $presidents = Person::find()->joinWith('personRoles')->isDeleted(FALSE)->role(Role::PRESIDENT)->all();
+        foreach ($presidents as $p) {
+            if (!isset($p->user_id)) {
+                continue;
+            }
+            $alert = new Alert();
+            $alert->message = \Yii::t('app', $message, [$pname]);
+            $alert->user_id = $p->user_id;
+            $alert->submission_id = $submission->id;
+            $alert->created_at = date('Y-m-d H:i:s');
+            $alert->save(FALSE);
+        }
+    }
+
+    public static function addCommitteeRejected($submissionCommittee) {
+        $submission = $submissionCommittee->submission;
+        $message = 'กรรมการ {0} ปฏิเสธการอ่านโครงการ {1} กรุณาเลือกกรรมการใหม่';
+        $pname = empty($submission->project->project_code) ? $submission->project->name_thai : $submission->project->project_code;
+        $presidents = Person::find()->joinWith('personRoles')->isDeleted(FALSE)->role(Role::PRESIDENT)->all();
+        foreach ($presidents as $p) {
+            if (!isset($p->user_id)) {
+                continue;
+            }
+            $alert = new Alert();
+            $alert->message = \Yii::t('app', $message, [
+                        Yii::$app->user->identity->person->fullName,
+                        $pname
+            ]);
+            $alert->user_id = $p->user_id;
+            $alert->submission_id = $submission->id;
+            $alert->created_at = date('Y-m-d H:i:s');
+            $alert->save(FALSE);
+        }
+    }
+
 }
